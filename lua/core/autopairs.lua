@@ -32,6 +32,14 @@ M.setup = function()
   local Rule = require "nvim-autopairs.rule"
   local cond = require "nvim-autopairs.conds"
 
+  if package.loaded["cmp"] then
+    require("nvim-autopairs.completion.cmp").setup({
+      map_cr = lvim.builtin.autopairs.map_cr, --  map <CR> on insert mode
+      map_complete = lvim.builtin.autopairs.map_complete, -- it will auto insert `(` after select function or method item
+      auto_select = true -- automatically select the first item
+    })
+  end
+
   autopairs.setup {
     check_ts = lvim.builtin.autopairs.check_ts,
     ts_config = lvim.builtin.autopairs.ts_config,

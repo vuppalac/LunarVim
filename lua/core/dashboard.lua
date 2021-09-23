@@ -61,6 +61,14 @@ M.setup = function()
 
   vim.g.dashboard_custom_header = lvim.builtin.dashboard.custom_header
 
+  local home = os.getenv('HOME')
+  vim.g.dashboard_footer_icon = '🐬 '
+  vim.g.dashboard_preview_command = 'cat'
+  -- vim.g.dashboard_preview_pipeline = 'lolcat -F 0.3'
+  vim.g.dashboard_preview_file = home .. '/.config/nvim/static/neovim.cat'
+  vim.g.dashboard_preview_file_height = 12
+  vim.g.dashboard_preview_file_width = 80
+
   vim.g.dashboard_default_executive = lvim.builtin.dashboard.search_handler
 
   vim.g.dashboard_custom_section = lvim.builtin.dashboard.custom_section
@@ -86,6 +94,14 @@ M.setup = function()
 
   local text = require "interface.text"
   vim.g.dashboard_custom_footer = text.align_center({ width = 0 }, footer, 0.49) -- Use 0.49 as  counts for 2 characters
+  -- vim.g.dashboard_custom_footer = lvim.builtin.dashboard.footer
+-- vim.cmd "let packages = len(globpath('~/.local/share/nvim/site/pack/packer/start', '*', 0, 1))"
+-- vim.api.nvim_exec(
+--   [[
+--   let g:dashboard_custom_footer = ['Neovim loaded '..packages..' plugins  ']
+--   ]],
+--   false
+ --)
 
   require("core.autocmds").define_augroups {
     _dashboard = {

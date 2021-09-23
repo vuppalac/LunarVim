@@ -79,6 +79,46 @@ function M.setup()
   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
     border = lvim.lsp.popup_border,
   })
+
+  --[[
+  local cap = vim.lsp.protocol.make_client_capabilities()
+  if cap.call_hierarchy or cap.callHierarchy then
+   vim.lsp.handlers["callHierarchy/incomingCalls"] = require"user.lsp.navigator.hierarchy".incoming_calls_handler
+    vim.lsp.handlers["callHierarchy/outgoingCalls"] = require"user.lsp.navigator.hierarchy".outgoing_calls_handler
+  end
+
+  vim.lsp.handlers["textDocument/references"] = require"user.lsp.navigator.reference".reference_handler
+  vim.lsp.handlers["textDocument/codeAction"] = require"user.lsp.navigator.codeAction".code_action_handler
+  vim.lsp.handlers["textDocument/definition"] = require"user.lsp.navigator.definition".definition_handler
+
+  if cap.declaration then
+    vim.lsp.handlers["textDocument/declaration"] = require"user.lsp.navigator.definition".declaration_handler
+  end
+
+  vim.lsp.handlers["textDocument/typeDefinition"] = require"user.lsp.navigator.definition".typeDefinition_handler
+  vim.lsp.handlers["textDocument/implementation"] = require"user.lsp.navigator.implementation".implementation_handler
+
+  vim.lsp.handlers["textDocument/documentSymbol"] = require"user.lsp.navigator.symbols".document_symbol_handler
+  vim.lsp.handlers["workspace/symbol"] = require"user.lsp.navigator.symbols".workspace_symbol_handler
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = require"user.lsp.navigator.diagnostics".diagnostic_handler
+
+  -- TODO: when active signature merge to neovim, remove this setup:
+  -- local hassig, sig = pcall(require, "lsp_signature")
+  -- if hassig then
+  --   if _NgConfigValues.signature_help_cfg then
+  --     sig.setup(_NgConfigValues.signature_help_cfg)
+  --   end
+  -- else
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+      require"user.lsp.navigator.signature".signature_handler,
+      {
+        border = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
+      })
+  -- end
+
+  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = lvim.lsp.popup_border})
+  vim.lsp.handlers["textDocument/formatting"] = require"user.lsp.navigator.formatting".format_hdl
+ --]]
 end
 
 local function split_by_chunk(text, chunkSize)

@@ -12,6 +12,7 @@ lvim = {
   vsnip_dir = utils.join_paths(home_dir, ".config", "snippets"),
   database = { save_location = utils.join_paths(home_dir, ".config", "lunarvim_db"), auto_execute = 1 },
   keys = {},
+  autoload = true,
 
   builtin = {},
 
@@ -70,6 +71,14 @@ lvim = {
           { name = "LspDiagnosticsSignHint", text = "" },
           { name = "LspDiagnosticsSignInformation", text = "" },
         },
+        nav = {
+          values = {
+            { name = "LspDiagnosticsSignError", text = "" },
+            { name = "LspDiagnosticsSignWarning", text = "" },
+            { name = "LspDiagnosticsSignHint", text = "💡" },
+            { name = "LspDiagnosticsSignInformation", text = "" },
+          }
+        }
       },
       virtual_text = {
         prefix = "",
@@ -87,6 +96,11 @@ lvim = {
     null_ls = {
       setup = {},
     },
+    cpp = {
+      provider = "clangd",
+      compile_commands_dir = "build",
+      cmd = {}
+    }
   },
 
   plugins = {
@@ -652,12 +666,13 @@ lvim.lang = {
             },
             diagnostics = {
               -- Get the language server to recognize the `vim` global
-              globals = { "vim", "lvim" },
+              globals = { "vim", "nvim" },
             },
             workspace = {
               -- Make the server aware of Neovim runtime files
               library = {
-                [require("utils").join_paths(get_runtime_dir(), "lvim", "lua")] = true,
+                [require("utils").join_paths(get_runtime_dir(), "nvim", "lua")] = true,
+                --[vim.fn.expand "~/.local/share/nvim/lua"] = true,
                 [vim.fn.expand "$VIMRUNTIME/lua"] = true,
                 [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
               },

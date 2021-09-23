@@ -38,7 +38,7 @@ lvim.autocommands = {
       "*",
       "setlocal formatoptions-=c formatoptions-=r formatoptions-=o",
     },
-    { "BufWritePost", config.path, "lua require('utils').reload_lv_config()" },
+    -- { "BufWritePost", config.path, "lua require('utils').reload_lv_config()" },
     {
       "FileType",
       "qf",

@@ -19,6 +19,7 @@ function M.config()
     auto_close = 1,
     quit_on_open = 0,
     follow = 1,
+    indent_markers = 1,
     hide_dotfiles = 1,
     git_hl = 1,
     root_folder_modifier = ":t",
@@ -63,8 +64,8 @@ function M.setup()
 
   -- Implicitly update nvim-tree when project module is active
   if lvim.builtin.project.active then
-    vim.g.nvim_tree_update_cwd = 1
-    vim.g.nvim_tree_respect_buf_cwd = 1
+    vim.g.nvim_tree_update_cwd = 0
+    vim.g.nvim_tree_respect_buf_cwd = 0
     vim.g.nvim_tree_disable_netrw = 0
     vim.g.nvim_tree_hijack_netrw = 0
     vim.g.netrw_banner = 0

@@ -90,7 +90,7 @@ function utils.reload_lv_config()
   config:load()
 
   require("keymappings").setup() -- this should be done before loading the plugins
-  vim.cmd("source " .. utils.join_paths(get_runtime_dir(), "lvim", "lua", "plugins.lua"))
+  vim.cmd("source " .. utils.join_paths(get_runtime_dir(), "lua", "plugins.lua"))
   local plugins = require "plugins"
   utils.toggle_autoformat()
   local plugin_loader = require "plugin-loader"
