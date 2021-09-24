@@ -1,14 +1,13 @@
 local M = {}
--- It's not safe to require 'utils' without adjusting the runtimepath
 
 local uv = vim.loop
-local function join_paths(...)
+
+-- It's not safe to require 'utils' without adjusting the runtimepath
+function _G.join_paths(...)
   local path_sep = uv.os_uname().version:match "Windows" and "\\" or "/"
   local result = table.concat({ ... }, path_sep)
   return result
 end
-
-_G.join_paths = join_paths
 
 function _G.get_runtime_dir()
   local lvim_runtime_dir = os.getenv "LUNARVIM_RUNTIME_DIR"
@@ -74,6 +73,7 @@ function M:init()
   end
 
   vim.fn.mkdir(vim.fn.stdpath "cache", "p")
+
   -- FIXME: currently unreliable in unit-tests
   if not os.getenv "LVIM_TEST_ENV" then
     require("impatient").setup {
