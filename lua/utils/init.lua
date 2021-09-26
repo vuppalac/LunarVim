@@ -163,7 +163,25 @@ function utils.lvim_cache_reset()
   require("plugin-loader"):cache_reset()
 end
 
-vim.cmd [[ command! LvimCacheReset lua require('utils').lvim_cache_reset() ]]
+function utils.write_file(path, txt, flag)
+  uv.fs_open(path, flag, 438, function(open_err, fd)
+    assert(not open_err, open_err)
+    uv.fs_write(fd, txt, -1, function(write_err)
+      assert(not write_err, write_err)
+      uv.fs_close(fd, function(close_err)
+        assert(not close_err, close_err)
+      end)
+    end)
+  end)
+end
+
+--FIXME: this is still broken
+function utils.lvim_update()
+  local update_script = utils.join_paths(get_runtime_dir(), "lvim", "utils", "installer", "update_lvim.sh")
+  os.execute("bash " .. update_script)
+
+  vim.notify("Operation complete. Please reload LunarVim to see all the changes", vim.log.levels.INFO)
+end
 
 return utils
 
