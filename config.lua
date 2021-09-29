@@ -16,10 +16,12 @@ vim.g.tokyonight_style = "storm"
 vim.g.tokyonight_italic_functions = false
 vim.g.tokyonight_lualine_bold = true
 -- vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
-lvim.colorscheme = "tokyonight"
+-- lvim.colorscheme = "tokyonight"
 -- lvim.colorscheme = "onedarker"
 -- lvim.colorscheme = "aurora"
 -- lvim.colorscheme = "doom-one"
+lvim.colorscheme = "gruvbox"
+lvim.builtin.lualine.options.theme = 'gruvbox'
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
@@ -46,6 +48,7 @@ lvim.lsp.cpp.cmd = {
 -- lvim.lsp.cpp.provider = "clangd"
 -- lvim.lsp.cpp.cmd = {
 --   ls_install_prefix .. "/lspinstall/cpp/clangd/bin/clangd",
+--   -- "clangd",
 --   "--background-index",
 --   "--header-insertion=never",
 --   "--cross-file-rename",
@@ -73,6 +76,11 @@ lvim.builtin.which_key.mappings['t'] = {
   i = { "<cmd> IndentBlanklineToggle<CR>", "Indent Style"},
   l = { "<cmd> set nu!<CR>", "Line Numbers"},
   w = { "<cmd> set wrap!<CR>", "Wrap Text"},
+}
+
+lvim.builtin.which_key.mappings['m'] = {
+  name = "+Misc",
+  t = { "<cmd> %s/\\s\\+$//e<CR>", "Trim Trailing Whitespace"},
 }
 
 lvim.builtin.which_key.mappings["g"]["d"] = {"<cmd>Gvdiff<cr>", "File diff"}

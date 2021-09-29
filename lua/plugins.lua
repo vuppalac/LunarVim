@@ -85,7 +85,7 @@ return {
   },
 
   {
-    "lewis6991/gitsigns.nvim",
+    "vuppalac/gitsigns.nvim",
 
     config = function()
       require("core.gitsigns").setup()
