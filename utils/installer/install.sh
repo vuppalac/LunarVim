@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -eo pipefail
 
 #Set branch to master unless specified by the user
@@ -134,7 +133,7 @@ EOF
 
   if [ -e "$LUNARVIM_RUNTIME_DIR/lvim/init.lua" ]; then
     echo "Updating LunarVim"
-    update_lvim
+    bash "$LUNARVIM_RUNTIME_DIR/lvim/utils/installer/update_lvim.sh"
   else
     clone_lvim
     setup_lvim
@@ -355,17 +354,6 @@ function setup_lvim() {
   echo "Thank you for installing LunarVim!!"
   echo "You can start it by running: $INSTALL_PREFIX/bin/lvim"
   echo "Do not forget to use a font with glyphs (icons) support [https://github.com/ryanoasis/nerd-fonts]"
-}
-
-function update_lvim() {
-  git -C "$LUNARVIM_RUNTIME_DIR/lvim" fetch --quiet
-  if ! git -C "$LUNARVIM_RUNTIME_DIR/lvim" diff --quiet "@{upstream}"; then
-    git -C "$LUNARVIM_RUNTIME_DIR/lvim" merge --ff-only --progress ||
-      echo "Unable to guarantee data integrity while updating. Please do that manually instead." && exit 1
-  fi
-  echo "Clearing up old startup cache"
-  "$INSTALL_PREFIX/bin/lvim" --headless +LvimCacheReset +q
-  echo "Your LunarVim installation is now up to date!"
 }
 
 function __add_separator() {

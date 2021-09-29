@@ -1,7 +1,9 @@
 local M = {}
+
+local uv = vim.loop
+
 -- It's not safe to require 'utils' without adjusting the runtimepath
 function _G.join_paths(...)
-  local uv = vim.loop
   local path_sep = uv.os_uname().version:match "Windows" and "\\" or "/"
   local result = table.concat({ ... }, path_sep)
   return result
@@ -70,9 +72,10 @@ function M:init()
     vim.cmd("set spellfile=" .. join_paths(self.config_dir, "spell", "en.utf-8.add"))
   end
 
+  vim.fn.mkdir(vim.fn.stdpath "cache", "p")
+
   -- FIXME: currently unreliable in unit-tests
   if not os.getenv "LVIM_TEST_ENV" then
-    vim.fn.mkdir(vim.fn.stdpath "cache", "p")
     require("impatient").setup {
       path = vim.fn.stdpath "cache" .. "/lvim_cache",
       enable_profiling = true,
