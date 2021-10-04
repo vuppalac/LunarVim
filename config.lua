@@ -38,12 +38,12 @@ lvim.keys.normal_mode["<S-Tab>"] = ":BufferPrevious<CR>"
 
 local ls_install_prefix = vim.fn.stdpath "data"
 lvim.lsp.diagnostics.virtual_text = false
-lvim.lsp.cpp.compile_commands_dir = "build_el7_2020_05"
-lvim.lsp.cpp.provider = "ccls"
-lvim.lsp.cpp.cmd = {
-  ls_install_prefix .. "/lspinstall/cpp/ccls/bin/ccls",
-  '--init={"compilationDatabaseDirectory": "build_el7_2020_05", "index": {"threads": 1}}'
-}
+-- lvim.lsp.cpp.compile_commands_dir = "build_el7_2020_05"
+-- lvim.lsp.cpp.provider = "ccls"
+-- lvim.lsp.cpp.cmd = {
+--   ls_install_prefix .. "/lspinstall/cpp/ccls/bin/ccls",
+--   '--init={"compilationDatabaseDirectory": "build_el7_2020_05", "index": {"threads": 1}}'
+-- }
 
 -- lvim.lsp.cpp.provider = "clangd"
 -- lvim.lsp.cpp.cmd = {
@@ -116,7 +116,7 @@ lvim.builtin.dashboard.custom_header = {
   '▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔',
 }
 
-require("user.lsp.config")
+-- require("user.lsp.config")
 
 -- Additional Plugins
 -- require('user.plugins')

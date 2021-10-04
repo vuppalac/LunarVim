@@ -2,11 +2,12 @@ local opts = {
   settings = {
     Lua = {
       diagnostics = {
-        globals = { "vim", "lvim" },
+        globals = { "vim", "lvim", "nvim"},
       },
       workspace = {
         library = {
           [require("utils").join_paths(get_runtime_dir(), "lvim", "lua")] = true,
+          [require("utils").join_paths(get_runtime_dir(), "lua")] = true,
           [vim.fn.expand "$VIMRUNTIME/lua"] = true,
           [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
         },
