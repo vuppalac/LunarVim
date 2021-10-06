@@ -145,7 +145,7 @@ M.config = function()
 
       l = {
         name = "LSP",
-        a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
+        a = { "<cmd>lua require('core.telescope').code_actions()<cr>", "Code Action" },
         A = { "<cmd>lua require('navigator.codelens').run_action()<cr>", "Code Action" },
         d = {
           "<cmd>Telescope lsp_document_diagnostics<cr>",
@@ -168,6 +168,7 @@ M.config = function()
           "Prev Diagnostic",
         },
         o = { "<cmd>lua vim.lsp.buf.outgoing_calls()<CR>", "Outgoing Calls" },
+        l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
         p = {
           name = "Peek",
           d = { "<cmd>lua require('lsp.peek').Peek('definition')<cr>", "Definition" },
