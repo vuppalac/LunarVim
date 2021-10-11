@@ -19,9 +19,9 @@ vim.g.tokyonight_lualine_bold = true
 -- lvim.colorscheme = "tokyonight"
 -- lvim.colorscheme = "onedarker"
 -- lvim.colorscheme = "aurora"
--- lvim.colorscheme = "doom-one"
-lvim.colorscheme = "gruvbox"
-lvim.builtin.lualine.options.theme = 'gruvbox'
+lvim.colorscheme = "doom-one"
+-- lvim.colorscheme = "gruvbox"
+-- lvim.builtin.lualine.options.theme = 'gruvbox'
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
@@ -35,9 +35,10 @@ lvim.keys.visual_mode["<C-_>"] = ":CommentToggle<CR>"
 lvim.keys.normal_mode["<C-d>"] = ":Dox<CR>"
 lvim.keys.normal_mode["<Tab>"] = ":BufferNext<CR>"
 lvim.keys.normal_mode["<S-Tab>"] = ":BufferPrevious<CR>"
+lvim.keys.normal_mode["<F12>"] = ":SymbolsOutline<CR>"
 
-local ls_install_prefix = vim.fn.stdpath "data"
 lvim.lsp.diagnostics.virtual_text = false
+-- local ls_install_prefix = vim.fn.stdpath "data"
 -- lvim.lsp.cpp.compile_commands_dir = "build_el7_2020_05"
 -- lvim.lsp.cpp.provider = "ccls"
 -- lvim.lsp.cpp.cmd = {
@@ -92,16 +93,26 @@ lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.cmp.active = true
 lvim.builtin.comment.active = true
+
 lvim.builtin.nvimtree.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
 lvim.builtin.nvimtree.hide_dotfiles = 0
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = "maintained"
--- lvim.builtin.treesitter.ensure_installed = {'c', 'cpp', 'python', 'bash', 'json', 'cmake', 'dockerfile', 'regex'}
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.context_commentstring.enable = true
+lvim.builtin.treesitter.rainbow.enable = true
+
+-- All the patterns used to detect root dir, when **"pattern"** is in
+-- detection_methods
+lvim.builtin.project.patterns = { "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" }
+ -- Show hidden files in telescope
+lvim.builtin.project.show_hidden = true
+-- When set to false, you will get a message when project.nvim changes your
+-- directory.
+lvim.builtin.project.silent_chdir = false
 
 lvim.builtin.dashboard.custom_header = {
   '▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁',
@@ -208,8 +219,59 @@ lvim.plugins = {
   --  requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
   --  disable = false
   --},
-  {'ray-x/guihua.lua', run = 'cd lua/fzy && make'}
+  {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
+  -- Symbols outline - F12
+  {
+    'simrat39/symbols-outline.nvim',
+    cmd = 'SymbolsOutline'
+  },
+  {
+    "folke/todo-comments.nvim",
+    event = "BufRead",
+    config = function()
+      require("todo-comments").setup {
+        keywords = {
+          OK = { icon = "✔ ", color = "ok" },
+          ISH = { icon = "☛ ", color = "ish" },
+          BAD = { icon = "✘ ", color = "bad" },
+          TEST = { icon = "⚖ ", color = "test" }
+        },
+        colors = {
+          ok = { "#10B981" },
+          ish = { "#e0e031" },
+          bad = { "#f06981" },
+          test = { "#f02244" }
+        },
+      }
+    end
+  },
+  {
+    "f-person/git-blame.nvim",
+    event = "BufRead",
+    config = function()
+      vim.cmd "highlight default link gitblame SpecialComment"
+      vim.g.gitblame_enabled = 0
+    end,
+  },
+  {
+    "p00f/nvim-ts-rainbow",
+    event = "BufWinEnter",
+  },
 }
+
+local components = require("core.lualine.components")
+lvim.builtin.lualine.sections.lualine_b = {
+  components.branch,
+  {
+    'filename',
+    file_status = true, -- displays file status (readonly status, modified status)
+    path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
+    color = {},
+    cond = nil,
+  },
+}
+
+-- require("user.lsp.servers.ccls")
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- lvim.autocommands.custom_groups = {

@@ -43,8 +43,8 @@ M.load_options = function()
     wrap = false, -- display lines as one long line
     spell = false,
     spelllang = "en",
-    scrolloff = 8, -- is one of my fav
-    sidescrolloff = 8,
+    scrolloff = 3, -- is one of my fav
+    sidescrolloff = 3,
   }
 
   ---  SETTINGS  ---
