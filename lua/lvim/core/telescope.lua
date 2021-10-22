@@ -104,6 +104,7 @@ function M.setup()
         ["<C-k>"] = actions.cycle_history_prev,
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
         ["<CR>"] = actions.select_default + actions.center,
+        ["<esc>"] = actions.close,
       },
       n = {
         ["<C-n>"] = actions.move_selection_next,
