@@ -14,21 +14,29 @@ require("user.settings").config()
 -- Customization
 -- =========================================
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
--- lvim.builtin.lastplace = { active = false } -- change to false if you are jumping to future
--- lvim.builtin.tabnine = { active = true } -- change to false if you don't like tabnine
+lvim.builtin.sell_your_soul_to_devil = false -- if you want microsoft to abuse your soul
+lvim.builtin.lastplace = { active = true } -- change to false if you are jumping to future
+lvim.builtin.tabnine = { active = false } -- change to false if you don't like tabnine
 -- lvim.builtin.persistence = { active = true } -- change to false if you don't want persistence
 -- lvim.builtin.presence = { active = false } -- change to true if you want discord presence
 -- lvim.builtin.orgmode = { active = false } -- change to true if you want orgmode.nvim
--- lvim.builtin.dap.active = false -- change this to enable/disable debugging
+lvim.builtin.dap.active = false -- change this to enable/disable debugging
 lvim.builtin.fancy_statusline = { active = false } -- change this to enable/disable fancy statusline
 lvim.builtin.fancy_bufferline = { active = false } -- change this to enable/disable fancy bufferline
--- lvim.builtin.lua_dev = { active = true } -- change this to enable/disable folke/lua_dev
--- lvim.builtin.test_runner = { active = true } -- change this to enable/disable vim-test, ultest
--- lvim.builtin.cheat = { active = true } -- enable cheat.sh integration
+lvim.builtin.fancy_dashboard = { active = true } -- enable/disable fancy dashboard
+lvim.builtin.fancy_wild_menu = { active = false } -- enable/disable use wilder.nvim
+lvim.builtin.lua_dev = { active = true } -- change this to enable/disable folke/lua_dev
+lvim.builtin.test_runner = { active = false } -- change this to enable/disable vim-test, ultest
+lvim.builtin.cheat = { active = false } -- enable cheat.sh integration
+lvim.builtin.sql_integration = { active = false } -- use sql integration
+lvim.builtin.neoscroll = { active = true } -- smooth scrolling
+lvim.builtin.nonumber_unfocus = false -- diffrentiate between focused and non focused windows
+lvim.builtin.harpoon = { active = true } -- use the harpoon plugin
 lvim.lsp.diagnostics.virtual_text = false -- remove this line if you want to see inline errors
--- lvim.lsp.automatic_servers_installation = true
--- lvim.lsp.document_highlight = true
--- lvim.lsp.code_lens_refresh = true
+lvim.builtin.notify.active = true
+lvim.lsp.automatic_servers_installation = false
+lvim.lsp.document_highlight = true
+lvim.lsp.code_lens_refresh = true
 
 lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
@@ -72,35 +80,9 @@ end
 
 -- Language Specific
 -- =========================================
+-- lvim.lsp.override = { "dockerls", "sumneko_lua", "texlab", "tsserver", "rust_analyzer", "jsonls", "gopls" }
 -- require("user.null_ls").config()
--- lvim.lsp.override = { "dockerls", "sumneko_lua", "texlab", "tsserver", "rust_analyzer" }
--- for _, server_name in pairs(lvim.lsp.override) do
---   local lsp_installer_servers = require "nvim-lsp-installer.servers"
---   local server_available, requested_server = lsp_installer_servers.get_server(server_name)
---   if server_available then
---     if not requested_server:is_installed() then
---       if lvim.lsp.automatic_servers_installation then
---         requested_server:install()
---       else
---         return
---       end
---     end
---   end
-
---   local default_config = {
---     on_attach = require("lvim.lsp").common_on_attach,
---     on_init = require("lvim.lsp").common_on_init,
---     capabilities = require("lvim.lsp").common_capabilities(),
---   }
-
---   local status_ok, custom_config = pcall(require, "user/providers/" .. requested_server.name)
---   if status_ok then
---     local new_config = vim.tbl_deep_extend("force", default_config, custom_config)
---     requested_server:setup(new_config)
---   else
---     requested_server:setup(default_config)
---   end
--- end
+-- require("user.lsp_install").install()
 
 -- Additional Plugins
 -- =========================================

@@ -2,6 +2,17 @@ local M = {}
 
 M.config = function()
   -- Autocommands
+  if lvim.builtin.nonumber_unfocus then
+    vim.cmd [[
+" don't show line number in unfocued window
+augroup WindFocus
+    autocmd!
+    autocmd WinEnter * set relativenumber number cursorline
+    autocmd WinLeave * set norelativenumber nonumber nocursorline
+augroup END
+  ]]
+  end
+
   vim.cmd [[
 " fix the luasnip weird issue
 augroup CustomLuaSnip
@@ -9,7 +20,7 @@ augroup CustomLuaSnip
 	au TextChanged,InsertLeave * lua require'luasnip'.unlink_current_if_deleted()
 augroup end
 " disable syntax highlighting in big files
-function DisableSyntaxTreesitter()
+function! DisableSyntaxTreesitter()
     echo("Big file, disabling syntax, treesitter and folding")
     if exists(':TSBufDisable')
         exec 'TSBufDisable autotag'
@@ -30,11 +41,52 @@ augroup BigFileDisable
 augroup END
   ]]
 
+  if lvim.builtin.sql_integration.active then
+    -- Add vim-dadbod-completion in sql files
+    vim.cmd [[
+    augroup DadbodSql
+      au!
+      autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer { sources = { { name = 'vim-dadbod-completion' } } }
+    augroup END
+    ]]
+  end
+
   lvim.autocommands.custom_groups = {
+    -- toggleterm
+    { "TermOpen", "term://*", "lua require('user.keybindings').set_terminal_keymaps()" },
+
+    -- dashboard
+    { "FileType", "alpha", "nnoremap <silent> <buffer> q :q<CR>" },
+
     -- c, cpp
-    { "Filetype", "c,cpp", "nnoremap <leader>m <cmd>lua require('lvim.core.terminal')._exec_toggle('make ;read')<CR>" },
-    { "Filetype", "c,cpp", "nnoremap <leader>r <cmd>lua require('lvim.core.terminal')._exec_toggle('make run;read')<CR>" },
+    {
+      "Filetype",
+      "c,cpp",
+      "nnoremap <leader>m <cmd>lua require('lvim.core.terminal')._exec_toggle('make ;read')<CR>",
+    },
+    {
+      "Filetype",
+      "c,cpp",
+      "nnoremap <leader>r <cmd>lua require('lvim.core.terminal')._exec_toggle('make run;read')<CR>",
+    },
     { "Filetype", "c,cpp", "nnoremap <leader>H <Cmd>ClangdSwitchSourceHeader<CR>" },
+
+    -- go
+    {
+      "Filetype",
+      "go",
+      "nnoremap <leader>m <cmd>lua require('lvim.core.terminal')._exec_toggle('go build -v .;read')<CR>",
+    },
+    {
+      "Filetype",
+      "go",
+      "nnoremap <leader>r <cmd>lua require('lvim.core.terminal')._exec_toggle('go run .;read')<CR>",
+    },
+    {
+      "Filetype",
+      "go",
+      "nnoremap <leader>H <cmd>lua require('lvim.core.terminal')._exec_toggle('go vet .;read')<CR>",
+    },
 
     -- java
     {
@@ -52,7 +104,9 @@ augroup END
     {
       "Filetype",
       "python",
-      "nnoremap <leader>r <cmd>lua require('lvim.core.terminal')._exec_toggle('python " .. vim.fn.expand "%" .. ";read')<CR>",
+      "nnoremap <leader>r <cmd>lua require('lvim.core.terminal')._exec_toggle('python "
+        .. vim.fn.expand "%"
+        .. ";read')<CR>",
     },
     {
       "Filetype",
@@ -66,7 +120,11 @@ augroup END
       "rust",
       "nnoremap <leader>m <cmd>lua require('lvim.core.terminal')._exec_toggle('cargo build;read')<CR>",
     },
-    { "Filetype", "rust", "nnoremap <leader>r <cmd>lua require('lvim.core.terminal')._exec_toggle('cargo run;read')<CR>" },
+    {
+      "Filetype",
+      "rust",
+      "nnoremap <leader>r <cmd>lua require('lvim.core.terminal')._exec_toggle('cargo run;read')<CR>",
+    },
     {
       "Filetype",
       "rust",

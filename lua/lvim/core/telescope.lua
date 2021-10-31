@@ -49,6 +49,7 @@ function M.config()
           only_sort_text = true,
         },
       },
+      hl_result_eol = false,
     },
     extensions = {
       fzf = {

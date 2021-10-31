@@ -52,80 +52,10 @@ M.config = function()
     --     return (_time.hour >= 17 and _time.hour < 21)
     --   end,
     -- },
-    -- {
-    --   "tzachar/cmp-tabnine",
-    --   run = "./install.sh",
-    --   requires = "hrsh7th/nvim-cmp",
-    --   config = function()
-    --     local tabnine = require "cmp_tabnine.config"
-    --     tabnine:setup {
-    --       max_lines = 1000,
-    --       max_num_results = 10,
-    --       sort = true,
-    --     }
-    --   end,
-    --   disable = not lvim.builtin.tabnine.active,
-    -- },
-    {
-      "IndianBoy42/hop.nvim",
-      event = "BufRead",
-      config = function()
-        require("user.hop").config()
-      end,
-    },
-    {
-      "akinsho/bufferline.nvim",
-      config = function()
-        require("user.bufferline").config()
-      end,
-      requires = "nvim-web-devicons",
-      disable = not lvim.builtin.fancy_bufferline.active,
-    },
-    {"folke/tokyonight.nvim"},
     {
       "ray-x/lsp_signature.nvim",
       config = function() require("user/lsp_signature").config() end,
       event = "BufRead"
-    },
-    {
-      "tpope/vim-fugitive",
-      cmd = {
-        "G",
-        "Git",
-        "Gdiffsplit",
-        "Gread",
-        "Gwrite",
-        "Ggrep",
-        "GMove",
-        "GDelete",
-        "GBrowse",
-        "GRemove",
-        "GRename",
-        "Glgrep",
-        "Gedit",
-        "Gvdiff",
-      },
-      ft = {"fugitive"}
-    },
-    {
-      "sindrets/diffview.nvim",
-      cmd = {
-        "DiffviewFileHistory",
-        "DiffviewFocusFiles",
-        "DiffviewOpen",
-        "DiffViewRefresh",
-        "DiffviewToggleFiles",
-      },
-      config = function ()
-        require('diffview').setup({
-          diff_binaries = false,    -- Show diffs for binaries
-          use_icons = true,         -- Requires nvim-web-devicons
-        })
-      end
-    },
-    {
-      "folke/trouble.nvim",
-      cmd = "TroubleToggle",
     },
     {
       "ethanholz/nvim-lastplace",
@@ -141,7 +71,48 @@ M.config = function()
       end,
     },
     {
-      'editorconfig/editorconfig-vim',
+      "folke/todo-comments.nvim",
+      event = "BufRead",
+      config = function()
+        -- require("user.todo_comments").config()
+        require("todo-comments").setup {
+          keywords = {
+            OK = { icon = "✔ ", color = "ok" },
+            ISH = { icon = "☛ ", color = "ish" },
+            BAD = { icon = "✘ ", color = "bad" },
+            TEST = { icon = "⚖ ", color = "test" }
+          },
+          colors = {
+            ok = { "#10B981" },
+            ish = { "#e0e031" },
+            bad = { "#f06981" },
+            test = { "#f02244" }
+          },
+        }
+      end
+    },
+    {
+      "folke/trouble.nvim",
+      requires = "kyazdani42/nvim-web-devicons",
+      config = function()
+        require("trouble").setup()
+      end,
+      cmd = "Trouble",
+    },
+    {
+      "IndianBoy42/hop.nvim",
+      event = "BufRead",
+      config = function()
+        require("user.hop").config()
+      end,
+    },
+    {
+      'simrat39/symbols-outline.nvim',
+      config = function()
+        vim.g.symbols_outline.auto_preview = false
+      end,
+      -- event = "BufReadPost",
+      cmd = 'SymbolsOutline'
     },
     {
       "lukas-reineke/indent-blankline.nvim",
@@ -210,43 +181,173 @@ M.config = function()
       end
     },
     {
+      "tzachar/cmp-tabnine",
+      run = "./install.sh",
+      requires = "hrsh7th/nvim-cmp",
+      config = function()
+        local tabnine = require "cmp_tabnine.config"
+        tabnine:setup {
+          max_lines = 1000,
+          max_num_results = 10,
+          sort = true,
+        }
+      end,
+      disable = not lvim.builtin.tabnine.active,
+    },
+    {
+      "folke/twilight.nvim",
+      config = function()
+        require("user.twilight").config()
+      end,
+      event = "BufRead",
+    },
+    {
+      "kevinhwang91/nvim-bqf",
+      config = function()
+        require("user.bqf").config()
+      end,
+      event = "BufRead",
+    },
+    {
+      "rcarriga/nvim-dap-ui",
+      config = function()
+        require("dapui").setup()
+      end,
+      ft = { "python", "rust", "go" },
+      requires = { "mfussenegger/nvim-dap" },
+      disable = not lvim.builtin.dap.active,
+    },
+    {
+      "andymass/vim-matchup",
+      event = "CursorMoved",
+      config = function()
+        vim.g.matchup_enabled = 1
+        vim.g.matchup_surround_enabled = 1
+        vim.g.matchup_matchparen_deferred = 1
+        vim.g.matchup_matchparen_offscreen = { method = "popup" }
+      end,
+    },
+    {
+      "windwp/nvim-spectre",
+      event = "BufRead",
+      config = function()
+        require("user.spectre").config()
+      end,
+    },
+    {
+      "norcalli/nvim-colorizer.lua",
+      config = function()
+        require("user.colorizer").config()
+      end,
+      event = "BufRead",
+    },
+    {
+      "danymat/neogen",
+      config = function()
+        require("neogen").setup {
+          enabled = true,
+        }
+      end,
+      ft = { "lua", "python", "javascript", "typescriptreact", "c", "cpp", "go" },
+      event = "InsertEnter",
+      requires = "nvim-treesitter/nvim-treesitter",
+    },
+    {
+      "folke/lua-dev.nvim",
+      ft = "lua",
+      before = "williamboman/nvim-lsp-installer",
+      disable = not lvim.builtin.lua_dev.active,
+    },
+    {
+      "akinsho/bufferline.nvim",
+      config = function()
+        require("user.bufferline").config()
+      end,
+      requires = "nvim-web-devicons",
+      disable = not lvim.builtin.fancy_bufferline.active,
+    }, 
+    {
+      "goolord/alpha-nvim",
+      config = function()
+        require("user.dashboard").config()
+      end,
+      disable = not lvim.builtin.fancy_dashboard.active,
+    },
+    {
+      "gelguy/wilder.nvim",
+      -- event = { "CursorHold", "CmdlineEnter" },
+      rocks = { "luarocks-fetch-gitrec", "pcre2" },
+      requires = { "romgrk/fzy-lua-native" },
+      config = function()
+        vim.cmd(string.format("source %s", "~/.config/lvim/vimscript/wilder.vim"))
+      end,
+      run = ":UpdateRemotePlugins",
+      disable = not lvim.builtin.fancy_wild_menu.active,
+    },
+    {
+      "karb94/neoscroll.nvim",
+      config = function()
+        require("neoscroll").setup()
+      end,
+      event = "BufRead",
+      disable = not lvim.builtin.neoscroll.active,
+    },
+    {
+      "github/copilot.vim",
+      disable = not lvim.builtin.sell_your_soul_to_devil,
+    },
+    {
+      "ThePrimeagen/harpoon",
+      requires = {
+        { "nvim-lua/plenary.nvim" },
+        { "nvim-lua/popup.nvim" },
+      },
+      disable = not lvim.builtin.harpoon.active,
+    },
+    {
+      "tpope/vim-fugitive",
+      cmd = {
+        "G",
+        "Git",
+        "Gdiffsplit",
+        "Gread",
+        "Gwrite",
+        "Ggrep",
+        "GMove",
+        "GDelete",
+        "GBrowse",
+        "GRemove",
+        "GRename",
+        "Glgrep",
+        "Gedit",
+        "Gvdiff",
+      },
+      ft = {"fugitive"}
+    },
+    {
+      "sindrets/diffview.nvim",
+      cmd = {
+        "DiffviewFileHistory",
+        "DiffviewFocusFiles",
+        "DiffviewOpen",
+        "DiffViewRefresh",
+        "DiffviewToggleFiles",
+      },
+      config = function ()
+        require('diffview').setup({
+          diff_binaries = false,    -- Show diffs for binaries
+          use_icons = true,         -- Requires nvim-web-devicons
+        })
+      end
+    },
+    {
+      'editorconfig/editorconfig-vim',
+    }, 
+    {
       'vim-scripts/DoxygenToolkit.vim',
       cmd = "Dox",
       setup = function ()
         vim.g.DoxygenToolkit_commentType = "C++"
-      end
-    },
-    --{
-    --  'vuppalac/navigator.lua',
-    --  requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
-    --  disable = false
-    --},
-    -- {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
-    {
-      'simrat39/symbols-outline.nvim',
-      config = function()
-        vim.g.symbols_outline.auto_preview = false
-      end,
-      cmd = 'SymbolsOutline'
-    },
-    {
-      "folke/todo-comments.nvim",
-      event = "BufRead",
-      config = function()
-        require("todo-comments").setup {
-          keywords = {
-            OK = { icon = "✔ ", color = "ok" },
-            ISH = { icon = "☛ ", color = "ish" },
-            BAD = { icon = "✘ ", color = "bad" },
-            TEST = { icon = "⚖ ", color = "test" }
-          },
-          colors = {
-            ok = { "#10B981" },
-            ish = { "#e0e031" },
-            bad = { "#f06981" },
-            test = { "#f02244" }
-          },
-        }
       end
     },
     {

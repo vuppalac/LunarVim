@@ -1,6 +1,10 @@
 local M = {}
 
 M.config = function ()
+  -- Snippets
+  -- =========================================
+  require("luasnip/loaders/from_vscode").load { paths = { "~/.config/nvim/snippets" } }
+
   -- Barbar
   -- =========================================
   if lvim.builtin.fancy_bufferline.active then
@@ -39,7 +43,24 @@ M.config = function ()
   --   path = "  ",
   --   calc = "  ",
   --   cmp_tabnine = "  ",
+  --   ["vim-dadbod-completion"] = "𝓐",
   -- }
+
+  if lvim.builtin.sell_your_soul_to_devil then
+    vim.g.copilot_no_tab_map = true
+    vim.g.copilot_assume_mapped = true
+    vim.g.copilot_tab_fallback = ""
+    local cmp = require "cmp"
+    lvim.builtin.cmp.mapping["<C-e>"] = function(fallback)
+      cmp.mapping.abort()
+      local copilot_keys = vim.fn["copilot#Accept"]()
+      if copilot_keys ~= "" then
+        vim.api.nvim_feedkeys(copilot_keys, "i", true)
+      else
+        fallback()
+      end
+    end
+  end
 
   -- Dashboard
   -- =========================================
@@ -86,16 +107,16 @@ M.config = function ()
 
   -- NvimTre
   -- =========================================
-  -- lvim.builtin.nvimtree.setup.auto_open = 0
-  -- lvim.builtin.nvimtree.setup.diagnostics = {
-  --   enable = true,
-  --   icons = {
-  --     hint = "",
-  --     info = "",
-  --     warning = "",
-  --     error = "",
-  --   },
-  -- }
+  lvim.builtin.nvimtree.setup.auto_open = 0
+  lvim.builtin.nvimtree.setup.diagnostics = {
+    enable = true,
+    icons = {
+      hint = "",
+      info = "",
+      warning = "",
+      error = "",
+    },
+  }
   lvim.builtin.nvimtree.side = "left"
   lvim.builtin.nvimtree.show_icons.git = 0
   lvim.builtin.nvimtree.hide_dotfiles = 0
@@ -109,11 +130,11 @@ M.config = function ()
 
   -- Treesiter
   -- =========================================
+  lvim.builtin.treesitter.context_commentstring.enable = true
   lvim.builtin.treesitter.ensure_installed = "maintained"
   lvim.builtin.treesitter.ignore_install = { "haskell" }
   lvim.builtin.treesitter.highlight.enabled = true
   -- lvim.builtin.treesitter.highlight.disable = {}
-  lvim.builtin.treesitter.context_commentstring.enable = true
   lvim.builtin.treesitter.rainbow.enable = true
   -- lvim.builtin.treesitter.incremental_selection = {
   --   enable = true,
@@ -160,17 +181,52 @@ M.config = function ()
   lvim.builtin.telescope.defaults.layout_strategy = "horizontal"
   lvim.builtin.telescope.defaults.file_ignore_patterns = {
     "vendor/*",
-    "node_modules",
+    "%.lock",
+    "__pycache__/*",
+    "%.sqlite3",
+    "%.ipynb",
+    "node_modules/*",
     "%.jpg",
     "%.jpeg",
     "%.png",
     "%.svg",
     "%.otf",
     "%.ttf",
+    ".git/",
+    "%.webp",
+    ".dart_tool/",
+    ".github/",
+    ".gradle/",
+    ".idea/",
+    ".settings/",
+    ".vscode/",
+    "__pycache__/",
+    "build/",
+    "env/",
+    "gradle/",
+    "node_modules/",
+    "target/",
   }
   lvim.builtin.telescope.defaults.layout_config = require("user.telescope").layout_config()
-  -- lvim.builtin.telescope.defaults.mappings.i["<esc>"] = require("telescope.actions").close
-  -- lvim.builtin.telescope.defaults.mappings.i["<C-y>"] = require("telescope.actions").which_key
+  lvim.builtin.telescope.defaults.mappings = {
+    i = {
+      ["<esc>"] = require("telescope.actions").close,
+      ["<C-y>"] = require("telescope.actions").which_key,
+    },
+  }
+
+  local telescope_actions = require "telescope.actions.set"
+  lvim.builtin.telescope.defaults.pickers.find_files = {
+    attach_mappings = function(_)
+      telescope_actions.select:enhance {
+        post = function()
+          vim.cmd ":normal! zx"
+        end,
+      }
+      return true
+    end,
+    find_command = { "fd", "--type=file", "--hidden", "--smart-case" },
+  }
 
   -- Terminal
   -- =========================================
@@ -179,7 +235,10 @@ M.config = function ()
   }
 
   -- WhichKey
--- =========================================
+  -- =========================================
+  lvim.builtin.which_key.setup.window.winblend = 10
+  lvim.builtin.which_key.setup.window.border = "none"
+  lvim.builtin.which_key.setup.ignore_missing = true
 --   lvim.builtin.which_key.on_config_done = function(wk)
 --     local keys = {
 --       ["ga"] = { "<cmd>lua require('user.telescope').code_actions()<CR>", "Code Action" },
