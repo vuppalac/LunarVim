@@ -5,6 +5,7 @@ M.config = function()
   if not present then
     return
   end
+  local dashboard = require("alpha.themes.dashboard")
 
   local header = {
     type = "text",
@@ -15,7 +16,7 @@ M.config = function()
     },
   }
 
-  local handle = io.popen 'fd -d 2 . $HOME"/.local/share/lunarvim/site/pack/packer" | grep pack | wc -l | tr -d "\n" '
+  local handle = io.popen 'fd -d 2 . $HOME"/.local/share/nvim/site/pack/packer" | grep pack | wc -l | tr -d "\n" '
   local plugins = handle:read "*a"
   handle:close()
 
@@ -62,7 +63,7 @@ M.config = function()
       text = txt,
       shortcut = sc,
       cursor = 5,
-      width = 24,
+      width = 30,
       align_shortcut = "right",
       hl_shortcut = "Number",
       hl = "Function",
@@ -85,12 +86,13 @@ M.config = function()
   local buttons = {
     type = "group",
     val = {
-      button("f", "   Explore", ":Telescope find_files<CR>"),
+      button("f", "   Find file", ":Telescope find_files<CR>"),
       button("e", "   New file", ":ene <BAR> startinsert <CR>"),
-      button("s", "   Ripgrep", ":Telescope live_grep<CR>"),
-      button("r", "   Recents", ":Telescope oldfiles<CR>"),
+      button("p", "   Recent projects", ":Telescope projects <CR>"),
+      button("r", "   Recent", ":Telescope oldfiles<CR>"),
       button("b", "   Buffers", ":Telescope buffers<CR>"),
-      button("o", "   Options", ":e ~/.config/lvim/config.lua | :cd %:p:h | split . | wincmd k | pwd<CR>"),
+      button("s", "   Find word", ":Telescope live_grep<CR>"),
+      button("o", "   Configuration", ":e ~/.config/nvim/config.lua | :cd %:p:h | split . | wincmd k | pwd<CR>"),
     },
     opts = {
       spacing = 1,

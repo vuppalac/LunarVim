@@ -145,7 +145,8 @@ M.config = function()
           "lspinfo",
           "", -- for all buffers without a file type
           "terminal",
-          "Lviminfo"
+          "Lviminfo",
+          "alpha"
         }
         vim.g.indent_blankline_buftype_exclude = {"terminal", "nofile"}
         vim.g.indent_blankline_show_trailing_blankline_indent = false
