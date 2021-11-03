@@ -45,7 +45,7 @@ function M.config()
     git_hl = 1,
     root_folder_modifier = ":t",
     allow_resize = 1,
-    auto_ignore_ft = { "startify", "dashboard" },
+    auto_ignore_ft = { "startify", "dashboard", 'alpha'},
     icons = {
       default = "",
       symlink = "",

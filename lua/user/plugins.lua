@@ -2,56 +2,6 @@ local M = {}
 
 M.config = function()
   lvim.plugins = {
-    -- {
-    --   "abzcoding/zephyr-nvim",
-    --   config = function()
-    --     vim.cmd [[
-    --     colorscheme zephyr
-    --     ]]
-    --   end,
-    --   cond = function()
-    --     local _time = os.date "*t"
-    --     return (_time.hour >= 5 and _time.hour < 8)
-    --   end,
-    -- },
-    -- {
-    --   "Pocco81/Catppuccino.nvim",
-    --   config = function()
-    --     require("user.theme").catppuccino()
-    --   end,
-    --   cond = function()
-    --     local _time = os.date "*t"
-    --     return (_time.hour >= 8 and _time.hour < 11)
-    --   end,
-    -- },
-    -- {
-    --   "abzcoding/tokyonight.nvim",
-    --   branch = "feature/vim-diagnostics",
-    --   config = function()
-    --     require("user.theme").tokyonight()
-    --     vim.cmd [[
-    --     colorscheme tokyonight
-    --     ]]
-    --   end,
-    --   cond = function()
-    --     local _time = os.date "*t"
-    --     return (_time.hour >= 0 and _time.hour < 5) or (_time.hour >= 11 and _time.hour < 17)
-    --   end,
-    -- },
-    -- {
-    --   "abzcoding/doom-one.nvim",
-    --   branch = "feat/nvim-cmp-floating",
-    --   config = function()
-    --     require("user.theme").doom()
-    --     vim.cmd [[
-    --   colorscheme doom-one
-    --   ]]
-    --   end,
-    --   cond = function()
-    --     local _time = os.date "*t"
-    --     return (_time.hour >= 17 and _time.hour < 21)
-    --   end,
-    -- },
     {
       "ray-x/lsp_signature.nvim",
       config = function() require("user/lsp_signature").config() end,
@@ -118,68 +68,11 @@ M.config = function()
       "lukas-reineke/indent-blankline.nvim",
       event = "BufRead",
       setup = function()
-        vim.g.indentLine_enabled = 1
-        vim.g.indent_blankline_char_list = { '|', '¦', '┆', '┊' }
-        vim.g.indent_blankline_filetype_exclude = {
-          "log",
-          "gitcommit",
-          "vimwiki",
-          "markdown",
-          "json",
-          "txt",
-          "vista",
-          "NvimTree",
-          "git",
-          "TelescopePrompt",
-          "undotree",
-          "flutterToolsOutline",
-          "org",
-          "orgagenda",
-          "help",
-          "startify",
-          "dashboard",
-          "packer",
-          "neogitstatus",
-          "NvimTree",
-          "Trouble",
-          "lspinfo",
-          "", -- for all buffers without a file type
-          "terminal",
-          "Lviminfo",
-          "alpha"
-        }
-        vim.g.indent_blankline_buftype_exclude = {"terminal", "nofile"}
-        vim.g.indent_blankline_show_trailing_blankline_indent = false
-        vim.g.indent_blankline_show_first_indent_level = true
-        vim.g.indent_blankline_show_current_context = true
-        vim.g.indent_blankline_use_treesitter = true
-        vim.g.indent_blankline_context_patterns = {
-          "class",
-          "return",
-          "function",
-          "method",
-          "^if",
-          "^do",
-          "^switch",
-          "^while",
-          "jsx_element",
-          "^for",
-          "^object",
-          "^table",
-          "block",
-          "arguments",
-          "if_statement",
-          "else_clause",
-          "jsx_element",
-          "jsx_self_closing_element",
-          "try_statement",
-          "catch_clause",
-          "import_statement",
-          "operation_type",
-        }
-        -- HACK: work-around for https://github.com/lukas-reineke/indent-blankline.nvim/issues/59
-        vim.wo.colorcolumn = "99999"
-      end
+        vim.g.indent_blankline_char = "▏"
+      end,
+      config = function()
+        require("user.indent_blankline").config()
+      end,
     },
     {
       "tzachar/cmp-tabnine",
