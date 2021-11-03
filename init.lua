@@ -21,6 +21,4 @@ vim.g.colors_name = lvim.colorscheme -- Colorscheme must get called after plugin
 local commands = require "lvim.core.commands"
 commands.load(commands.defaults)
 
-require("lvim.keymappings").setup()
-
 require("lvim.lsp").setup()
