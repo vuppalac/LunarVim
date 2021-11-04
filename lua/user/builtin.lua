@@ -13,10 +13,11 @@ M.config = function ()
 
   -- CMP
   -- =========================================
+
   -- lvim.builtin.cmp.sources = {
   --   { name = "nvim_lsp" },
   --   { name = "cmp_tabnine", max_item_count = 3 },
-  --   { name = "buffer", max_item_count = 5 },
+  --   { name = "buffer", max_item_count = 5, keyword_length = 5 },
   --   { name = "path", max_item_count = 5 },
   --   { name = "luasnip", max_item_count = 3 },
   --   { name = "nvim_lua" },
@@ -36,13 +37,13 @@ M.config = function ()
   --   buffer = "(Buffer)",
   --   nvim_lsp = "(LSP)",
   --   luasnip = "(Snip)",
-  --   treesitter = " ",
+  --   treesitter = "",
   --   nvim_lua = "(NvLua)",
-  --   spell = " 暈",
-  --   emoji = "  ",
-  --   path = "  ",
-  --   calc = "  ",
-  --   cmp_tabnine = "  ",
+  --   spell = "暈",
+  --   emoji = "",
+  --   path = "",
+  --   calc = "",
+  --   cmp_tabnine = "ﮧ",
   --   ["vim-dadbod-completion"] = "𝓐",
   -- }
 
@@ -123,7 +124,6 @@ M.config = function ()
 
   -- Project
   -- =========================================
-  -- lvim.builtin.project.active = false
   lvim.builtin.project.patterns = { "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" }
   lvim.builtin.project.show_hidden = true
   lvim.builtin.project.silent_chdir = false
@@ -134,26 +134,26 @@ M.config = function ()
   lvim.builtin.treesitter.ensure_installed = "maintained"
   lvim.builtin.treesitter.ignore_install = { "haskell" }
   lvim.builtin.treesitter.highlight.enabled = true
-  -- lvim.builtin.treesitter.highlight.disable = {}
+  lvim.builtin.treesitter.highlight.disable = {}
   lvim.builtin.treesitter.rainbow.enable = true
-  -- lvim.builtin.treesitter.incremental_selection = {
-  --   enable = true,
-  --   keymaps = {
-  --     init_selection = "<C-n>",
-  --     node_incremental = "<C-n>",
-  --     scope_incremental = "<C-s>",
-  --     node_decremental = "<C-r>",
-  --   },
-  -- }
-  -- lvim.builtin.treesitter.indent = { enable = true, disable = { "yaml", "python" } } -- treesitter is buggy :(
-  -- lvim.builtin.treesitter.matchup.enable = true
-  -- -- lvim.treesitter.textsubjects.enable = true
-  -- -- lvim.treesitter.playground.enable = true
-  -- lvim.builtin.treesitter.query_linter = {
-  --   enable = true,
-  --   use_virtual_text = true,
-  --   lint_events = { "BufWrite", "CursorHold" },
-  -- }
+  lvim.builtin.treesitter.incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "<C-n>",
+      node_incremental = "<C-n>",
+      scope_incremental = "<C-s>",
+      node_decremental = "<C-r>",
+    },
+  }
+  lvim.builtin.treesitter.indent = { enable = true, disable = { "yaml", "python" } } -- treesitter is buggy :(
+  lvim.builtin.treesitter.matchup.enable = true
+  -- lvim.treesitter.textsubjects.enable = true
+  -- lvim.treesitter.playground.enable = true
+  lvim.builtin.treesitter.query_linter = {
+    enable = true,
+    use_virtual_text = true,
+    lint_events = { "BufWrite", "CursorHold" },
+  }
   -- lvim.builtin.treesitter.on_config_done = function()
   --   local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
   --   parser_config.solidity = {
@@ -281,8 +281,8 @@ M.config = function ()
     t = { "<cmd> %s/\\s\\+$//e<CR>", "Trim Trailing Whitespace"},
   }
 
-  lvim.builtin.which_key.mappings["g"]["d"] = {"<cmd>Gvdiff<cr>", "File diff"}
-  lvim.builtin.which_key.mappings["g"]["h"] = {"<cmd>DiffviewFileHistory<cr>", "File history"}
+  -- lvim.builtin.which_key.mappings["g"]["d"] = {"<cmd>Gvdiff<cr>", "File diff"}
+  -- lvim.builtin.which_key.mappings["g"]["h"] = {"<cmd>DiffviewFileHistory<cr>", "File history"}
 
   -- ETC
   -- =========================================
@@ -290,12 +290,12 @@ M.config = function ()
   if _time.hour >= 21 and _time.hour <= 24 then
     lvim.colorscheme = "onedarker"
   end
-  --   if lvim.builtin.lastplace.active == false then
-  --     -- go to last loc when opening a buffer
-  --     vim.cmd [[
-  --   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif
-  -- ]]
-  --   end
+    if lvim.builtin.lastplace.active == false then
+      -- go to last loc when opening a buffer
+      vim.cmd [[
+    autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif
+  ]]
+    end
 
 end
 

@@ -32,6 +32,22 @@ local function diff_source()
   end
 end
 
+local function testing()
+  if vim.g.testing_status == "running" then
+    return " "
+  end
+  if vim.g.testing_status == "fail" then
+    return ""
+  end
+  if vim.g.testing_status == "pass" then
+    return " "
+  end
+  return nil
+end
+local function using_session()
+  return (vim.g.using_persistence ~= nil)
+end
+
 local mode = function()
   local mod = vim.fn.mode()
   if mod == "n" or mod == "no" or mod == "nov" then
@@ -212,7 +228,7 @@ M.config = function()
         normal = { c = { fg = colors.fg, bg = colors.bg } },
         inactive = { c = { fg = colors.fg, bg = colors.bg_alt } },
       },
-      disabled_filetypes = { "dashboard", "NvimTree", "Outline" },
+      disabled_filetypes = { "dashboard", "NvimTree", "Outline", "alpha" },
     },
     sections = {
       -- these are to remove the defaults
@@ -354,6 +370,38 @@ M.config = function()
     cond = conditions.hide_in_width,
   }
   ins_left {
+    provider = function()
+      return testing()
+    end,
+    enabled = function()
+      return testing() ~= nil
+    end,
+    hl = {
+      fg = colors.fg,
+    },
+    left_sep = " ",
+    right_sep = {
+      str = " |",
+      hl = { fg = colors.fg },
+    },
+  }
+  ins_left {
+    provider = function()
+      if vim.g.using_persistence then
+        return "  |"
+      elseif vim.g.using_persistence == false then
+        return "  |"
+      end
+    end,
+    enabled = function()
+      return using_session()
+    end,
+    hl = {
+      fg = colors.fg,
+    },
+  }
+
+  ins_left {
     lsp_progress,
     cond = conditions.hide_small,
   }
@@ -364,6 +412,16 @@ M.config = function()
     function()
       return "%="
     end,
+  }
+
+  ins_right {
+    function()
+      if not vim.bo.readonly or not vim.bo.modifiable then
+        return ""
+      end
+      return "" -- """
+    end,
+    color = { fg = colors.red },
   }
 
   local ok, _ = pcall(require, "vim.diagnostic")
@@ -426,7 +484,7 @@ M.config = function()
       -- add formatter
       local formatters = require "lvim.lsp.null-ls.formatters"
       local supported_formatters = {}
-      for _, fmt in pairs(formatters.list_supported_names(buf_ft)) do
+      for _, fmt in pairs(formatters.list_registered_providers(buf_ft)) do
         local _added_formatter = fmt
         if trim then
           _added_formatter = string.sub(fmt, 1, 4)
@@ -438,7 +496,7 @@ M.config = function()
       -- add linter
       local linters = require "lvim.lsp.null-ls.linters"
       local supported_linters = {}
-      for _, lnt in pairs(linters.list_supported_names(buf_ft)) do
+      for _, lnt in pairs(linters.list_registered_providers(buf_ft)) do
         local _added_linter = lnt
         if trim then
           _added_linter = string.sub(lnt, 1, 4)
@@ -524,3 +582,4 @@ M.config = function()
 end
 
 return M
+

@@ -28,7 +28,7 @@ M.config = function()
   -- local thingy = io.popen 'echo "$(date +%a) $(date +%d) $(date +%b)" | tr -d "\n"'
   -- local date = thingy:read "*a"
   -- thingy:close()
-  -- local datetime = os.date("%d-%m-%Y  %H:%M:%S 🕔")
+  local datetime = os.date("%d-%m-%Y  %H:%M:%S 🕔")
   plugins = plugins:gsub("^%s*(.-)%s*$", "%1")
 
   local plugin_count = {
@@ -42,7 +42,7 @@ M.config = function()
 
   local heading = {
     type = "text",
-    val = " ⚡ " .. plugins .. " plugins loaded",
+    val = " ⚡ " .. plugins .. " plugins loaded ➖ " .. datetime,
     opts = {
       position = "center",
       hl = "String",
