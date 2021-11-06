@@ -12,13 +12,13 @@ function M.setup()
   }
   if vim.fn.has "nvim-0.5.1" > 0 then
     vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx, _)
-      local uri = ctx.uri
+      local uri = result.uri
       local bufnr = vim.uri_to_bufnr(uri)
       if not bufnr then
         return
       end
 
-      local diagnostics = ctx.diagnostics
+      local diagnostics = result.diagnostics
       local ok, vim_diag = pcall(require, "vim.diagnostic")
       if ok then
         -- FIX: why can't we just use vim.diagnostic.get(buf_id)?
