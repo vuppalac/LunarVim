@@ -24,15 +24,15 @@ M.config = function()
   for _, plugin in pairs(disabled_plugins) do
     vim.g["loaded_" .. plugin] = 1
   end
-  vim.opt.shada = "!,'0,f0,<50,s10,h"
+  vim.g.did_load_filetypes = 1
   vim.opt.relativenumber = false
-  vim.opt.wrap = false
+  vim.opt.wrap = true
   vim.opt.termguicolors = true
-  -- vim.opt.updatetime = 100
-  -- vim.opt.timeout = true
-  vim.opt.timeoutlen = 200
-  -- vim.opt.ttimeoutlen = 10
-  vim.opt.wrapscan = false -- Searches wrap around the end of the file
+  vim.opt.updatetime = 100
+  vim.opt.timeoutlen = 250
+  vim.opt.redrawtime = 1500
+  vim.opt.ttimeoutlen = 10
+  vim.opt.wrapscan = true -- Searches wrap around the end of the file
   vim.wo.foldmethod = "expr"
   vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
   vim.wo.foldlevel = 4
@@ -148,6 +148,9 @@ M.config = function()
     -- vim.cmd [[NvuiToggleFrameless]]
     vim.cmd [[NvuiOpacity 0.99]]
   end
+
+  vim.opt.scrolloff = 3
+  vim.opt.sidescrolloff = 3
 end
 
 return M

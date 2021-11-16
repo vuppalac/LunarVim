@@ -5,30 +5,31 @@ M.config = function()
   if not present then
     return
   end
-  local dashboard = require("alpha.themes.dashboard")
 
   local function pick_color()
     local colors = {"String", "Identifier", "Keyword", "Number"}
     return colors[math.random(#colors)]
   end
 
+  local color = pick_color()
+
   local header = {
     type = "text",
     val = require("user.banners").dashboard(),
     opts = {
       position = "center",
-      hl = pick_color(),
+      hl = color,
     },
   }
 
-  local handle = io.popen 'fd -d 2 . $HOME"/.local/share/nvim/site/pack/packer" | grep pack | wc -l | tr -d "\n" '
+  local handle = io.popen 'fd -d 2 . $HOME"/.local/share/lunarvim/site/pack/packer" | grep pack | wc -l | tr -d "\n" '
   local plugins = handle:read "*a"
   handle:close()
 
   -- local thingy = io.popen 'echo "$(date +%a) $(date +%d) $(date +%b)" | tr -d "\n"'
   -- local date = thingy:read "*a"
   -- thingy:close()
-  local datetime = os.date("%d-%m-%Y  %H:%M:%S 🕔")
+  local datetime = os.date(" %d-%m-%Y  %H:%M:%S")
   plugins = plugins:gsub("^%s*(.-)%s*$", "%1")
 
   local plugin_count = {
@@ -36,16 +37,19 @@ M.config = function()
     val = "└─   " .. plugins .. " plugins in total ─┘",
     opts = {
       position = "center",
-      hl = "String",
+      -- hl = "String",
+      hl = color,
     },
   }
 
   local heading = {
     type = "text",
-    val = " ⚡ " .. plugins .. " plugins loaded ➖ " .. datetime,
+    -- val = "┌─   Today is " .. date .. " ─┐",
+    val = "   " .. plugins .. " plugins loaded ➖ " .. datetime,
     opts = {
       position = "center",
-      hl = "String",
+      -- hl = "String",
+      hl = color,
     },
   }
 
@@ -69,7 +73,7 @@ M.config = function()
       text = txt,
       shortcut = sc,
       cursor = 5,
-      width = 35,
+      width = 24,
       align_shortcut = "right",
       hl_shortcut = "Number",
       hl = "Function",
@@ -92,13 +96,12 @@ M.config = function()
   local buttons = {
     type = "group",
     val = {
-      button("f", "   Find File", ":Telescope find_files<CR>"),
+      button("f", "   Find File", ":Telescope find_files<CR>"),
       button("e", "   New File", ":ene <BAR> startinsert <CR>"),
-      button("p", "   Recent Projects", ":Telescope projects <CR>"),
-      button("r", "   Recently Used Files", ":Telescope oldfiles<CR>"),
+      button("r", "   Recents", ":Telescope oldfiles<CR>"),
       button("s", "   Find Word", ":Telescope live_grep<CR>"),
-      button("o", "   Configuration", ":e ~/.config/nvim/config.lua<CR>"),
-      -- button("o", "   Configuration", ":e ~/.config/nvim/config.lua | :cd %:p:h | split . | wincmd k | pwd<CR>"),
+      button("m", "   Marks", ":Telescope marks<CR>"),
+      button("o", "   Options", ":e ~/.config/lvim/config.lua<CR>"),
     },
     opts = {
       spacing = 1,
@@ -117,12 +120,12 @@ M.config = function()
     layout = {
       { type = "padding", val = 1 },
       section.header,
-      { type = "padding", val = 1 },
+      { type = "padding", val = 2 },
       -- section.top_bar,
       section.buttons,
       { type = "padding", val = 1 },
-      -- section.plugin_count,
       section.heading,
+      -- section.plugin_count,
       -- section.bot_bar,
       -- { type = "padding", val = 1 },
       section.footer,

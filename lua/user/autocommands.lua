@@ -19,6 +19,7 @@ augroup CustomLuaSnip
 	au!
 	au TextChanged,InsertLeave * lua require'luasnip'.unlink_current_if_deleted()
 augroup end
+
 " disable syntax highlighting in big files
 function! DisableSyntaxTreesitter()
     echo("Big file, disabling syntax, treesitter and folding")
@@ -26,6 +27,7 @@ function! DisableSyntaxTreesitter()
         exec 'TSBufDisable autotag'
         exec 'TSBufDisable highlight'
     endif
+
     set foldmethod=manual
     syntax clear
     syntax off
@@ -35,21 +37,12 @@ function! DisableSyntaxTreesitter()
     set noloadplugins
     set lazyredraw
 endfunction
+
 augroup BigFileDisable
     autocmd!
     autocmd BufReadPre,FileReadPre * if getfsize(expand("%")) > 1024 * 1024 | exec DisableSyntaxTreesitter() | endif
 augroup END
   ]]
-
-  if lvim.builtin.sql_integration.active then
-    -- Add vim-dadbod-completion in sql files
-    vim.cmd [[
-    augroup DadbodSql
-      au!
-      autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer { sources = { { name = 'vim-dadbod-completion' } } }
-    augroup END
-    ]]
-  end
 
   lvim.autocommands.custom_groups = {
     -- toggleterm
@@ -57,16 +50,6 @@ augroup END
 
     -- dashboard
     { "FileType", "alpha", "nnoremap <silent> <buffer> q :q<CR>" },
-    {
-      "FileType",
-      "alpha",
-      "setlocal nocursorline noswapfile synmaxcol& signcolumn=no norelativenumber nocursorcolumn nospell  nolist  nonumber bufhidden=wipe colorcolumn= foldcolumn=0 matchpairs= ",
-    },
-    {
-      "FileType",
-      "alpha",
-      "set showtabline=0 | autocmd BufLeave <buffer> set showtabline=" .. vim.opt.showtabline._value,
-    },
 
     -- c, cpp
     {

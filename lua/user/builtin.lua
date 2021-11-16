@@ -1,9 +1,9 @@
 local M = {}
 
-M.config = function ()
+M.config = function()
   -- Snippets
   -- =========================================
-  require("luasnip/loaders/from_vscode").load { paths = { "~/.config/nvim/snippets" } }
+  require("luasnip/loaders/from_vscode").load { paths = { "~/.config/lvim/snippets" } }
 
   -- Barbar
   -- =========================================
@@ -13,129 +13,144 @@ M.config = function ()
 
   -- CMP
   -- =========================================
-
-  -- lvim.builtin.cmp.sources = {
-  --   { name = "nvim_lsp" },
-  --   { name = "cmp_tabnine", max_item_count = 3 },
-  --   { name = "buffer", max_item_count = 5, keyword_length = 5 },
-  --   { name = "path", max_item_count = 5 },
-  --   { name = "luasnip", max_item_count = 3 },
-  --   { name = "nvim_lua" },
-  --   { name = "calc" },
-  --   { name = "emoji" },
-  --   { name = "treesitter" },
-  --   { name = "crates" },
-  -- }
-  -- lvim.builtin.cmp.documentation.border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
-  -- lvim.builtin.cmp.experimental = {
-  --   ghost_text = false,
-  --   native_menu = false,
-  --   custom_menu = true,
-  -- }
-  -- lvim.builtin.cmp.formatting.kind_icons = require("user.lsp_kind").symbols()
-  -- lvim.builtin.cmp.formatting.source_names = {
-  --   buffer = "(Buffer)",
-  --   nvim_lsp = "(LSP)",
-  --   luasnip = "(Snip)",
-  --   treesitter = "",
-  --   nvim_lua = "(NvLua)",
-  --   spell = "暈",
-  --   emoji = "",
-  --   path = "",
-  --   calc = "",
-  --   cmp_tabnine = "ﮧ",
-  --   ["vim-dadbod-completion"] = "𝓐",
-  -- }
-
+  lvim.builtin.cmp.sources = {
+    { name = "nvim_lsp" },
+    { name = "cmp_tabnine", max_item_count = 3 },
+    { name = "buffer", max_item_count = 5, keyword_length = 5 },
+    { name = "path", max_item_count = 5 },
+    { name = "luasnip", max_item_count = 3 },
+    { name = "nvim_lua" },
+    { name = "calc" },
+    { name = "emoji" },
+    { name = "treesitter" },
+    { name = "crates" },
+    { name = "orgmode" },
+  }
+  lvim.builtin.cmp.documentation.border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
+  lvim.builtin.cmp.experimental = {
+    ghost_text = false,
+    native_menu = false,
+    custom_menu = true,
+  }
+  lvim.builtin.cmp.formatting.kind_icons = require("user.lsp_kind").symbols()
+  lvim.builtin.cmp.formatting.source_names = {
+    buffer = "(Buffer)",
+    nvim_lsp = "(LSP)",
+    luasnip = "(Snip)",
+    treesitter = "",
+    nvim_lua = "(NvLua)",
+    spell = "暈",
+    emoji = "",
+    path = "",
+    calc = "",
+    cmp_tabnine = "ﮧ",
+    ["vim-dadbod-completion"] = "𝓐",
+  }
   if lvim.builtin.sell_your_soul_to_devil then
-    vim.g.copilot_no_tab_map = true
-    vim.g.copilot_assume_mapped = true
-    vim.g.copilot_tab_fallback = ""
+    lvim.keys.insert_mode["<c-h>"] = { [[copilot#Accept("\<CR>")]], { expr = true, script = true } }
     local cmp = require "cmp"
-    lvim.builtin.cmp.mapping["<C-e>"] = function(fallback)
-      cmp.mapping.abort()
-      local copilot_keys = vim.fn["copilot#Accept"]()
-      if copilot_keys ~= "" then
-        vim.api.nvim_feedkeys(copilot_keys, "i", true)
-      else
-        fallback()
-      end
+    lvim.builtin.cmp.mapping["<Tab>"] = cmp.mapping(M.tab, { "i", "c" })
+    lvim.builtin.cmp.mapping["<S-Tab>"] = cmp.mapping(M.shift_tab, { "i", "c" })
+  end
+
+  -- Comment
+  -- =========================================
+  -- integrate with nvim-ts-context-commentstring
+  lvim.builtin.comment.pre_hook = function(ctx)
+    if not vim.tbl_contains({ "typescript", "typescriptreact" }, vim.bo.ft) then
+      return
     end
+
+    local comment_utils = require "Comment.utils"
+    local type = ctx.ctype == comment_utils.ctype.line and "__default" or "__multiline"
+
+    local location
+    if ctx.ctype == comment_utils.ctype.block then
+      location = require("ts_context_commentstring.utils").get_cursor_location()
+    elseif ctx.cmotion == comment_utils.cmotion.v or ctx.cmotion == comment_utils.cmotion.V then
+      location = require("ts_context_commentstring.utils").get_visual_start_location()
+    end
+
+    return require("ts_context_commentstring.internal").calculate_commentstring {
+      key = type,
+      location = location,
+    }
   end
 
   -- Dashboard
   -- =========================================
-  -- lvim.builtin.dashboard.active = true
-  lvim.builtin.dashboard.custom_section["m"] = {
-    description = { "  Marks              " },
-    command = "Telescope marks",
-  }
-  lvim.builtin.dashboard.custom_header = {
-    '▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁',
-    '',
-    ' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
-    ' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
-    ' ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',
-    ' ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
-    ' ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
-    ' ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
-    '',
-    '▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔',
-  }
+  lvim.builtin.dashboard.active = not lvim.builtin.fancy_dashboard.active
+  if not lvim.builtin.fancy_dashboard.active then
+    lvim.builtin.dashboard.custom_section["m"] = {
+      description = { "  Marks              " },
+      command = "Telescope marks",
+    }
+  end
 
   -- LSP
   -- =========================================
-  -- lvim.lsp.diagnostics.signs.values = {
-  --   { name = "LspDiagnosticsSignError", text = " " },
-  --   { name = "LspDiagnosticsSignWarning", text = "" },
-  --   { name = "LspDiagnosticsSignHint", text = "" },
-  --   { name = "LspDiagnosticsSignInformation", text = "" },
-  -- }
+  lvim.lsp.diagnostics.signs.values = {
+    { name = "LspDiagnosticsSignError", text = "" },
+    { name = "LspDiagnosticsSignWarning", text = "" },
+    { name = "LspDiagnosticsSignHint", text = "" },
+    { name = "LspDiagnosticsSignInformation", text = "" },
+
+    -- { name = "LspDiagnosticsSignError", text = " " },
+    -- { name = "LspDiagnosticsSignWarning", text = "" },
+    -- { name = "LspDiagnosticsSignHint", text = "" },
+    -- { name = "LspDiagnosticsSignInformation", text = "" },
+    -- { name = "LspDiagnosticsSignError", text = "📛" },
+    -- { name = "LspDiagnosticsSignWarning", text = "👎" },
+    -- { name = "LspDiagnosticsSignHint", text = [[👩]] },
+    -- { name = "LspDiagnosticsSignInformation", text = [[💁]] },
+  }
 
   -- Lualine
   -- =========================================
-  local components = require("lvim.core.lualine.components")
-  lvim.builtin.lualine.sections.lualine_b = {
-    components.branch,
-    {
-      'filename',
-      file_status = true, -- displays file status (readonly status, modified status)
-      path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
-      color = {},
-      cond = nil,
-    },
-  }
+  lvim.builtin.lualine.active = true
+  lvim.builtin.lualine.sections.lualine_b = { "branch" }
 
-  -- NvimTre
+  -- NvimTree
   -- =========================================
   lvim.builtin.nvimtree.setup.auto_open = 0
-  lvim.builtin.nvimtree.setup.diagnostics = {
-    enable = true,
-    icons = {
-      hint = "",
-      info = "",
-      warning = "",
-      error = "",
-    },
-  }
-  lvim.builtin.nvimtree.side = "left"
-  lvim.builtin.nvimtree.show_icons.git = 0
-  lvim.builtin.nvimtree.hide_dotfiles = 0
+  -- lvim.builtin.nvimtree.setup.diagnostics = {
+  --   enable = true,
+  --   icons = {
+  --     hint = "",
+  --     info = "",
+  --     warning = "",
+  --     error = "",
+  --   },
+  -- }
+  -- lvim.builtin.nvimtree.hide_dotfiles = 0
 
   -- Project
   -- =========================================
+  lvim.builtin.project.active = false
   lvim.builtin.project.patterns = { "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" }
-  lvim.builtin.project.show_hidden = true
-  lvim.builtin.project.silent_chdir = false
 
-  -- Treesiter
+  -- Treesitter
   -- =========================================
   lvim.builtin.treesitter.context_commentstring.enable = true
-  lvim.builtin.treesitter.ensure_installed = "maintained"
+  lvim.builtin.treesitter.ensure_installed = {
+      "bash",
+      "c",
+      "cpp",
+      "javascript",
+      "json",
+      "lua",
+      "python",
+      "typescript",
+      "css",
+      "rust",
+      "java",
+      "yaml",
+      "toml",
+      "go",
+  }
+  lvim.builtin.treesitter.highlight.disable = { "org" }
+  lvim.builtin.treesitter.highlight.aditional_vim_regex_highlighting = { "org" }
   lvim.builtin.treesitter.ignore_install = { "haskell" }
-  lvim.builtin.treesitter.highlight.enabled = true
-  lvim.builtin.treesitter.highlight.disable = {}
-  lvim.builtin.treesitter.rainbow.enable = true
   lvim.builtin.treesitter.incremental_selection = {
     enable = true,
     keymaps = {
@@ -154,28 +169,38 @@ M.config = function ()
     use_virtual_text = true,
     lint_events = { "BufWrite", "CursorHold" },
   }
-  -- lvim.builtin.treesitter.on_config_done = function()
-  --   local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-  --   parser_config.solidity = {
-  --     install_info = {
-  --       url = "https://github.com/JoranHonig/tree-sitter-solidity",
-  --       files = { "src/parser.c" },
-  --       requires_generate_from_grammar = true,
-  --     },
-  --     filetype = "solidity",
-  --   }
-  --   parser_config.jsonc.used_by = "json"
-  --   parser_config.markdown = {
-  --     install_info = {
-  --       url = "https://github.com/ikatyang/tree-sitter-markdown",
-  --       files = { "src/parser.c", "src/scanner.cc" },
-  --     },
-  --   }
-  -- end
+  lvim.builtin.treesitter.on_config_done = function()
+    local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+    parser_config.solidity = {
+      install_info = {
+        url = "https://github.com/JoranHonig/tree-sitter-solidity",
+        files = { "src/parser.c" },
+        requires_generate_from_grammar = true,
+      },
+      filetype = "solidity",
+    }
+    parser_config.jsonc.used_by = "json"
+    parser_config.markdown = {
+      install_info = {
+        url = "https://github.com/ikatyang/tree-sitter-markdown",
+        files = { "src/parser.c", "src/scanner.cc" },
+      },
+    }
+    if lvim.builtin.orgmode.active then
+      parser_config.org = {
+        install_info = {
+          url = "https://github.com/milisims/tree-sitter-org",
+          revision = "main",
+          files = { "src/parser.c", "src/scanner.cc" },
+        },
+        filetype = "org",
+      }
+    end
+  end
 
   -- Telescope
   -- =========================================
-  -- lvim.builtin.telescope.defaults.path_display = { "smart", "absolute", "truncate" }
+  lvim.builtin.telescope.defaults.path_display = { "smart", "absolute", "truncate" }
   lvim.builtin.telescope.defaults.path_display = { shorten = 10 }
   lvim.builtin.telescope.defaults.winblend = 6
   lvim.builtin.telescope.defaults.layout_strategy = "horizontal"
@@ -211,10 +236,10 @@ M.config = function ()
   lvim.builtin.telescope.defaults.mappings = {
     i = {
       ["<esc>"] = require("telescope.actions").close,
+      ["<C-c>"] = require("telescope.actions").close,
       ["<C-y>"] = require("telescope.actions").which_key,
     },
   }
-
   local telescope_actions = require "telescope.actions.set"
   lvim.builtin.telescope.defaults.pickers.find_files = {
     attach_mappings = function(_)
@@ -227,48 +252,45 @@ M.config = function ()
     end,
     find_command = { "fd", "--type=file", "--hidden", "--smart-case" },
   }
+  lvim.builtin.telescope.on_config_done = function(telescope)
+    telescope.load_extension "file_create"
+  end
 
   -- Terminal
   -- =========================================
+  lvim.builtin.terminal.active = true
   lvim.builtin.terminal.execs = {
     { "lazygit", "gg", "LazyGit" },
   }
+  lvim.builtin.terminal.open_mapping = [[<c-\>]]
+  lvim.builtin.terminal.direction = 'tab'
 
   -- WhichKey
   -- =========================================
   lvim.builtin.which_key.setup.window.winblend = 10
   lvim.builtin.which_key.setup.window.border = "none"
   lvim.builtin.which_key.setup.ignore_missing = true
---   lvim.builtin.which_key.on_config_done = function(wk)
---     local keys = {
---       ["ga"] = { "<cmd>lua require('user.telescope').code_actions()<CR>", "Code Action" },
---       ["gR"] = { "<cmd>Trouble lsp_references<CR>", "Goto References" },
---       ["gI"] = { "<cmd>lua require('user.telescope').lsp_implementations()<CR>", "Goto Implementation" },
-  --     }
+  lvim.builtin.which_key.on_config_done = function(wk)
+    local keys = {
+      ["ga"] = { "<cmd>lua require('user.telescope').code_actions()<CR>", "Code Action" },
+      ["gR"] = { "<cmd>Trouble lsp_references<CR>", "Goto References" },
+      ["gI"] = { "<cmd>lua require('user.telescope').lsp_implementations()<CR>", "Goto Implementation" },
+    }
 
---     -- better keybindings for ts and tsx files
---     local langs = { "typescript", "typescriptreact" }
---     local ftype = vim.bo.filetype
---     if vim.tbl_contains(langs, ftype) then
---       local ts_keys = {
---         ["gA"] = { "<cmd>TSLspImportAll<CR>", "Import All" },
---         ["gr"] = { "<cmd>TSLspRenameFile<CR>", "Rename File" },
---         ["gS"] = { "<cmd>TSLspOrganize<CR>", "Organize Imports" },
---       }
---       wk.register(ts_keys, { mode = "n" })
---     end
---     wk.register(keys, { mode = "n" })
-  --   end
-  lvim.builtin.which_key.mappings["d"] = {
-    name = "+Diagnostics",
-    f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
-    t = { "<cmd>TroubleToggle<cr>", "Trouble" },
-    w = { "<cmd>TroubleToggle lsp_workspace_diagnostics<cr>", "Workspace" },
-    d = { "<cmd>TroubleToggle lsp_document_diagnostics<cr>", "Document" },
-    q = { "<cmd>TroubleToggle quickfix<cr>", "QuickFix" },
-    l = { "<cmd>TroubleToggle loclist<cr>", "LocationList" },
-    r = { "<cmd>TroubleToggle lsp_references<cr>", "References" },
-  }
+    -- better keybindings for ts and tsx files
+    local langs = { "typescript", "typescriptreact" }
+    local ftype = vim.bo.filetype
+    if vim.tbl_contains(langs, ftype) then
+      local ts_keys = {
+        ["gA"] = { "<cmd>TSLspImportAll<CR>", "Import All" },
+        ["gr"] = { "<cmd>TSLspRenameFile<CR>", "Rename File" },
+        ["gS"] = { "<cmd>TSLspOrganize<CR>", "Organize Imports" },
+      }
+      wk.register(ts_keys, { mode = "n" })
+    end
+    wk.register(keys, { mode = "n" })
+  end
+
   lvim.builtin.which_key.mappings['t'] = {
     name = "+Toggle",
     i = { "<cmd> IndentBlanklineToggle<CR>", "Indent Style"},
@@ -281,22 +303,118 @@ M.config = function ()
     t = { "<cmd> %s/\\s\\+$//e<CR>", "Trim Trailing Whitespace"},
   }
 
-  -- lvim.builtin.which_key.mappings["g"]["d"] = {"<cmd>Gvdiff<cr>", "File diff"}
-  -- lvim.builtin.which_key.mappings["g"]["h"] = {"<cmd>DiffviewFileHistory<cr>", "File history"}
-
   -- ETC
   -- =========================================
-  local _time = os.date "*t"
-  if _time.hour >= 21 and _time.hour <= 24 then
-    lvim.colorscheme = "onedarker"
-  end
-    if lvim.builtin.lastplace.active == false then
-      -- go to last loc when opening a buffer
-      vim.cmd [[
-    autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif
-  ]]
-    end
+  --   if lvim.builtin.lastplace.active == false then
+  --     -- go to last loc when opening a buffer
+  --     vim.cmd [[
+  --   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif
+  -- ]]
+  --   end
+end
 
+function M.rename(curr, win)
+  local name = vim.trim(vim.fn.getline ".")
+  vim.api.nvim_win_close(win, true)
+  if #name > 0 and name ~= curr then
+    local params = vim.lsp.util.make_position_params()
+    params.newName = name
+    vim.lsp.buf_request(0, "textDocument/rename", params)
+  end
+end
+
+function M.lsp_rename()
+  local name = vim.fn.expand "<cword>"
+  local ok, ts = pcall(require, "nvim-treesitter-playground.hl-info")
+  local tshl = ""
+  if ok and ts then
+    if #ts <= 0 then
+      return
+    end
+    tshl = ts.get_treesitter_hl()
+    local ind = tshl[#tshl]:match "^.*()%*%*.*%*%*"
+    tshl = tshl[#tshl]:sub(ind + 2, -3)
+  end
+
+  local win = require("plenary.popup").create(name, {
+    title = "New Name",
+    style = "minimal",
+    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+    relative = "cursor",
+    borderhighlight = "FloatBorder",
+    titlehighlight = "Title",
+    highlight = tshl,
+    focusable = true,
+    width = 25,
+    height = 1,
+    line = "cursor+2",
+    col = "cursor-1",
+  })
+  -- Move cursor to the end of the prefix
+  vim.cmd "stopinsert"
+  vim.cmd "startinsert!"
+  vim.cmd [[lua require('cmp').setup.buffer { enabled = false }]]
+
+  local opts = { noremap = false, silent = true }
+  vim.api.nvim_buf_set_keymap(0, "i", "<Esc>", "<cmd>stopinsert | q!<CR>", opts)
+  vim.api.nvim_buf_set_keymap(0, "n", "<Esc>", "<cmd>stopinsert | q!<CR>", opts)
+  vim.api.nvim_buf_set_keymap(
+    0,
+    "i",
+    "<CR>",
+    "<cmd>stopinsert | lua require('user.builtin').rename(" .. name .. "," .. win .. ")<CR>",
+    opts
+  )
+  vim.api.nvim_buf_set_keymap(
+    0,
+    "n",
+    "<CR>",
+    "<cmd>stopinsert | lua require('user.builtin').rename(" .. name .. "," .. win .. ")<CR>",
+    opts
+  )
+end
+
+function M.tab(fallback)
+  local methods = require("lvim.core.cmp").methods
+  local cmp = require "cmp"
+  local luasnip = require "luasnip"
+  local copilot_keys = vim.fn["copilot#Accept"]()
+  if cmp.visible() then
+    cmp.select_next_item()
+  elseif vim.api.nvim_get_mode().mode == "c" then
+    fallback()
+  elseif copilot_keys ~= "" then -- prioritise copilot over snippets
+    -- Copilot keys do not need to be wrapped in termcodes
+    vim.api.nvim_feedkeys(copilot_keys, "i", true)
+  elseif luasnip.expandable() then
+    luasnip.expand()
+  elseif methods.jumpable() then
+    luasnip.jump(1)
+  elseif methods.check_backspace() then
+    fallback()
+  else
+    methods.feedkeys("<Plug>(Tabout)", "")
+  end
+end
+
+function M.shift_tab(fallback)
+  local methods = require("lvim.core.cmp").methods
+  local luasnip = require "luasnip"
+  local cmp = require "cmp"
+  if cmp.visible() then
+    cmp.select_prev_item()
+  elseif vim.api.nvim_get_mode().mode == "c" then
+    fallback()
+  elseif methods.jumpable(-1) then
+    luasnip.jump(-1)
+  else
+    local copilot_keys = vim.fn["copilot#Accept"]()
+    if copilot_keys ~= "" then
+      methods.feedkeys(copilot_keys, "i")
+    else
+      methods.feedkeys("<Plug>(Tabout)", "")
+    end
+  end
 end
 
 return M

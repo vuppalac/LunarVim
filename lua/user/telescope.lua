@@ -300,4 +300,3 @@ function M.grep_string_visual()
 end
 
 return M
-

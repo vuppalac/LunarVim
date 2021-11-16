@@ -32,6 +32,7 @@ M.config = function()
       "packer",
       "neogitstatus",
       "NvimTree",
+      "Outline",
       "Trouble",
       "lspinfo",
       "", -- for all buffers without a file type
@@ -39,10 +40,12 @@ M.config = function()
     -- char = "▏",
     char_list = { "", "┊", "┆", "¦", "|", "¦", "┆", "┊", "" },
     show_trailing_blankline_indent = false,
-    show_first_indent_level = true,
+    show_first_indent_level = false,
     space_char_blankline = " ",
     use_treesitter = true,
+    show_foldtext = false,
     show_current_context = true,
+    show_current_context_start = false,
     context_patterns = {
       "class",
       "return",

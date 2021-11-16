@@ -1,72 +1,56 @@
 -- Neovim
 -- =========================================
-lvim.log.level = "warn"
 lvim.format_on_save = false
-lvim.lint_on_save = true
--- vim.g.tokyonight_style = "storm"
--- vim.g.tokyonight_italic_functions = false
--- vim.g.tokyonight_lualine_bold = true
--- vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
-lvim.colorscheme = "onedarker"
-lvim.leader = "space"
-require("user.settings").config()
+lvim.leader = " "
+lvim.colorscheme = "pablo"
+lvim.debug = false
+lvim.log.level = "warn"
+require("user.neovim").config()
+local _time = os.date "*t"
+if _time.hour >= 21 and _time.hour < 24 then
+  lvim.colorscheme = "onedarker"
+end
 
 -- Customization
 -- =========================================
--- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.sell_your_soul_to_devil = false -- if you want microsoft to abuse your soul
 lvim.builtin.lastplace = { active = true } -- change to false if you are jumping to future
-lvim.builtin.tabnine = { active = false } -- change to false if you don't like tabnine
--- lvim.builtin.persistence = { active = true } -- change to false if you don't want persistence
--- lvim.builtin.presence = { active = false } -- change to true if you want discord presence
--- lvim.builtin.orgmode = { active = false } -- change to true if you want orgmode.nvim
+lvim.builtin.tabnine = { active = true } -- change to false if you don't like tabnine
+lvim.builtin.persistence = { active = true } -- change to false if you don't want persistence
+lvim.builtin.presence = { active = false } -- change to true if you want discord presence
+lvim.builtin.orgmode = { active = false } -- change to true if you want orgmode.nvim
 lvim.builtin.dap.active = false -- change this to enable/disable debugging
-lvim.builtin.fancy_statusline = { active = true } -- change this to enable/disable fancy statusline
-lvim.builtin.fancy_bufferline = { active = false } -- change this to enable/disable fancy bufferline
+lvim.builtin.fancy_statusline = { active = true } -- enable/disable fancy statusline
+lvim.builtin.fancy_bufferline = { active = true } -- enable/disable fancy bufferline
 lvim.builtin.fancy_dashboard = { active = true } -- enable/disable fancy dashboard
 lvim.builtin.fancy_wild_menu = { active = false } -- enable/disable use wilder.nvim
+lvim.builtin.fancy_rename = { active = true } -- enable/disable custom rename
+lvim.builtin.fancy_diff = { active = true } -- enable/disable fancier git diff
 lvim.builtin.lua_dev = { active = true } -- change this to enable/disable folke/lua_dev
-lvim.builtin.test_runner = { active = false } -- change this to enable/disable vim-test, ultest
-lvim.builtin.cheat = { active = false } -- enable cheat.sh integration
-lvim.builtin.sql_integration = { active = false } -- use sql integration
-lvim.builtin.neoscroll = { active = false } -- smooth scrolling
+lvim.builtin.test_runner = { active = true } -- change this to enable/disable vim-test, ultest
+lvim.builtin.neoscroll = { active = true } -- smooth scrolling
+lvim.builtin.neoclip = { active = false, enable_persistant_history = false }
 lvim.builtin.nonumber_unfocus = false -- diffrentiate between focused and non focused windows
 lvim.builtin.harpoon = { active = false } -- use the harpoon plugin
-lvim.builtin.notify.active = true
-lvim.builtin.dashboard.active = true
-lvim.builtin.terminal.active = true
-lvim.builtin.cmp.active = true
-lvim.builtin.comment.active = true
-lvim.builtin.project.active = false
-
+lvim.builtin.remote_dev = { active = false } -- enable/disable remote development
+lvim.builtin.global_status_line = { active = false } -- use the global status line
+lvim.builtin.cursorline = { active = true } -- use a bit fancier cursorline
+lvim.builtin.motion_provider = "hop" -- change this to use different motion providers ( hop or lightspeed )
+lvim.builtin.gitsigns = { active = true, gitpath = "git" } -- use a custom gitsigns, which has support for non-default git command location
+local user = os.getenv "USER"
+if user and user == "abz" then
+  lvim.builtin.nvim_web_devicons = { active = false }
+  lvim.builtin.sell_your_soul_to_devil = true
+  lvim.lsp.document_highlight = false
+end
 lvim.lsp.diagnostics.virtual_text = false -- remove this line if you want to see inline errors
+lvim.builtin.notify.active = true
 lvim.lsp.automatic_servers_installation = false
-lvim.lsp.document_highlight = true
+if lvim.builtin.cursorline.active then
+  lvim.lsp.document_highlight = false
+end
 lvim.lsp.code_lens_refresh = true
-
-lvim.builtin.gitsigns.opts.git_path = 'git'
 require("user.builtin").config()
-
--- add your own keymapping
--- local ls_install_prefix = vim.fn.stdpath "data"
--- lvim.lsp.cpp.compile_commands_dir = "build_el7_2020_05"
--- lvim.lsp.cpp.provider = "ccls"
--- lvim.lsp.cpp.cmd = {
---   ls_install_prefix .. "/lspinstall/cpp/ccls/bin/ccls",
---   '--init={"compilationDatabaseDirectory": "build_el7_2020_05", "index": {"threads": 1}}'
--- }
-
--- lvim.lsp.cpp.provider = "clangd"
--- lvim.lsp.cpp.cmd = {
---   ls_install_prefix .. "/lspinstall/cpp/clangd/bin/clangd",
---   -- "clangd",
---   "--background-index",
---   "--header-insertion=never",
---   "--cross-file-rename",
---   "--clang-tidy",
---   "--clang-tidy-checks=-*,llvm-*,clang-analyzer-*",
---   "--compile-commands-dir=build_el7_2020_05",
--- }
 
 -- StatusLine
 -- =========================================
@@ -76,22 +60,16 @@ end
 
 -- Debugging
 -- =========================================
--- if lvim.builtin.dap.active then
---   require("user.dap").config()
--- end
+if lvim.builtin.dap.active then
+  require("user.dap").config()
+end
 
 -- Language Specific
 -- =========================================
--- local custom_servers = { "dockerls", "sumneko_lua", "texlab", "tsserver", "jsonls", "gopls" }
--- vim.list_extend(lvim.lsp.override, { "rust_analyzer" })
--- vim.list_extend(lvim.lsp.override, custom_servers)
--- require("user.null_ls").config()
--- for _, server_name in ipairs(custom_servers) do
---   local status_ok, custom_config = pcall(require, "user/providers/" .. server_name)
---   if status_ok then
---     require("lvim.lsp.manager").setup(server_name, custom_config)
---   end
--- end
+local custom_servers = { "sumneko_lua", "jsonls" }
+vim.list_extend(lvim.lsp.override, { "rust_analyzer", "clangd" })
+vim.list_extend(lvim.lsp.override, custom_servers)
+require("user.null_ls").config()
 
 -- Additional Plugins
 -- =========================================
@@ -104,8 +82,3 @@ require("user.autocommands").config()
 -- Additional keybindings
 -- =========================================
 require("user.keybindings").config()
-
--- Autocommands (https://neovim.io/doc/user/autocmd.html)
--- lvim.autocommands.custom_groups = {
---   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
--- }

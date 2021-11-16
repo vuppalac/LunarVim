@@ -157,35 +157,33 @@ local default_colors = {
 }
 
 M.config = function()
-  local theme = require "user.theme"
-
-  local colors
+  local colors = default_colors
+  local themes = require("user.theme").colors
   local _time = os.date "*t"
-  if (_time.hour >= 0 and _time.hour < 5) or (_time.hour >= 11 and _time.hour < 17) then
-    colors = theme.colors.tokyonight_colors
-  elseif _time.hour >= 5 and _time.hour < 8 then
-    colors = theme.colors.zephyr_colors
+  if _time.hour >= 5 and _time.hour < 8 then
+    colors = themes.zephyr_colors
   elseif _time.hour >= 8 and _time.hour < 11 then
-    colors = theme.colors.catppuccino_colors
-  elseif _time.hour >= 21 and _time.hour <= 24 then
-    colors = theme.colors.onedarker_colors
+    colors = themes.rose_pine_colors
+  elseif (_time.hour >= 0 and _time.hour < 5) or (_time.hour >= 11 and _time.hour < 17) then
+    colors = themes.tokyonight_colors
   elseif _time.hour >= 17 and _time.hour < 21 then
-    colors = theme.colors.doom_one_colors
-  else
-    colors = default_colors
+    colors = themes.doom_one_colors
+  elseif _time.hour >= 21 and _time.hour < 24 then
+    colors = themes.onedarker_colors
   end
+
   -- Color table for highlights
   local mode_color = {
     n = colors.git.delete,
     i = colors.green,
     v = colors.yellow,
-    [""] = colors.blue,
+    [""] = colors.blue,
     V = colors.yellow,
     c = colors.cyan,
     no = colors.magenta,
     s = colors.orange,
     S = colors.orange,
-    [""] = colors.orange,
+    [""] = colors.orange,
     ic = colors.yellow,
     R = colors.violet,
     Rv = colors.violet,
@@ -202,10 +200,10 @@ M.config = function()
       return vim.fn.empty(vim.fn.expand "%:t") ~= 1
     end,
     hide_in_width = function()
-      return vim.fn.winwidth(0) > 80
+      return vim.fn.winwidth(0) > 80 or lvim.builtin.global_status_line.active
     end,
     hide_small = function()
-      return vim.fn.winwidth(0) > 150
+      return vim.fn.winwidth(0) > 150 or lvim.builtin.global_status_line.active
     end,
     check_git_workspace = function()
       local filepath = vim.fn.expand "%:p:h"
@@ -325,7 +323,29 @@ M.config = function()
   ins_left {
     function()
       vim.api.nvim_command("hi! LualineFileIconColor guifg=" .. get_file_icon_color() .. " guibg=" .. colors.bg)
-      return get_file_icon()
+      local winnr = vim.api.nvim_win_get_number(vim.api.nvim_get_current_win())
+      local win = " "
+      if winnr == 2 then
+        win = " "
+      elseif winnr == 3 then
+        win = " "
+      elseif winnr == 4 then
+        win = " "
+      elseif winnr == 5 then
+        win = " "
+      elseif winnr == 6 then
+        win = " "
+      elseif winnr == 7 then
+        win = " "
+      elseif winnr == 8 then
+        win = " "
+      elseif winnr == 9 then
+        win = " "
+      elseif winnr > 9 then
+        win = " "
+      end
+      return win .. " " .. get_file_icon()
+      -- return get_file_icon()
     end,
     padding = { left = 2, right = 0 },
     cond = conditions.buffer_not_empty,
@@ -333,7 +353,10 @@ M.config = function()
     gui = "bold",
   }
   ins_left {
-    "filename",
+    function()
+      local fname = vim.fn.expand "%:T"
+      return fname .. "%{&readonly?'  ':''}" .. "%{&modified?'  ':''}"
+    end,
     cond = conditions.buffer_not_empty,
     padding = { left = 1, right = 1 },
     color = { fg = colors.fg, gui = "bold" },
@@ -429,14 +452,16 @@ M.config = function()
     ins_right {
       "diagnostics",
       sources = { "nvim" },
-      symbols = { error = " ", warn = " ", info = " ", hint = " " },
+      symbols = { error = " ", warn = " ", info = " ", hint = " " },
+      -- symbols = { error = " ", warn = " ", info = " ", hint = " " },
       cond = conditions.hide_in_width,
     }
   else
     ins_right {
       "diagnostics",
       sources = { "nvim_lsp" },
-      symbols = { error = " ", warn = " ", info = " ", hint = " " },
+      symbols = { error = " ", warn = " ", info = " ", hint = " " },
+      -- symbols = { error = " ", warn = " ", info = " ", hint = " " },
       cond = conditions.hide_in_width,
     }
   end
@@ -455,17 +480,20 @@ M.config = function()
   }
   ins_right {
     function(msg)
-      msg = msg or "LS Inactive"
+      msg = msg or "  LS Inactive"
       local buf_clients = vim.lsp.buf_get_clients()
       if next(buf_clients) == nil then
         if type(msg) == "boolean" or #msg == 0 then
-          return "LS Inactive"
+          return "  LS Inactive"
         end
         return msg
       end
       local buf_ft = vim.bo.filetype
       local buf_client_names = {}
       local trim = vim.fn.winwidth(0) < 120
+      if lvim.builtin.global_status_line.active then
+        trim = false
+      end
 
       -- add client
       -- local utils = require "lsp.utils"
@@ -505,9 +533,9 @@ M.config = function()
       end
       vim.list_extend(buf_client_names, supported_linters)
 
-      return table.concat(buf_client_names, ", ")
+      return " " .. table.concat(buf_client_names, ", ")
     end,
-    icon = " ",
+    -- icon = " ",
     color = { fg = colors.fg },
     cond = conditions.hide_in_width,
   }
@@ -582,4 +610,3 @@ M.config = function()
 end
 
 return M
-

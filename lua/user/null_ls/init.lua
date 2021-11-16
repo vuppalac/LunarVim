@@ -11,6 +11,9 @@ M.config = function()
     return
   end
 
+  local custom_go_actions = require "user.null_ls.go"
+  local custom_md_hover = require "user.null_ls.markdown"
+
   -- you can either config null-ls itself
   nls.config {
     debounce = 150,
@@ -30,47 +33,19 @@ M.config = function()
       nls.builtins.diagnostics.luacheck,
       nls.builtins.diagnostics.vint,
       nls.builtins.diagnostics.chktex,
+      custom_go_actions.gomodifytags,
+      custom_go_actions.gostructhelper,
+      custom_md_hover.dictionary,
     },
   }
 
   -- or use the lunarvim syntax
-  -- local formatters = require "lvim.lsp.null-ls.formatters"
-  -- formatters.setup {
-  --   {
-  --     exe = "prettier",
-  --     filetypes = {
-  --       "javascriptreact",
-  --       "javascript",
-  --       "typescriptreact",
-  --       "typescript",
-  --       "json",
-  --       "markdown",
-  --     },
-  --   },
-  --   {
-
-  --   }
-  -- }
-  -- local linters = require "lvim.lsp.null-ls.linters"
-  -- linters.setup {
-  --   {
-  --     exe = "eslint",
-  --     filetypes = {
-  --       "javascriptreact",
-  --       "javascript",
-  --       "typescriptreact",
-  --       "typescript",
-  --       "vue",
-  --     },
-  --   },
-  -- }
-
-  -- WARN: do not redfine or reuse formatter/linters in this format
-  -- or use the lang specific format
-  lvim.lang.python.formatters = {
+  local formatters = require "lvim.lsp.null-ls.formatters"
+  formatters.setup {
     {
       exe = "black",
       args = { "--fast" },
+      filetypes = { "python" },
     },
     {
       exe = "isort",
@@ -78,16 +53,11 @@ M.config = function()
         "--profile",
         "black",
       },
+      filetypes = { "python" },
     },
   }
-  lvim.lang.markdown.linters = {
-    {
-      exe = "markdownlint",
-    },
-    {
-      exe = "vale",
-    },
-  }
+  local linters = require "lvim.lsp.null-ls.linters"
+  linters.setup {}
 end
 
 return M
