@@ -27,12 +27,20 @@ M.config = function()
       nls.builtins.formatting.sqlformat,
       nls.builtins.formatting.terraform_fmt,
       nls.builtins.formatting.shfmt.with { extra_args = { "-i", "2", "-ci" } },
+      nls.builtins.formatting.black.with { extra_args = { "--fast" }, filetypes = {"python"} },
+      nls.builtins.formatting.isort.with { extra_args = { "--profile", "black" }, filetypes = {"python"} },
       nls.builtins.diagnostics.hadolint,
       nls.builtins.diagnostics.eslint_d,
       nls.builtins.diagnostics.shellcheck,
       nls.builtins.diagnostics.luacheck,
       nls.builtins.diagnostics.vint,
       nls.builtins.diagnostics.chktex,
+      nls.builtins.diagnostics.markdownlint.with {
+        filetypes = { "markdown" },
+      },
+      nls.builtins.diagnostics.vale.with {
+        filetypes = { "markdown" },
+      },
       custom_go_actions.gomodifytags,
       custom_go_actions.gostructhelper,
       custom_md_hover.dictionary,
@@ -54,6 +62,14 @@ M.config = function()
         "black",
       },
       filetypes = { "python" },
+    },
+    -- {
+    --     exe = "clang-format-13"
+    -- },
+    {
+      exe = "uncrustify",
+      args = {"-c", "uncrustify.cfg"},
+      filetypes = {"cpp", "c"},
     },
   }
   local linters = require "lvim.lsp.null-ls.linters"

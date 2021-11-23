@@ -12,6 +12,7 @@ M.config = function()
   end
 
   local color = pick_color()
+  local kind = require "user.lsp_kind"
 
   local header = {
     type = "text",
@@ -22,19 +23,21 @@ M.config = function()
     },
   }
 
-  local handle = io.popen 'fd -d 2 . $HOME"/.local/share/lunarvim/site/pack/packer" | grep pack | wc -l | tr -d "\n" '
+  local handle = io.popen 'fd -d 2 . $HOME"/.local/share/nvim/site/pack/packer" | grep pack | wc -l | tr -d "\n" '
   local plugins = handle:read "*a"
   handle:close()
 
   -- local thingy = io.popen 'echo "$(date +%a) $(date +%d) $(date +%b)" | tr -d "\n"'
   -- local date = thingy:read "*a"
   -- thingy:close()
-  local datetime = os.date(" %d-%m-%Y  %H:%M:%S")
+  local datetime = os.date(kind.icons.calendar .. "%d-%m-%Y ".. kind.icons.clock .. "%H:%M:%S")
   plugins = plugins:gsub("^%s*(.-)%s*$", "%1")
 
   local plugin_count = {
     type = "text",
-    val = "└─   " .. plugins .. " plugins in total ─┘",
+    -- val = "└─   " .. plugins .. " plugins in total ─┘",
+    --val = "└─   " .. plugins .. " plugins in total ─┘",
+    val = "└─ " .. kind.cmp_kind.Module .. " " .. plugins .. " plugins in total ─┘",
     opts = {
       position = "center",
       -- hl = "String",
@@ -45,7 +48,9 @@ M.config = function()
   local heading = {
     type = "text",
     -- val = "┌─   Today is " .. date .. " ─┐",
-    val = "   " .. plugins .. " plugins loaded ➖ " .. datetime,
+    -- val = "   " .. plugins .. " plugins loaded ➖ " .. datetime,
+    val = "  " .. plugins .. " plugins loaded ➖ " .. datetime,
+    -- val = "┌─ " .. kind.icons.calendar .. " Today is " .. date .. " ─┐",
     opts = {
       position = "center",
       -- hl = "String",
@@ -96,12 +101,13 @@ M.config = function()
   local buttons = {
     type = "group",
     val = {
-      button("f", "   Find File", ":Telescope find_files<CR>"),
-      button("e", "   New File", ":ene <BAR> startinsert <CR>"),
-      button("r", "   Recents", ":Telescope oldfiles<CR>"),
-      button("s", "   Find Word", ":Telescope live_grep<CR>"),
-      button("m", "   Marks", ":Telescope marks<CR>"),
-      button("o", "   Options", ":e ~/.config/lvim/config.lua<CR>"),
+      button("f", " " .. kind.cmp_kind.Folder .. " Explore", ":Telescope find_files<CR>"),
+      button("e", " " .. kind.cmp_kind.File .. " New file", ":ene <BAR> startinsert <CR>"),
+      button("s", " " .. kind.cmp_kind.Text .. " Find Word", ":Telescope live_grep<CR>"),
+      button("r", " " .. kind.icons.clock .. " Recents", ":Telescope oldfiles<CR>"),
+      button("b", " " .. kind.icons.buffer .. " Buffers", ":Telescope buffers<CR>"),
+      button("m", " " .. kind.icons.Marks ..  " Marks", ":Telescope marks<CR>"),
+      button("o", " " .. kind.icons.settings .. " Options", ":e ~/.config/nvim/config.lua<CR>"),
     },
     opts = {
       spacing = 1,

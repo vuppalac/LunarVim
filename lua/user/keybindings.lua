@@ -51,6 +51,26 @@ nmap <expr> T reg_recording() . reg_executing() == "" ? "<Plug>Lightspeed_T" : "
   ]]
 end
 
+M.set_hlslens_keymaps = function()
+  local opts = { noremap = true, silent = true }
+  vim.api.nvim_set_keymap(
+    "n",
+    "n",
+    "<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>",
+    opts
+  )
+  vim.api.nvim_set_keymap(
+    "n",
+    "N",
+    "<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>",
+    opts
+  )
+  vim.api.nvim_set_keymap("n", "*", "*<Cmd>lua require('hlslens').start()<CR>", opts)
+  vim.api.nvim_set_keymap("n", "#", "#<Cmd>lua require('hlslens').start()<CR>", opts)
+  vim.api.nvim_set_keymap("n", "g*", "g*<Cmd>lua require('hlslens').start()<CR>", opts)
+  vim.api.nvim_set_keymap("n", "g#", "g#<Cmd>lua require('hlslens').start()<CR>", opts)
+end
+
 local function set_bufferline_keymaps()
   lvim.keys.normal_mode["<S-x>"] = ":bdelete!<CR>"
   lvim.keys.normal_mode["<S-l>"] = "<Cmd>BufferLineCycleNext<CR>"
@@ -132,6 +152,7 @@ M.config = function()
     "<cmd>lua vim.lsp.diagnostic.goto_prev({popup_opts = {border = lvim.lsp.popup_border}})<cr>"
   lvim.keys.normal_mode["<A-a>"] = "<C-a>"
   lvim.keys.normal_mode["<A-x>"] = "<C-x>"
+  lvim.keys.normal_mode["<C-,>"] = "<cmd>lua require('neogen').jump_next()<CR>"
   lvim.keys.normal_mode["<C-n>i"] = { "<C-i>", { noremap = true } }
   if vim.fn.has "mac" == 1 then
     lvim.keys.normal_mode["gx"] =
@@ -145,10 +166,12 @@ M.config = function()
   else
     lvim.keys.normal_mode["<S-x>"] = ":BufferClose<CR>"
   end
+  if lvim.builtin.sidebar.active then
+    lvim.keys.normal_mode["E"] = ":SidebarNvimToggle<cr>"
+  end
   lvim.keys.normal_mode["<esc><esc>"] = "<cmd>nohlsearch<cr>"
   lvim.keys.normal_mode["Y"] = "y$"
   lvim.keys.normal_mode["gv"] = "<cmd>vsplit | lua vim.lsp.buf.definition()<cr>"
-  lvim.keys.normal_mode["gA"] = "<cmd>lua vim.lsp.codelens.run()<cr>"
   if lvim.builtin.harpoon.active then
     set_harpoon_keymaps()
   end

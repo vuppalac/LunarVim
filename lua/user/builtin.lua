@@ -1,6 +1,7 @@
 local M = {}
 
 M.config = function()
+  local kind = require "user.lsp_kind"
   -- Snippets
   -- =========================================
   require("luasnip/loaders/from_vscode").load { paths = { "~/.config/lvim/snippets" } }
@@ -32,7 +33,7 @@ M.config = function()
     native_menu = false,
     custom_menu = true,
   }
-  lvim.builtin.cmp.formatting.kind_icons = require("user.lsp_kind").symbols()
+  lvim.builtin.cmp.formatting.kind_icons = kind.cmp_kind
   lvim.builtin.cmp.formatting.source_names = {
     buffer = "(Buffer)",
     nvim_lsp = "(LSP)",
@@ -90,10 +91,10 @@ M.config = function()
   -- LSP
   -- =========================================
   lvim.lsp.diagnostics.signs.values = {
-    { name = "LspDiagnosticsSignError", text = "" },
-    { name = "LspDiagnosticsSignWarning", text = "" },
-    { name = "LspDiagnosticsSignHint", text = "" },
-    { name = "LspDiagnosticsSignInformation", text = "" },
+    --{ name = "LspDiagnosticsSignError", text = "" },
+    --{ name = "LspDiagnosticsSignWarning", text = "" },
+    --{ name = "LspDiagnosticsSignHint", text = "" },
+    --{ name = "LspDiagnosticsSignInformation", text = "" },
 
     -- { name = "LspDiagnosticsSignError", text = " " },
     -- { name = "LspDiagnosticsSignWarning", text = "" },
@@ -103,7 +104,15 @@ M.config = function()
     -- { name = "LspDiagnosticsSignWarning", text = "👎" },
     -- { name = "LspDiagnosticsSignHint", text = [[👩]] },
     -- { name = "LspDiagnosticsSignInformation", text = [[💁]] },
+    { name = "LspDiagnosticsSignError", text = kind.icons.error },
+    { name = "LspDiagnosticsSignWarning", text = kind.icons.warn },
+    { name = "LspDiagnosticsSignInformation", text = kind.icons.info },
+    { name = "LspDiagnosticsSignHint", text = kind.icons.hint },
   }
+  local ok, _ = pcall(require, "vim.diagnostic")
+  if ok then
+    vim.diagnostic.config { virtual_text = false }
+  end
 
   -- Lualine
   -- =========================================
@@ -113,21 +122,23 @@ M.config = function()
   -- NvimTree
   -- =========================================
   lvim.builtin.nvimtree.setup.auto_open = 0
-  -- lvim.builtin.nvimtree.setup.diagnostics = {
-  --   enable = true,
-  --   icons = {
-  --     hint = "",
-  --     info = "",
-  --     warning = "",
-  --     error = "",
-  --   },
-  -- }
+  lvim.builtin.nvimtree.setup.diagnostics = {
+    enable = true,
+    icons = {
+      hint = kind.icons.hint,
+      info = kind.icons.info,
+      warning = kind.icons.warn,
+      error = kind.icons.error,
+    },
+  }
+  lvim.builtin.nvimtree.icons = kind.nvim_tree_icons
   -- lvim.builtin.nvimtree.hide_dotfiles = 0
 
   -- Project
   -- =========================================
   lvim.builtin.project.active = false
   lvim.builtin.project.patterns = { "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" }
+  lvim.builtin.project.detection_methods = { "lsp", "pattern" }
 
   -- Treesitter
   -- =========================================
@@ -168,6 +179,56 @@ M.config = function()
     enable = true,
     use_virtual_text = true,
     lint_events = { "BufWrite", "CursorHold" },
+  }
+  lvim.builtin.treesitter.textobjects = {
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        -- You can use the capture groups defined in textobjects.scm
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+        ["al"] = "@loop.outer",
+        ["il"] = "@loop.inner",
+        ["aa"] = "@parameter.outer",
+        ["ia"] = "@parameter.inner",
+      },
+    },
+    swap = {
+      enable = true,
+      swap_next = {
+        ["<leader><M-a>"] = "@parameter.inner",
+        ["<leader><M-f>"] = "@function.outer",
+        ["<leader><M-e>"] = "@element",
+      },
+      swap_previous = {
+        ["<leader><M-A>"] = "@parameter.inner",
+        ["<leader><M-F>"] = "@function.outer",
+        ["<leader><M-E>"] = "@element",
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        ["]f"] = "@function.outer",
+        ["]]"] = "@class.outer",
+      },
+      goto_next_end = {
+        ["]F"] = "@function.outer",
+        ["]["] = "@class.outer",
+      },
+      goto_previous_start = {
+        ["[f"] = "@function.outer",
+        ["[["] = "@class.outer",
+      },
+      goto_previous_end = {
+        ["[F"] = "@function.outer",
+        ["[]"] = "@class.outer",
+      },
+    },
   }
   lvim.builtin.treesitter.on_config_done = function()
     local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
@@ -276,18 +337,6 @@ M.config = function()
       ["gR"] = { "<cmd>Trouble lsp_references<CR>", "Goto References" },
       ["gI"] = { "<cmd>lua require('user.telescope').lsp_implementations()<CR>", "Goto Implementation" },
     }
-
-    -- better keybindings for ts and tsx files
-    local langs = { "typescript", "typescriptreact" }
-    local ftype = vim.bo.filetype
-    if vim.tbl_contains(langs, ftype) then
-      local ts_keys = {
-        ["gA"] = { "<cmd>TSLspImportAll<CR>", "Import All" },
-        ["gr"] = { "<cmd>TSLspRenameFile<CR>", "Rename File" },
-        ["gS"] = { "<cmd>TSLspOrganize<CR>", "Organize Imports" },
-      }
-      wk.register(ts_keys, { mode = "n" })
-    end
     wk.register(keys, { mode = "n" })
   end
 
@@ -305,6 +354,14 @@ M.config = function()
 
   -- ETC
   -- =========================================
+  local default_exe_handler = vim.lsp.handlers["workspace/executeCommand"]
+  vim.lsp.handlers["workspace/executeCommand"] = function(err, result, ctx, config)
+    -- supress NULL_LS error msg
+    if err and vim.startswith(err.message, "NULL_LS") then
+      return
+    end
+    return default_exe_handler(err, result, ctx, config)
+  end
   --   if lvim.builtin.lastplace.active == false then
   --     -- go to last loc when opening a buffer
   --     vim.cmd [[

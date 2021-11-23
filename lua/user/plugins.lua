@@ -225,7 +225,6 @@ M.config = function()
       config = function()
         require("neogen").setup {
           enabled = true,
-          jump_map = "<C-,>",
         }
       end,
       ft = { "lua", "python", "javascript", "typescriptreact", "c", "cpp", "go", "java" },
@@ -313,11 +312,18 @@ M.config = function()
         vim.g.copilot_assume_mapped = true
         vim.g.copilot_tab_fallback = ""
         vim.g.copilot_filetypes = {
-          ["*"] = true,
-          markdown = false,
-          dart = false,
-          gitcommit = false,
-          NeogitCommitMessage = false,
+          ["*"] = false,
+          python = true,
+          lua = true,
+          go = true,
+          rust = true,
+          html = true,
+          c = true,
+          cpp = true,
+          javascript = true,
+          typescript = true,
+          javascriptreact = true,
+          typescriptreact = true,
         }
       end,
       disable = not lvim.builtin.sell_your_soul_to_devil,
@@ -390,6 +396,15 @@ M.config = function()
     },
     {
       "Nguyen-Hoang-Nam/nvim-mini-file-icons",
+      config = function()
+        require("nvim-web-devicons").set_icon {
+          rs = {
+            icon = "",
+            color = "#d28445",
+            name = "Rust",
+          },
+        }
+      end,
       disable = lvim.builtin.nvim_web_devicons == nil,
     },
     {
@@ -434,6 +449,42 @@ M.config = function()
       end,
       disable = not lvim.builtin.sell_your_soul_to_devil,
     },
+    {
+      "kevinhwang91/nvim-hlslens",
+      config = function()
+        require("user.hlslens").config()
+      end,
+      event = "BufReadPost",
+      disable = not lvim.builtin.hlslens.active,
+    },
+    {
+      "kosayoda/nvim-lightbulb",
+      config = function()
+        vim.fn.sign_define(
+          "LightBulbSign",
+          { text = require("user.lsp_kind").icons.code_action, texthl = "DiagnosticInfo" }
+        )
+      end,
+      event = "BufRead",
+      ft = { "rust", "go" },
+    },
+    {
+      "chrisbra/csv.vim",
+      ft = { "csv" },
+      disable = not lvim.builtin.csv_support,
+    },
+    {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      after = "nvim-treesitter",
+    },
+    {
+      "sidebar-nvim/sidebar.nvim",
+      config = function()
+        require("user.sidebar").config()
+      end,
+      event = "BufRead",
+      disable = not lvim.builtin.sidebar.active,
+    },
     -- end of abz config
     {
       'editorconfig/editorconfig-vim',
@@ -476,7 +527,7 @@ M.config = function()
         "Gvdiff",
       },
       ft = {"fugitive"}
-    },
+    }, 
   }
 end
 
