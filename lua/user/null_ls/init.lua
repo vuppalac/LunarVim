@@ -67,9 +67,7 @@ M.config = function()
     --     exe = "clang-format-13"
     -- },
     {
-      exe = "uncrustify",
-      args = {"-c", "uncrustify.cfg"},
-      filetypes = {"cpp", "c"},
+      exe = "clang-format",
     },
   }
   local linters = require "lvim.lsp.null-ls.linters"
