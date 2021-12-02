@@ -19,7 +19,11 @@ M.config = function()
     debounce = 150,
     save_after_format = false,
     sources = {
-      nls.builtins.formatting.prettierd,
+      require("null-ls.helpers").conditional(function(utils)
+        return utils.root_has_file ".eslintrc.js"
+            and nls.builtins.formatting.eslint_d.with { prefer_local = "node_modules/.bin" }
+          or nls.builtins.formatting.prettierd.with { prefer_local = "node_modules/.bin" }
+      end),
       nls.builtins.formatting.stylua,
       nls.builtins.formatting.goimports,
       nls.builtins.formatting.cmake_format,
@@ -27,10 +31,10 @@ M.config = function()
       nls.builtins.formatting.sqlformat,
       nls.builtins.formatting.terraform_fmt,
       nls.builtins.formatting.shfmt.with { extra_args = { "-i", "2", "-ci" } },
-      nls.builtins.formatting.black.with { extra_args = { "--fast" }, filetypes = {"python"} },
-      nls.builtins.formatting.isort.with { extra_args = { "--profile", "black" }, filetypes = {"python"} },
+      nls.builtins.formatting.black.with { extra_args = { "--fast" }, filetypes = { "python" } },
+      nls.builtins.formatting.isort.with { extra_args = { "--profile", "black" }, filetypes = { "python" } },
       nls.builtins.diagnostics.hadolint,
-      nls.builtins.diagnostics.eslint_d,
+      nls.builtins.diagnostics.eslint_d.with { prefer_local = "node_modules/.bin" },
       nls.builtins.diagnostics.shellcheck,
       nls.builtins.diagnostics.luacheck,
       nls.builtins.diagnostics.vint,
@@ -41,6 +45,16 @@ M.config = function()
       nls.builtins.diagnostics.vale.with {
         filetypes = { "markdown" },
       },
+      require("null-ls.helpers").conditional(function(utils)
+        return utils.root_has_file "revive.toml" and nls.builtins.diagnostics.revive
+          or utils.root_has_file ".golangci.yml" and nls.builtins.diagnostics.golangci_lint
+      end),
+      nls.builtins.code_actions.eslint_d.with { prefer_local = "node_modules/.bin" },
+      -- TODO: try these later on
+      -- nls.builtins.formatting.google_java_format,
+      -- nls.builtins.code_actions.refactoring,
+      -- nls.builtins.code_actions.proselint,
+      -- nls.builtins.diagnostics.proselint,
       custom_go_actions.gomodifytags,
       custom_go_actions.gostructhelper,
       custom_md_hover.dictionary,
@@ -63,12 +77,9 @@ M.config = function()
       },
       filetypes = { "python" },
     },
-    -- {
-    --     exe = "clang-format-13"
-    -- },
     {
       exe = "clang-format",
-    },
+    }
   }
   local linters = require "lvim.lsp.null-ls.linters"
   linters.setup {}

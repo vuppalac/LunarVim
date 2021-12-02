@@ -1,7 +1,7 @@
-setlocal tabstop=3
-setlocal shiftwidth=3
+setlocal tabstop=4
+setlocal shiftwidth=4
 setlocal autoindent
 setlocal smarttab
-setlocal noexpandtab
+setlocal expandtab
 setlocal textwidth=80
 setlocal formatoptions=croql

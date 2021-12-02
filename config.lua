@@ -28,6 +28,8 @@ lvim.builtin.fancy_rename = { active = true } -- enable/disable custom rename
 lvim.builtin.fancy_diff = { active = true } -- enable/disable fancier git diff
 lvim.builtin.lua_dev = { active = true } -- change this to enable/disable folke/lua_dev
 lvim.builtin.test_runner = { active = false } -- change this to enable/disable vim-test, ultest
+lvim.builtin.cheat = { active = false } -- enable cheat.sh integration
+lvim.builtin.sql_integration = { active = false } -- use sql integration
 lvim.builtin.neoscroll = { active = true } -- smooth scrolling
 lvim.builtin.neoclip = { active = false, enable_persistant_history = false }
 lvim.builtin.nonumber_unfocus = false -- diffrentiate between focused and non focused windows
@@ -39,7 +41,7 @@ lvim.builtin.motion_provider = "hop" -- change this to use different motion prov
 lvim.builtin.hlslens = { active = false } -- enable/disable hlslens
 lvim.builtin.csv_support = false -- enable/disable csv support
 lvim.builtin.sidebar = { active = false } -- enable/disable sidebar
-
+lvim.builtin.async_tasks = { active = true } -- enable/disable async tasks
 lvim.builtin.gitsigns.opts.git_path = "git" -- use a custom gitsigns, which has support for non-default git command location
 local user = os.getenv "USER"
 if user and user == "abz" then
@@ -47,6 +49,9 @@ if user and user == "abz" then
   lvim.builtin.sell_your_soul_to_devil = true
   lvim.lsp.document_highlight = false
   lvim.builtin.csv_support = true
+  lvim.builtin.async_tasks.active = true
+  lvim.builtin.dap.active = true
+  lvim.builtin.sql_integration.active = true
 end
 lvim.lsp.diagnostics.virtual_text = false -- remove this line if you want to see inline errors
 lvim.builtin.notify.active = true

@@ -160,7 +160,8 @@ M.config = function()
       config = function()
         require("dapui").setup()
       end,
-      ft = { "python", "rust", "go" },
+      -- ft = { "python", "rust", "go" },
+      event = "BufReadPost",
       requires = { "mfussenegger/nvim-dap" },
       disable = not lvim.builtin.dap.active,
     },
@@ -200,7 +201,10 @@ M.config = function()
       event = "BufReadPre",
       module = "persistence",
       config = function()
-        require("persistence").setup()
+        require("persistence").setup {
+          dir = vim.fn.expand(get_cache_dir() .. "/sessions/"), -- directory where session files are saved
+          options = { "buffers", "curdir", "tabpages", "winsize" }, -- sessionoptions used for saving
+        }
       end,
       disable = not lvim.builtin.persistence.active,
     },
@@ -227,7 +231,7 @@ M.config = function()
           enabled = true,
         }
       end,
-      ft = { "lua", "python", "javascript", "typescriptreact", "c", "cpp", "go", "java" },
+      -- ft = { "lua", "python", "javascript", "typescriptreact", "c", "cpp", "go", "java" },
       event = "InsertEnter",
       requires = "nvim-treesitter/nvim-treesitter",
     },
@@ -482,8 +486,23 @@ M.config = function()
       config = function()
         require("user.sidebar").config()
       end,
-      event = "BufRead",
+      -- event = "BufRead",
       disable = not lvim.builtin.sidebar.active,
+    },
+    {
+      "skywind3000/asynctasks.vim",
+      requires = {
+        { "skywind3000/asyncrun.vim" },
+      },
+      setup = function()
+        vim.cmd [[
+          let g:asyncrun_open = 8
+          let g:asynctask_template = '~/.config/lvim/task_template.ini'
+          let g:asynctasks_extra_config = ['~/.config/lvim/tasks.ini']
+        ]]
+      end,
+      event = "BufRead",
+      disable = not lvim.builtin.async_tasks.active,
     },
     -- end of abz config
     {

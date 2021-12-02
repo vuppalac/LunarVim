@@ -38,19 +38,20 @@ augroup BigFileDisable
 augroup END
   ]]
 
-  if lvim.builtin.hlslens.active then
+  if lvim.builtin.sql_integration.active then
+    -- Add vim-dadbod-completion in sql files
     vim.cmd [[
-function! Hls_coloring()
-  hi HlSearchNear guibg=None guifg=#bb9af7 gui=underline
-  hi HlSearchFloat guibg=None guifg=#bb9af7 gui=underline
-  hi HlSearchLensNear guibg=None guifg=#bb9af7 gui=italic
-  hi HlSearchLens guibg=None guifg=#bb9af7 gui=underline
-endfunction
-augroup hlsColor
-  autocmd!
-  autocmd BufReadPost * exec Hls_coloring()
-augroup END
-  ]]
+    augroup DadbodSql
+      au!
+      autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer { sources = { { name = 'vim-dadbod-completion' } } }
+    augroup END
+    ]]
+  end
+
+  local codelens_viewer = "lua require('nvim-lightbulb').update_lightbulb()"
+  local user = os.getenv "USER"
+  if user and user == "abz" then
+    codelens_viewer = "lua require('user.codelens').show_line_sign()"
   end
 
   lvim.autocommands.custom_groups = {
@@ -61,30 +62,10 @@ augroup END
     { "FileType", "alpha", "nnoremap <silent> <buffer> q :q<CR>" },
 
     -- c, cpp
-    {
-      "Filetype",
-      "c,cpp",
-      "nnoremap <leader>m <cmd>lua require('lvim.core.terminal')._exec_toggle('make ;read')<CR>",
-    },
-    {
-      "Filetype",
-      "c,cpp",
-      "nnoremap <leader>r <cmd>lua require('lvim.core.terminal')._exec_toggle('make run;read')<CR>",
-    },
     { "Filetype", "c,cpp", "nnoremap <leader>H <Cmd>ClangdSwitchSourceHeader<CR>" },
 
     -- go
-    { "CursorHold", "*.rs,*.go", "lua require'nvim-lightbulb'.update_lightbulb()" },
-    {
-      "Filetype",
-      "go",
-      "nnoremap <leader>m <cmd>lua require('lvim.core.terminal')._exec_toggle('go build -v .;read')<CR>",
-    },
-    {
-      "Filetype",
-      "go",
-      "nnoremap <leader>r <cmd>lua require('lvim.core.terminal')._exec_toggle('go run .;read')<CR>",
-    },
+    { "CursorHold", "*.rs,*.go", codelens_viewer },
     {
       "Filetype",
       "go",
@@ -101,6 +82,55 @@ augroup END
       "Filetype",
       "java",
       "nnoremap <leader>m <cmd>lua require('toggleterm.terminal').Terminal:new {cmd='mvn compile;read', hidden =false}:toggle()<CR>",
+    },
+
+    -- rust
+    {
+      "Filetype",
+      "rust",
+      "nnoremap <leader>H <cmd>lua require('lvim.core.terminal')._exec_toggle('cargo clippy;read')<CR>",
+    },
+    { "Filetype", "rust", "nnoremap <leader>lm <Cmd>RustExpandMacro<CR>" },
+    { "Filetype", "rust", "nnoremap <leader>lH <Cmd>RustToggleInlayHints<CR>" },
+    { "Filetype", "rust", "nnoremap <leader>le <Cmd>RustRunnables<CR>" },
+    { "Filetype", "rust", "nnoremap <leader>lh <Cmd>RustHoverActions<CR>" },
+    { "Filetype", "rust", "nnoremap <leader>lc <Cmd>RustOpenCargo<CR>" },
+    { "Filetype", "rust", "nnoremap gA <Cmd>RustHoverActions<CR>" },
+
+    -- typescript
+    { "Filetype", "typescript,typescriptreact", "nnoremap gA <Cmd>TSLspImportAll<CR>" },
+    { "Filetype", "typescript,typescriptreact", "nnoremap gr <Cmd>TSLspRenameFile<CR>" },
+    { "Filetype", "typescript,typescriptreact", "nnoremap gS <Cmd>TSLspOrganize<CR>" },
+
+    -- uncomment the following if you want to show diagnostics on hover
+    -- { "CursorHold", "*", "lua vim.lsp.diagnostic.show_line_diagnostics({ show_header = false, border = 'single' })" },
+  }
+end
+
+M.make_run = function()
+  return {
+    -- c, cpp
+    {
+      "Filetype",
+      "c,cpp",
+      "nnoremap <leader>m <cmd>lua require('lvim.core.terminal')._exec_toggle('make ;read')<CR>",
+    },
+    {
+      "Filetype",
+      "c,cpp",
+      "nnoremap <leader>r <cmd>lua require('lvim.core.terminal')._exec_toggle('make run;read')<CR>",
+    },
+
+    -- go
+    {
+      "Filetype",
+      "go",
+      "nnoremap <leader>m <cmd>lua require('lvim.core.terminal')._exec_toggle('go build -v .;read')<CR>",
+    },
+    {
+      "Filetype",
+      "go",
+      "nnoremap <leader>r <cmd>lua require('lvim.core.terminal')._exec_toggle('go run .;read')<CR>",
     },
 
     -- python
@@ -128,25 +158,6 @@ augroup END
       "rust",
       "nnoremap <leader>r <cmd>lua require('rust-tools.runnables').runnables()<CR>",
     },
-    {
-      "Filetype",
-      "rust",
-      "nnoremap <leader>H <cmd>lua require('lvim.core.terminal')._exec_toggle('cargo clippy;read')<CR>",
-    },
-    { "Filetype", "rust", "nnoremap <leader>lm <Cmd>RustExpandMacro<CR>" },
-    { "Filetype", "rust", "nnoremap <leader>lH <Cmd>RustToggleInlayHints<CR>" },
-    { "Filetype", "rust", "nnoremap <leader>le <Cmd>RustRunnables<CR>" },
-    { "Filetype", "rust", "nnoremap <leader>lh <Cmd>RustHoverActions<CR>" },
-    { "Filetype", "rust", "nnoremap <leader>lc <Cmd>RustOpenCargo<CR>" },
-    { "Filetype", "rust", "nnoremap gA <Cmd>RustHoverActions<CR>" },
-
-    -- typescript
-    { "Filetype", "typescript,typescriptreact", "nnoremap gA <Cmd>TSLspImportAll<CR>" },
-    { "Filetype", "typescript,typescriptreact", "nnoremap gr <Cmd>TSLspRenameFile<CR>" },
-    { "Filetype", "typescript,typescriptreact", "nnoremap gS <Cmd>TSLspOrganize<CR>" },
-
-    -- uncomment the following if you want to show diagnostics on hover
-    -- { "CursorHold", "*", "lua vim.lsp.diagnostic.show_line_diagnostics({ show_header = false, border = 'single' })" },
   }
 end
 
