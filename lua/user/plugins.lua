@@ -546,7 +546,10 @@ M.config = function()
         "Gvdiff",
       },
       ft = {"fugitive"}
-    }, 
+    },
+    {
+      'timakro/vim-yadi'
+    }
   }
 end
 
