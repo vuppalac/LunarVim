@@ -4,7 +4,14 @@ M.config = function()
   local kind = require "user.lsp_kind"
   -- Snippets
   -- =========================================
-  require("luasnip/loaders/from_vscode").load { paths = { "~/.config/lvim/snippets" } }
+  require("luasnip/loaders/from_vscode").load { paths = { "~/.config/nvim/snippets" } }
+
+  -- Autopairs
+  -- =========================================
+  lvim.builtin.autopairs.on_config_done = function(autopairs)
+    autopairs.remove_rule("$$", "$$", "tex")
+    autopairs.remove_rule("$", "$", { "tex", "latex" })
+  end
 
   -- Barbar
   -- =========================================
