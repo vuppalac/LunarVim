@@ -9,42 +9,10 @@ function M.setup()
     underline = lvim.lsp.diagnostics.underline,
     update_in_insert = lvim.lsp.diagnostics.update_in_insert,
     severity_sort = lvim.lsp.diagnostics.severity_sort,
+    float = lvim.lsp.diagnostics.float,
   }
-  if vim.fn.has "nvim-0.5.1" > 0 then
-    vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx, _)
-      local uri = result.uri
-      local bufnr = vim.uri_to_bufnr(uri)
-      if not bufnr then
-        return
-      end
-
-      local diagnostics = result.diagnostics
-      local ok, vim_diag = pcall(require, "vim.diagnostic")
-      if ok then
-        -- FIX: why can't we just use vim.diagnostic.get(buf_id)?
-        config.signs = true
-        for i, diagnostic in ipairs(diagnostics) do
-          local rng = diagnostic.range
-          diagnostics[i].lnum = rng["start"].line
-          diagnostics[i].end_lnum = rng["end"].line
-          diagnostics[i].col = rng["start"].character
-          diagnostics[i].end_col = rng["end"].character
-        end
-        local namespace = vim.lsp.diagnostic.get_namespace(ctx.client_id)
-
-        vim_diag.set(namespace, bufnr, diagnostics, config)
-        if not vim.api.nvim_buf_is_loaded(bufnr) then
-          return
-        end
-        vim_diag.show(namespace, bufnr, diagnostics, config)
-      else
-        vim.lsp.diagnostic.save(diagnostics, bufnr, ctx.client_id)
-        if not vim.api.nvim_buf_is_loaded(bufnr) then
-          return
-        end
-        vim.lsp.diagnostic.display(diagnostics, bufnr, ctx.client_id, config)
-      end
-    end
+  if vim.fn.has "nvim-0.6" == 1 then
+    vim.diagnostic.config(config)
   else
     vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, _, params, client_id, _)
       local uri = params.uri
@@ -60,67 +28,29 @@ function M.setup()
       end
       vim.lsp.diagnostic.display(diagnostics, bufnr, client_id, config)
     end
+
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+      border = lvim.lsp.popup_border,
+    })
+
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+      border = lvim.lsp.popup_border,
+    })
   end
-
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = lvim.lsp.popup_border,
-  })
-
-  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-    border = lvim.lsp.popup_border,
-  })
-
-  --[[
-  local cap = vim.lsp.protocol.make_client_capabilities()
-  if cap.call_hierarchy or cap.callHierarchy then
-   vim.lsp.handlers["callHierarchy/incomingCalls"] = require"user.lsp.navigator.hierarchy".incoming_calls_handler
-    vim.lsp.handlers["callHierarchy/outgoingCalls"] = require"user.lsp.navigator.hierarchy".outgoing_calls_handler
-  end
-
-  vim.lsp.handlers["textDocument/references"] = require"user.lsp.navigator.reference".reference_handler
-  vim.lsp.handlers["textDocument/codeAction"] = require"user.lsp.navigator.codeAction".code_action_handler
-  vim.lsp.handlers["textDocument/definition"] = require"user.lsp.navigator.definition".definition_handler
-
-  if cap.declaration then
-    vim.lsp.handlers["textDocument/declaration"] = require"user.lsp.navigator.definition".declaration_handler
-  end
-
-  vim.lsp.handlers["textDocument/typeDefinition"] = require"user.lsp.navigator.definition".typeDefinition_handler
-  vim.lsp.handlers["textDocument/implementation"] = require"user.lsp.navigator.implementation".implementation_handler
-
-  vim.lsp.handlers["textDocument/documentSymbol"] = require"user.lsp.navigator.symbols".document_symbol_handler
-  vim.lsp.handlers["workspace/symbol"] = require"user.lsp.navigator.symbols".workspace_symbol_handler
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = require"user.lsp.navigator.diagnostics".diagnostic_handler
-
-  -- TODO: when active signature merge to neovim, remove this setup:
-  -- local hassig, sig = pcall(require, "lsp_signature")
-  -- if hassig then
-  --   if _NgConfigValues.signature_help_cfg then
-  --     sig.setup(_NgConfigValues.signature_help_cfg)
-  --   end
-  -- else
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-      require"user.lsp.navigator.signature".signature_handler,
-      {
-        border = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
-      })
-  -- end
-
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = lvim.lsp.popup_border})
-  vim.lsp.handlers["textDocument/formatting"] = require"user.lsp.navigator.formatting".format_hdl
- --]]
-end
-
-local function split_by_chunk(text, chunkSize)
-  local s = {}
-  for i = 1, #text, chunkSize do
-    s[#s + 1] = text:sub(i, i + chunkSize - 1)
-  end
-  return s
 end
 
 function M.show_line_diagnostics()
-  -- TODO: replace all this with vim.diagnostic.show_position_diagnostics()
+  if vim.fn.has "nvim-0.6" == 1 then
+    return vim.diagnostic.open_float(0, { scope = "line" })
+  end
+
+  local function split_by_chunk(text, chunkSize)
+    local s = {}
+    for i = 1, #text, chunkSize do
+      s[#s + 1] = text:sub(i, i + chunkSize - 1)
+    end
+    return s
+  end
   local diagnostics = vim.lsp.diagnostic.get_line_diagnostics()
   local severity_highlight = {
     "LspDiagnosticsFloatingError",
