@@ -6,56 +6,56 @@ M.config = function()
     neoclip_req = {}
   end
   lvim.plugins = {
-    {
-      "abzcoding/zephyr-nvim",
-      config = function()
-        vim.cmd [[
-       colorscheme zephyr
-       ]]
-      end,
-      cond = function()
-        local _time = os.date "*t"
-        return (_time.hour >= 5 and _time.hour < 8)
-      end,
-    },
-    {
-      "rose-pine/neovim",
-      as = "rose-pine",
-      config = function()
-        require("user.theme").rose_pine()
-      end,
-      cond = function()
-        local _time = os.date "*t"
-        return (_time.hour >= 8 and _time.hour < 11)
-      end,
-    },
-    {
-      "folke/tokyonight.nvim",
-      config = function()
-        require("user.theme").tokyonight()
-        vim.cmd [[
-      colorscheme tokyonight
-      ]]
-      end,
-      cond = function()
-        local _time = os.date "*t"
-        return (_time.hour >= 0 and _time.hour < 5) or (_time.hour >= 11 and _time.hour < 17)
-      end,
-    },
-    {
-      "abzcoding/doom-one.nvim",
-      branch = "feat/nvim-cmp-floating",
-      config = function()
-        require("user.theme").doom()
-        vim.cmd [[
-      colorscheme doom-one
-      ]]
-      end,
-      cond = function()
-        local _time = os.date "*t"
-        return (_time.hour >= 17 and _time.hour < 21)
-      end,
-    },
+    -- {
+    --   "abzcoding/zephyr-nvim",
+    --   config = function()
+    --     vim.cmd [[
+    --    colorscheme zephyr
+    --    ]]
+    --   end,
+    --   cond = function()
+    --     local _time = os.date "*t"
+    --     return (_time.hour >= 5 and _time.hour < 8)
+    --   end,
+    -- },
+    -- {
+    --   "rose-pine/neovim",
+    --   as = "rose-pine",
+    --   config = function()
+    --     require("user.theme").rose_pine()
+    --   end,
+    --   cond = function()
+    --     local _time = os.date "*t"
+    --     return (_time.hour >= 8 and _time.hour < 11)
+    --   end,
+    -- },
+    -- {
+    --   "folke/tokyonight.nvim",
+    --   config = function()
+    --     require("user.theme").tokyonight()
+    --     vim.cmd [[
+    --   colorscheme tokyonight
+    --   ]]
+    --   end,
+    --   cond = function()
+    --     local _time = os.date "*t"
+    --     return (_time.hour >= 0 and _time.hour < 5) or (_time.hour >= 11 and _time.hour < 17)
+    --   end,
+    -- },
+    -- {
+    --   "abzcoding/doom-one.nvim",
+    --   branch = "feat/nvim-cmp-floating",
+    --   config = function()
+    --     require("user.theme").doom()
+    --     vim.cmd [[
+    --   colorscheme doom-one
+    --   ]]
+    --   end,
+    --   cond = function()
+    --     local _time = os.date "*t"
+    --     return (_time.hour >= 17 and _time.hour < 21)
+    --   end,
+    -- },
     {
       "ray-x/lsp_signature.nvim",
       config = function()
@@ -66,7 +66,16 @@ M.config = function()
     {
       "ethanholz/nvim-lastplace",
       config = function()
-        require("nvim-lastplace").setup {}
+        require("nvim-lastplace").setup {
+          lastplace_ignore_buftype = { "quickfix", "nofile", "help" },
+          lastplace_ignore_filetype = {
+            "gitcommit",
+            "gitrebase",
+            "svn",
+            "hgcommit",
+          },
+          lastplace_open_folds = true,
+        }
       end,
       event = "BufWinEnter",
       disable = not lvim.builtin.lastplace.active,
@@ -167,7 +176,7 @@ M.config = function()
     },
     {
       "andymass/vim-matchup",
-      event = "CursorMoved",
+      event = "BufReadPost",
       config = function()
         vim.g.matchup_enabled = 1
         vim.g.matchup_surround_enabled = 1
@@ -424,7 +433,7 @@ M.config = function()
       disable = not lvim.builtin.fancy_rename.active,
     },
     {
-      "windwp/floatline.nvim",
+      "simrat39/floatline.nvim",
       config = function()
         require("floatline").setup()
       end,

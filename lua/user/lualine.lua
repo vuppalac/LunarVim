@@ -565,6 +565,17 @@ M.config = function()
   }
 
   ins_right {
+    function ()
+      if vim.o.expandtab then
+        return "S:" .. vim.o.shiftwidth
+      end
+      return "T:" .. vim.o.shiftwidth
+    end,
+    color = { fg = colors.blue },
+    cond = conditions.buffer_not_empty,
+  }
+
+  ins_right {
     function()
       local function format_file_size(file)
         local size = vim.fn.getfsize(file)
