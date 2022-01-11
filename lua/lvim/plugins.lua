@@ -1,38 +1,39 @@
 local commit = {
   barbar = "6e638309efcad2f308eb9c5eaccf6f62b794bbab",
-  cmp_buffer = "a0fe52489ff6e235d62407f8fa72aef80222040a",
-  cmp_luasnip = "75bf6434f175206cd219f9d2bbcae154a009346c",
-  cmp_nvim_lsp = "134117299ff9e34adde30a735cd8ca9cf8f3db81",
-  cmp_nvim_lua = "d276254e7198ab7d00f117e88e223b4bd8c02d21",
-  cmp_path = "d83839ae510d18530c6d36b662a9e806d4dceb73",
-  comment = "58d489fb7f18c3652adf7e8e1fff9d3281a8fc6a",
+  cmp_buffer = "f83773e2f433a923997c5faad7ea689ec24d1785",
+  cmp_luasnip = "d6f837f4e8fe48eeae288e638691b91b97d1737f",
+  cmp_nvim_lsp = "b4251f0fca1daeb6db5d60a23ca81507acf858c2",
+  cmp_path = "4d58224e315426e5ac4c5b218ca86cab85f80c79",
+  comment = "90df2f87c0b17193d073d1f72cea2e528e5b162d",
   dapinstall = "dd09e9dd3a6e29f02ac171515b8a089fb82bb425",
+  dashboard_nvim = "d82ddae95fd4dc4c3b7bbe87f09b1840fbf20ecb",
   fixcursorhold = "0e4e22d21975da60b0fd2d302285b3b603f9f71e",
-  friendly_snippets = "4a9516c116f8d3a5766fcb8ac91b176979612d5d",
-  gitsigns = "64dc9b9763f5553e2c0707a26bd507b9ada6d066",
-  lualine = "5596c2a25a49ca235613c804169b9063e20b05f5",
-  luasnip = "577045e9adf325e58f690f4d4b4a293f3dcec1b3",
-  nlsp_settings = "599edc32707f53bd9b0739879f013b3bf162ea4e",
-  null_ls = "fb9e2a64ae8e43c2255025064cfee37dc7d6a752",
-  nvim_autopairs = "04cd1779f81e9d50d5a116c5dccd054b275bd191",
-  nvim_cmp = "af07ff9b7973e95eff9e0275e13fe0350281208b",
-  nvim_dap = "3b3027e0ca98775000e1ba727d8f292e821f9f03",
-  nvim_lsp_installer = "fcd5d79a7f4966645e9d2f512b85b72f7de0dde2",
-  nvim_lspconfig = "e6d95863a336b7e52c92b38c62aa60b469254d14",
-  nvim_notify = "ef027e34b618eac42fb0111c1db670ba01793039",
-  nvim_tree = "2e33b1654384921ec1cc9656a2018744f3f1ce81",
-  nvim_treesitter = "1d66657e6d0f1f8f79ddc48ff1dac9788694cc2d",
-  nvim_ts_context_commentstring = "9f5e422e1030e7073e593ad32c5354aa0bcb0176",
-  nvim_web_devicons = "344331467509802e1af200f08ec3da278be5cbba",
+  friendly_snippets = "9f04462bcabfd108341a6e47ed742b09a6a5b975",
+  gitsigns = "70a703f50c2aab607454047f8aeea9d3921fcb91",
+  lua_dev = "03a44ec6a54b0a025a633978e8541584a02e46d9",
+  lualine = "fd8fa5ddd823e15721ddec560ea61e7372e746a7",
+  luasnip = "ed0140696fa99ea072bc485c87d22a396c477db3",
+  nlsp_settings = "97125eeb68a412f11885dffe5fdcc3a26d36c58d",
+  null_ls = "48ac5bcd4d766b371d91024d10c7c83fb909e388",
+  nvim_autopairs = "5348e4a778ebdf42126a54fb5a933a98612df6cb",
+  nvim_cmp = "9f6d2b42253dda8db950ab38795978e5420a93aa",
+  nvim_dap = "3f1514d020f9d73a458ac04f42d27e5b284c0e48",
+  nvim_lsp_installer = "2e81b1d86f90c8a05d7f875599818612bd68e1a7",
+  nvim_lspconfig = "c7081e00fa8100ee099c16e375f3e5e838cbf1db",
+  nvim_notify = "15f52efacd169ea26b0f4070451d3ea53f98cd5a",
+  nvim_tree = "0a2f6b0b6ba558a88c77a6b262af647760e6eca8",
+  nvim_treesitter = "a7c0c1764b0b583d0597108dd7d48bc5c0f98c81",
+  nvim_ts_context_commentstring = "097df33c9ef5bbd3828105e4bee99965b758dc3f",
+  nvim_web_devicons = "ac71ca88b1136e1ecb2aefef4948130f31aa40d1",
   packer = "851c62c5ecd3b5adc91665feda8f977e104162a5",
-  plenary = "e6267f79481064eee53950571f53cbaafb08417d",
+  plenary = "563d9f6d083f0514548f2ac4ad1888326d0a1c66",
   popup = "b7404d35d5d3548a82149238289fa71f7f6de4ac",
   project = "71d0e23dcfc43cfd6bb2a97dc5a7de1ab47a6538",
   structlog = "6f1403a192791ff1fa7ac845a73de9e860f781f1",
-  telescope = "80cdb00b221f69348afc4fb4b701f51eb8dd3120", -- see telescope.nvim#1549
+  telescope = "f06dd06bb1143caa779e492ca37e5f985f0c6157",
   telescope_fzf_native = "b8662b076175e75e6497c59f3e2799b879d7b954",
-  toggleterm = "265bbff68fbb8b2a5fb011272ec469850254ec9f",
-  which_key = "0fd9de78fe09215e1b7c6173ff1b0b90c8ed6ec4",
+  toggleterm = "463843d1ba0288eedaf834872c3eca114d45bddf",
+  which_key = "312c386ee0eafc925c27869d2be9c11ebdb807eb",
 }
 
 return {
@@ -53,6 +54,10 @@ return {
     "rcarriga/nvim-notify",
     commit = commit.nvim_notify,
     disable = not lvim.builtin.notify.active,
+    config = function()
+      require("lvim.core.notify").setup()
+    end,
+    event = "BufRead",
   },
   { "Tastyep/structlog.nvim", commit = commit.structlog },
 
@@ -115,8 +120,9 @@ return {
     commit = commit.cmp_path,
   },
   {
-    "hrsh7th/cmp-nvim-lua",
-    commit = commit.cmp_nvim_lua,
+    "folke/lua-dev.nvim",
+    module = "lua-dev",
+    commit = commit.lua_dev,
   },
 
   -- Autopairs
@@ -171,8 +177,10 @@ return {
 
   -- Whichkey
   {
-    "folke/which-key.nvim",
-    commit = commit.which_key,
+    -- "folke/which-key.nvim",
+    -- commit = commit.which_key,
+    "zeertzjq/which-key.nvim",
+    branch = "patch-1",
     config = function()
       require("lvim.core.which-key").setup()
     end,
