@@ -6,62 +6,58 @@ M.config = function()
     neoclip_req = {}
   end
   lvim.plugins = {
-    -- {
-    --   "abzcoding/zephyr-nvim",
-    --   config = function()
-    --     vim.cmd [[
-    --    colorscheme zephyr
-    --    ]]
-    --   end,
-    --   cond = function()
-    --     local _time = os.date "*t"
-    --     return (_time.hour >= 5 and _time.hour < 8)
-    --   end,
-    -- },
-    -- {
-    --   "rose-pine/neovim",
-    --   as = "rose-pine",
-    --   config = function()
-    --     require("user.theme").rose_pine()
-    --   end,
-    --   cond = function()
-    --     local _time = os.date "*t"
-    --     return (_time.hour >= 8 and _time.hour < 11)
-    --   end,
-    -- },
-    -- {
-    --   "folke/tokyonight.nvim",
-    --   config = function()
-    --     require("user.theme").tokyonight()
-    --     vim.cmd [[
-    --   colorscheme tokyonight
-    --   ]]
-    --   end,
-    --   cond = function()
-    --     local _time = os.date "*t"
-    --     return (_time.hour >= 0 and _time.hour < 5) or (_time.hour >= 11 and _time.hour < 17)
-    --   end,
-    -- },
-    -- {
-    --   "abzcoding/doom-one.nvim",
-    --   branch = "feat/nvim-cmp-floating",
-    --   config = function()
-    --     require("user.theme").doom()
-    --     vim.cmd [[
-    --   colorscheme doom-one
-    --   ]]
-    --   end,
-    --   cond = function()
-    --     local _time = os.date "*t"
-    --     return (_time.hour >= 17 and _time.hour < 21)
-    --   end,
-    -- },
+    {
+      "rose-pine/neovim",
+      as = "rose-pine",
+      config = function()
+        require("user.theme").rose_pine()
+        vim.cmd [[colorscheme rose-pine]]
+      end,
+      cond = function()
+        local _time = os.date "*t"
+        return (_time.hour >= 1 and _time.hour < 9)
+      end,
+    },
+    {
+      "folke/tokyonight.nvim",
+      config = function()
+        require("user.theme").tokyonight()
+        vim.cmd [[colorscheme tokyonight]]
+      end,
+      cond = function()
+        local _time = os.date "*t"
+        return _time.hour >= 9 and _time.hour < 17
+      end,
+    },
+    {
+      "abzcoding/doom-one.nvim",
+      branch = "feat/nvim-cmp-floating",
+      config = function()
+        require("user.theme").doom()
+        vim.cmd [[colorscheme doom-one]]
+      end,
+      cond = function()
+        local _time = os.date "*t"
+        return (_time.hour >= 17 and _time.hour < 21)
+      end,
+    },
+    {
+      "rebelot/kanagawa.nvim",
+      config = function()
+        require("user.theme").kanagawa()
+        vim.cmd [[colorscheme kanagawa]]
+      end,
+      cond = function()
+        local _time = os.date "*t"
+        return (_time.hour >= 21 and _time.hour < 24) or (_time.hour >= 0 and _time.hour < 1)
+      end,
+    },
     {
       "ray-x/lsp_signature.nvim",
       config = function()
         require("user/lsp_signature").config()
       end,
-      event = "BufRead",
+      event = { "BufRead", "BufNew" },
     },
     {
       "ethanholz/nvim-lastplace",
@@ -96,7 +92,7 @@ M.config = function()
           auto_close = true,
           padding = false,
           height = 10,
-          use_lsp_diagnostic_signs = true,
+          use_diagnostic_signs = true,
         }
       end,
       cmd = "Trouble",
@@ -117,7 +113,9 @@ M.config = function()
       disable = lvim.builtin.motion_provider ~= "hop",
     },
     {
-      "simrat39/symbols-outline.nvim",
+      -- NOTE: temporary workaround for neovim head, change back to simrat39 once merged
+      "zeertzjq/symbols-outline.nvim",
+      branch = "patch-1",
       setup = function()
         require("user.symbols_outline").config()
       end,
@@ -169,7 +167,7 @@ M.config = function()
       config = function()
         require("dapui").setup()
       end,
-      -- ft = { "python", "rust", "go" },
+      ft = { "python", "rust", "go" },
       event = "BufReadPost",
       requires = { "mfussenegger/nvim-dap" },
       disable = not lvim.builtin.dap.active,
@@ -240,7 +238,7 @@ M.config = function()
           enabled = true,
         }
       end,
-      -- ft = { "lua", "python", "javascript", "typescriptreact", "c", "cpp", "go", "java" },
+      ft = { "lua", "python", "javascript", "typescriptreact", "c", "cpp", "go", "java" },
       event = "InsertEnter",
       requires = "nvim-treesitter/nvim-treesitter",
     },
@@ -254,10 +252,22 @@ M.config = function()
       disable = not lvim.builtin.test_runner.active,
     },
     {
-      "folke/lua-dev.nvim",
-      ft = "lua",
+      "jose-elias-alvarez/nvim-lsp-ts-utils",
+      ft = {
+        "javascript",
+        "javascriptreact",
+        "javascript.jsx",
+        "typescript",
+        "typescriptreact",
+        "typescript.tsx",
+      },
+      opt = true,
+      event = "BufReadPre",
       before = "williamboman/nvim-lsp-installer",
-      disable = not lvim.builtin.lua_dev.active,
+    },
+    {
+      "lervag/vimtex",
+      ft = "tex",
     },
     {
       "akinsho/bufferline.nvim",
@@ -333,22 +343,15 @@ M.config = function()
           html = true,
           c = true,
           cpp = true,
+          java = true,
           javascript = true,
           typescript = true,
           javascriptreact = true,
           typescriptreact = true,
+          terraform = true,
         }
       end,
       disable = not lvim.builtin.sell_your_soul_to_devil,
-    },
-    {
-      "akinsho/dependency-assist.nvim",
-      branch = "refactor",
-      --- requires libyaml-dev on ubuntu or libyaml on macOS
-      rocks = { { "lyaml", server = "http://rocks.moonscript.org" } },
-      config = function()
-        require("dependency_assist").setup()
-      end,
     },
     {
       "ThePrimeagen/harpoon",
@@ -403,6 +406,13 @@ M.config = function()
               ["kitty.conf"] = "kitty",
               [".gitignore"] = "conf",
             },
+            complex = {
+              [".clang*"] = "yaml",
+            },
+            extensions = {
+              tfvars = "terraform",
+              tfstate = "json",
+            },
           },
         }
       end,
@@ -416,6 +426,16 @@ M.config = function()
             color = "#d28445",
             name = "Rust",
           },
+          tf = {
+            icon = "",
+            color = "#3d59a1",
+            name = "Terraform",
+          },
+          tfvars = {
+            icon = "勇",
+            color = "#51afef",
+            name = "Terraform",
+          },
         }
       end,
       disable = lvim.builtin.nvim_web_devicons == nil,
@@ -426,25 +446,9 @@ M.config = function()
     {
       "filipdutescu/renamer.nvim",
       config = function()
-        require("renamer").setup {
-          title = "Rename",
-        }
+        require("user.renamer").config()
       end,
       disable = not lvim.builtin.fancy_rename.active,
-    },
-    {
-      "simrat39/floatline.nvim",
-      config = function()
-        require("floatline").setup()
-      end,
-      disable = not lvim.builtin.global_status_line.active,
-    },
-    {
-      "luukvbaal/stabilize.nvim",
-      config = function()
-        require("stabilize").setup { forcemark = "f", nested = "QuickFixCmdPost,User LspDiagnosticsChanged" }
-      end,
-      disable = not lvim.builtin.global_status_line.active,
     },
     { "mtdl9/vim-log-highlighting", ft = { "text", "log" } },
     {
@@ -479,7 +483,7 @@ M.config = function()
         )
       end,
       event = "BufRead",
-      ft = { "rust", "go" },
+      ft = { "rust", "go", "typescript", "typescriptreact" },
     },
     {
       "chrisbra/csv.vim",
@@ -512,6 +516,11 @@ M.config = function()
       end,
       event = "BufRead",
       disable = not lvim.builtin.async_tasks.active,
+    },
+    {
+      "scalameta/nvim-metals",
+      requires = { "nvim-lua/plenary.nvim" },
+      disable = not lvim.builtin.metals.active,
     },
     -- end of abz config
     {
@@ -556,9 +565,6 @@ M.config = function()
       },
       ft = {"fugitive"}
     },
-    {
-      'timakro/vim-yadi'
-    }
   }
 end
 
