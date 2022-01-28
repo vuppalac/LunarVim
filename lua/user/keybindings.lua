@@ -246,6 +246,10 @@ M.config = function()
     "<cmd>lua require('telescope').extensions.command_palette.command_palette()<cr>",
     "Command Palette",
   }
+
+  if lvim.builtin.file_browser.active then
+    lvim.builtin.which_key.mappings["sF"] = { "<cmd>Telescope file_browser<cr>", "File Browser" }
+  end
   lvim.builtin.which_key.mappings["H"] = "Help"
   local ok, _ = pcall(require, "vim.diagnostic")
   if ok then
@@ -286,6 +290,7 @@ M.config = function()
     c = { "<cmd>lua require('neogen').generate({ type = 'class'})<CR>", "Class Documentation" },
     f = { "<cmd>lua require('neogen').generate({ type = 'func'})<CR>", "Function Documentation" },
     t = { "<cmd>lua require('neogen').generate({ type = 'type'})<CR>", "Type Documentation" },
+    F = { "<cmd>lua require('neogen').generate({ type = 'file'})<CR>", "File Documentation" },
   }
   lvim.builtin.which_key.mappings["N"] = { "<cmd>Telescope file_create<CR>", "Create new file" }
   lvim.builtin.which_key.mappings["o"] = { "<cmd>SymbolsOutline<cr>", "Symbol Outline" }
@@ -302,13 +307,13 @@ M.config = function()
     "<cmd>lua require('telescope').extensions.live_grep_raw.live_grep_raw()<cr>",
     "String",
   }
-  lvim.builtin.which_key.mappings["T"] = {
-    name = "Test",
-    f = { "<cmd>TestFile<cr>", "File" },
-    n = { "<cmd>TestNearest<cr>", "Nearest" },
-    s = { "<cmd>TestSuite<cr>", "Suite" },
-  }
   lvim.builtin.which_key.mappings["t"] = {
+    name = "Test",
+    f = { "<cmd>Ultest<cr>", "File" },
+    n = { "<cmd>UltestNearest<cr>", "Nearest" },
+    s = { "<cmd>UltestSummary<cr>", "Summary" },
+  }
+  lvim.builtin.which_key.mappings["T"] = {
     name = "+Trouble",
     d = { "<cmd>Trouble document_diagnostics<cr>", "Diagnosticss" },
     f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
