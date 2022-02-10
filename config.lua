@@ -19,14 +19,14 @@ lvim.builtin.orgmode = { active = false } -- change to true if you want orgmode.
 lvim.builtin.dap.active = false -- change this to enable/disable debugging
 lvim.builtin.fancy_statusline = { active = true } -- enable/disable fancy statusline
 lvim.builtin.fancy_dashboard = { active = true } -- enable/disable fancy dashboard
-lvim.builtin.fancy_wild_menu = { active = true } -- enable/disable use wilder.nvim
+lvim.builtin.fancy_wild_menu = { active = false } -- enable/disable use wilder.nvim
 lvim.builtin.fancy_rename = { active = true } -- enable/disable custom rename
 lvim.builtin.fancy_diff = { active = true } -- enable/disable fancier git diff
 lvim.builtin.lua_dev = { active = true } -- change this to enable/disable folke/lua_dev
 lvim.builtin.test_runner = { active = false } -- change this to enable/disable vim-test, ultest
 lvim.builtin.cheat = { active = false } -- enable cheat.sh integration
 lvim.builtin.sql_integration = { active = false } -- use sql integration
-lvim.builtin.neoscroll = { active = true } -- smooth scrolling
+lvim.builtin.neoscroll = { active = false } -- smooth scrolling
 lvim.builtin.neoclip = { active = false, enable_persistant_history = false }
 lvim.builtin.nonumber_unfocus = false -- diffrentiate between focused and non focused windows
 lvim.builtin.harpoon = { active = false } -- use the harpoon plugin
@@ -88,16 +88,16 @@ end
 -- Language Specific
 -- =========================================
 vim.list_extend(lvim.lsp.override, {
-  "rust_analyzer",
-  "tsserver",
-  "dockerls",
-  "texlab",
-  "sumneko_lua",
-  "gopls",
-  "yamlls",
-  "r_language_server",
-  "pyright",
   "clangd",
+  "dockerls",
+  "gopls",
+  "pyright",
+  "r_language_server",
+  "rust_analyzer",
+  "sumneko_lua",
+  "texlab",
+  "tsserver",
+  "yamlls",
 })
 require("user.null_ls").config()
 
