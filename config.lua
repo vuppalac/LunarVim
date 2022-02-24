@@ -66,7 +66,7 @@ if user and user == "abz" then
   require("user.prose").config() -- setup prosemd-lsp for my local use
 end
 lvim.lsp.diagnostics.virtual_text = false -- remove this line if you want to see inline errors
-lvim.builtin.notify.active = true
+lvim.builtin.notify.active = false
 lvim.lsp.automatic_servers_installation = false
 if lvim.builtin.cursorline.active then
   lvim.lsp.document_highlight = false

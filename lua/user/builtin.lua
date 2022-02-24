@@ -320,6 +320,7 @@ M.config = function()
     lvim.builtin.telescope.defaults.winblend = 15
   end
   lvim.builtin.telescope.defaults.cache_picker = { num_pickers = 3 }
+  lvim.builtin.telescope.defaults.sorting_strategy  = "ascending"
   lvim.builtin.telescope.defaults.layout_strategy = "horizontal"
   lvim.builtin.telescope.defaults.file_ignore_patterns = {
     "vendor/*",
