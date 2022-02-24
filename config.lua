@@ -51,7 +51,6 @@ lvim.builtin.editorconfig = { active = true } -- enable/disable editorconfig
 lvim.builtin.fancy_telescope = { active = true } -- telescope to the moon
 
 lvim.builtin.gitsigns.opts.git_path = "git" -- use a custom gitsigns, which has support for non-default git command location
-
 local user = os.getenv "USER"
 if user and user == "abz" then
   lvim.builtin.nvim_web_devicons = { active = false }
@@ -67,7 +66,7 @@ if user and user == "abz" then
   require("user.prose").config() -- setup prosemd-lsp for my local use
 end
 lvim.lsp.diagnostics.virtual_text = false -- remove this line if you want to see inline errors
-lvim.builtin.notify.active = false
+lvim.builtin.notify.active = true
 lvim.lsp.automatic_servers_installation = false
 if lvim.builtin.cursorline.active then
   lvim.lsp.document_highlight = false
