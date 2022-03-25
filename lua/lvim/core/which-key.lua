@@ -69,6 +69,7 @@ M.config = function()
       }
     },
     mappings = {
+      [";"] = { "<cmd>Alpha<CR>", "Dashboard" },
       ["w"] = { "<cmd>w!<CR>", "Save" },
       ["q"] = { "<cmd>q!<CR>", "Quit" },
       ["/"] = { "<cmd>lua require('Comment.api').toggle_current_linewise()<CR>", "Comment" },
@@ -179,6 +180,7 @@ M.config = function()
           "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
           "Workspace Symbols",
         },
+        e = { "<cmd>Telescope quickfix<cr>", "Telescope Quickfix" },
       },
       L = {
         name = "+LunarVim",

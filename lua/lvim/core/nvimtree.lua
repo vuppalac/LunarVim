@@ -9,6 +9,7 @@ function M.config()
       disable_netrw = true,
       hijack_netrw = true,
       open_on_setup = false,
+      ignore_buffer_on_setup = false,
       ignore_ft_on_setup = {
         "startify",
         "dashboard",
@@ -78,6 +79,7 @@ function M.config()
           global = false,
         },
         open_file = {
+          resize_window = true,
           quit_on_open = false,
         },
         window_picker = {
