@@ -315,7 +315,7 @@ M.config = function()
       -- results = {' ', '▐', '▄', '▌', '▌', '▐', '▟', '▙' };
       preview = { " ", "│", " ", "▌", "▌", "╮", "╯", "▌" },
     }
-    lvim.builtin.telescope.defaults.selection_caret = "  "
+    -- lvim.builtin.telescope.defaults.selection_caret = "  "
   else
     lvim.builtin.telescope.defaults.winblend = 15
   end
