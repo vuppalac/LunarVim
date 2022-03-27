@@ -50,7 +50,7 @@ function M.layout_config()
     width = 0.90,
     height = 0.85,
     preview_cutoff = 120,
-    prompt_position = "top",
+    prompt_position = "bottom",
     horizontal = {
       preview_width = function(_, cols, _)
         return math.floor(cols * 0.6)
