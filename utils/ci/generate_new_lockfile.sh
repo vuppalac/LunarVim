@@ -10,7 +10,7 @@ mkdir -p "${SNAPSHOT_DIR}"
 
 export SNAPSHOT_PATH="${REPO_DIR}/snapshots/${SNAPSHOT_NAME}"
 
-time lvim --headless \
+time nvim --headless \
   -c "luafile ./utils/ci/generate_new_lockfile.lua"
 
 temp=$(mktemp)

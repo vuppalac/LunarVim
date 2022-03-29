@@ -101,6 +101,7 @@ local core_plugins = {
     branch = vim.fn.has "nvim-0.6" == 1 and "master" or "0.5-compat",
     -- run = ":TSUpdate",
     config = function()
+      require("nvim-treesitter.install").prefer_git = true
       require("lvim.core.treesitter").setup()
     end,
   },
