@@ -15,7 +15,7 @@
     "commit": "8a1477d"
   },
   "bufferline.nvim": {
-    "commit": "b2a0691"
+    "commit": "af158e4"
   },
   "cmp-buffer": {
     "commit": "d66c4c2"
@@ -42,10 +42,10 @@
     "commit": "f14175e"
   },
   "nlsp-settings.nvim": {
-    "commit": "332306e"
+    "commit": "dc09f45"
   },
   "null-ls.nvim": {
-    "commit": "41f72ab"
+    "commit": "0292b22"
   },
   "nvim-autopairs": {
     "commit": "f3ebca3"
@@ -66,10 +66,10 @@
     "commit": "da10302"
   },
   "nvim-tree.lua": {
-    "commit": "5eef618"
+    "commit": "5958fd5"
   },
   "nvim-treesitter": {
-    "commit": "3b974b7"
+    "commit": "7bb97d2"
   },
   "nvim-ts-context-commentstring": {
     "commit": "7810f1f"
@@ -93,7 +93,7 @@
     "commit": "cef52b8"
   },
   "schemastore.nvim": {
-    "commit": "ccbe8e9"
+    "commit": "e14d337"
   },
   "structlog.nvim": {
     "commit": "6f1403a"
