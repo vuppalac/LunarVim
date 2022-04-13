@@ -4,6 +4,12 @@ a.describe("plugin-loader", function()
   local plugins = require "lvim.plugins"
   local loader = require "lvim.plugin-loader"
 
+  pcall(function()
+    lvim.log.level = "debug"
+    package.loaded["packer.log"] = nil
+    package.loaded["lvim.core.log"] = nil
+  end)
+
   a.it("should be able to load default packages without errors", function()
     loader.load { plugins, lvim.plugins }
 
@@ -57,8 +63,8 @@ a.describe("plugin-loader", function()
         _G.completed = true
       end
     end
-    vim.cmd [[autocmd User PackerComplete lua _G.verify_sha()]]
-    loader.sync_core_plugins()
+    vim.cmd [[autocmd User PackerComplete ++once lua _G.verify_sha()]]
+    loader.load_snapshot()
     local ret = vim.wait(30 * 10 * 1000, function()
       return _G.completed == true
     end, 200)

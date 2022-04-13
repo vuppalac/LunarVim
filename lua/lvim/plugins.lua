@@ -13,8 +13,12 @@ local core_plugins = {
   {
     "lunarvim/onedarker.nvim",
     config = function()
-      require("onedarker").setup()
-      lvim.builtin.lualine.options.theme = "onedarker"
+      pcall(function()
+        if lvim and lvim.colorscheme == "onedarker" then
+          require("onedarker").setup()
+          lvim.builtin.lualine.options.theme = "onedarker"
+        end
+      end)
     end,
     disable = lvim.colorscheme ~= "onedarker",
   },
@@ -65,7 +69,15 @@ local core_plugins = {
   {
     "L3MON4D3/LuaSnip",
     config = function()
-      require("luasnip/loaders/from_vscode").lazy_load()
+      local utils = require "lvim.utils"
+      require("luasnip.loaders.from_lua").lazy_load()
+      require("luasnip.loaders.from_vscode").lazy_load {
+        paths = {
+          utils.join_paths(get_config_dir(), "snippets"),
+          utils.join_paths(get_runtime_dir(), "site", "pack", "packer", "start", "friendly-snippets"),
+        },
+      }
+      require("luasnip.loaders.from_snipmate").lazy_load()
     end,
   },
   {
@@ -179,6 +191,7 @@ local core_plugins = {
     config = function()
       require("lvim.core.bufferline").setup()
     end,
+    branch = "main",
     event = "BufWinEnter",
     disable = not lvim.builtin.bufferline.active,
   },
@@ -214,6 +227,7 @@ local core_plugins = {
   {
     "akinsho/toggleterm.nvim",
     event = "BufWinEnter",
+    branch = "main",
     config = function()
       require("lvim.core.terminal").setup()
     end,
