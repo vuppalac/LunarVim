@@ -287,15 +287,26 @@ M.config = function()
       disable = not lvim.builtin.neoclip.active,
     },
     {
-      "gelguy/wilder.nvim",
-      -- event = { "CursorHold", "CmdlineEnter" },
-      rocks = { "luarocks-fetch-gitrec", "pcre2" },
-      requires = { "romgrk/fzy-lua-native" },
-      config = function()
-        vim.cmd(string.format("source %s", "~/.config/nvim/vimscript/wilder.vim"))
-      end,
-      run = ":UpdateRemotePlugins",
-      disable = not lvim.builtin.fancy_wild_menu.active,
+      "kristijanhusak/vim-dadbod-completion",
+      disable = not lvim.builtin.sql_integration.active,
+    },
+    {
+      "kristijanhusak/vim-dadbod-ui",
+      cmd = {
+        "DBUIToggle",
+        "DBUIAddConnection",
+        "DBUI",
+        "DBUIFindBuffer",
+        "DBUIRenameBuffer",
+      },
+      requires = {
+        {
+          "tpope/vim-dadbod",
+          opt = true,
+        },
+      },
+      opt = true,
+      disable = not lvim.builtin.sql_integration.active,
     },
     {
       "karb94/neoscroll.nvim",
@@ -374,14 +385,6 @@ M.config = function()
     },
     {
       "nvim-telescope/telescope-live-grep-raw.nvim",
-    },
-    {
-      "abzcoding/renamer.nvim",
-      branch = "develop",
-      config = function()
-        require("user.renamer").config()
-      end,
-      disable = not lvim.builtin.fancy_rename.active,
     },
     { "mtdl9/vim-log-highlighting", ft = { "text", "log" } },
     {
@@ -503,6 +506,32 @@ M.config = function()
         require("user.crates").config()
       end,
     },
+    {
+      "hrsh7th/cmp-cmdline",
+      disable = not lvim.builtin.fancy_wild_menu.active,
+    },
+    {
+      "gfeiyou/command-center.nvim",
+      config = function()
+        require("user.cc").config()
+      end,
+      requires = "nvim-telescope/telescope.nvim",
+      event = "BufWinEnter",
+    },
+    {
+      "stevearc/dressing.nvim",
+      config = function()
+        require("user.dress").config()
+      end,
+      disable = not lvim.builtin.dressing.active,
+      event = "BufWinEnter",
+    },
+    {
+      "kdheepak/cmp-latex-symbols",
+      requires = "hrsh7th/nvim-cmp",
+      ft = "tex",
+    },
+
     -- end of abz config
     {
       'vim-scripts/DoxygenToolkit.vim',
@@ -542,7 +571,7 @@ M.config = function()
         "Gvdiff",
       },
       ft = {"fugitive"}
-    },
+    }
   }
 end
 
