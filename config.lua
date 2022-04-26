@@ -30,6 +30,7 @@ lvim.builtin.neoclip = { active = true, enable_persistent_history = false }
 lvim.builtin.nonumber_unfocus = false -- diffrentiate between focused and non focused windows
 lvim.builtin.harpoon = { active = false } -- use the harpoon plugin
 lvim.builtin.remote_dev = { active = false } -- enable/disable remote development
+lvim.builtin.global_status_line = { active = false } -- WARN: doesn't work with nvim head
 lvim.builtin.cursorline = { active = true } -- use a bit fancier cursorline
 lvim.builtin.motion_provider = "hop" -- change this to use different motion providers ( hop or lightspeed )
 lvim.builtin.hlslens = { active = false } -- enable/disable hlslens
@@ -47,7 +48,7 @@ lvim.builtin.sniprun = { active = false } -- enable/disable sniprun
 lvim.builtin.tag_provider = "symbols-outline" -- change this to use different tag providers ( symbols-outline or vista )
 lvim.builtin.editorconfig = { active = true } -- enable/disable editorconfig
 lvim.builtin.global_statusline = true -- set true to use global statusline
-lvim.builtin.dressing = { active = false } -- enable to override vim.ui.input and vim.ui.select with telescope
+lvim.builtin.dressing = { active = true } -- enable to override vim.ui.input and vim.ui.select with telescope
 
 lvim.builtin.gitsigns.opts.git_path = "git" -- use a custom gitsigns, which has support for non-default git command location
 local user = os.getenv "USER"
@@ -90,7 +91,7 @@ end
 
 -- Language Specific
 -- =========================================
-vim.list_extend(lvim.lsp.override, {
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, {
   "clangd",
   "dockerls",
   "gopls",
