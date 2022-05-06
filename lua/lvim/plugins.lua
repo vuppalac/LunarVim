@@ -97,7 +97,8 @@ local core_plugins = {
     "hrsh7th/cmp-path",
   },
   {
-    "folke/lua-dev.nvim",
+    -- NOTE: Temporary fix till folke comes back
+    "max397574/lua-dev.nvim",
     module = "lua-dev",
   },
 
@@ -114,7 +115,6 @@ local core_plugins = {
   -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = vim.fn.has "nvim-0.6" == 1 and "master" or "0.5-compat",
     -- run = ":TSUpdate",
     config = function()
       require("nvim-treesitter.install").prefer_git = true
@@ -149,7 +149,7 @@ local core_plugins = {
 
   -- Whichkey
   {
-    "folke/which-key.nvim",
+    "max397574/which-key.nvim",
     config = function()
       require("lvim.core.which-key").setup()
     end,
@@ -177,7 +177,10 @@ local core_plugins = {
   },
 
   -- Icons
-  { "kyazdani42/nvim-web-devicons" },
+  {
+    "kyazdani42/nvim-web-devicons",
+    disable = not lvim.use_icons,
+  },
 
   -- Status Line and Bufferline
   {
@@ -212,7 +215,8 @@ local core_plugins = {
 
   -- Debugger management
   {
-    "Pocco81/DAPInstall.nvim",
+    "Pocco81/dap-buddy.nvim",
+    branch = "dev",
     -- event = "BufWinEnter",
     -- event = "BufRead",
     disable = not lvim.builtin.dap.active,

@@ -74,6 +74,7 @@ M.config = function()
       update_debounce = 200,
       status_formatter = nil, -- Use default
       git_path = 'git',
+      yadm = { enable = false },
     },
   }
 end
