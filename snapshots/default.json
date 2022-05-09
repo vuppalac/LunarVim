@@ -1,6 +1,6 @@
 {
   "Comment.nvim": {
-    "commit": "cb0de89"
+    "commit": "79b356d"
   },
   "FixCursorHold.nvim": {
     "commit": "1bfb32e"
@@ -33,7 +33,7 @@
     "commit": "6e0881a"
   },
   "gitsigns.nvim": {
-    "commit": "0beb194"
+    "commit": "3167268"
   },
   "lua-dev.nvim": {
     "commit": "54149d1"
@@ -57,7 +57,7 @@
     "commit": "d73ebd6"
   },
   "nvim-lsp-installer": {
-    "commit": "91fe454"
+    "commit": "ca244c6"
   },
   "nvim-lspconfig": {
     "commit": "2f37b2c"
@@ -69,7 +69,7 @@
     "commit": "483f155"
   },
   "nvim-treesitter": {
-    "commit": "cf3e963"
+    "commit": "09efcdb"
   },
   "nvim-ts-context-commentstring": {
     "commit": "8834375"
@@ -105,7 +105,7 @@
     "commit": "4681dcd"
   },
   "toggleterm.nvim": {
-    "commit": "c3fac3d"
+    "commit": "7941edf"
   },
   "which-key.nvim": {
     "commit": "f03a259"

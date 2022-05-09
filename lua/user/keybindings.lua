@@ -269,7 +269,7 @@ M.config = function()
     z = { "<cmd>lua require('user.telescope').search_only_certain_files()<cr>", "Certain Filetype" },
   }
   lvim.builtin.which_key.mappings["C"] = { "<cmd>Telescope command_center<cr>", " Command Palette" }
-  lvim.keys.normal_mode["<c-P>"] = "<cmd>Telescope command_center<cr>"
+  -- lvim.keys.normal_mode["<c-P>"] = "<cmd>Telescope command_center<cr>"
 
   if lvim.builtin.file_browser.active then
     lvim.builtin.which_key.mappings["se"] = { "<cmd>Telescope file_browser<cr>", "File Browser" }
