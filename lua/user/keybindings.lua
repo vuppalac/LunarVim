@@ -231,6 +231,7 @@ M.config = function()
   if lvim.builtin.harpoon.active then
     set_harpoon_keymaps()
   end
+  lvim.keys.normal_mode["gf"] = "<cmd>lua require'telescope.builtin'.find_files({find_command={'fd', vim.fn.expand('<cWORD>'):sub(2, -2)}})<cr>"
   lvim.keys.visual_mode["p"] = [["_dP]]
   lvim.keys.visual_mode["ga"] = "<esc><Cmd>lua vim.lsp.buf.range_code_action()<CR>"
   lvim.keys.visual_mode["<leader>st"] = "<Cmd>lua require('user.telescope').grep_string_visual()<CR>"
