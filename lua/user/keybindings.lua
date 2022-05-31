@@ -228,10 +228,10 @@ M.config = function()
   lvim.keys.normal_mode["<esc><esc>"] = "<cmd>nohlsearch<cr>"
   lvim.keys.normal_mode["Y"] = "y$"
   lvim.keys.normal_mode["gv"] = "<cmd>vsplit | lua vim.lsp.buf.definition()<cr>"
+  lvim.keys.normal_mode["gf"] = "<cmd>lua require'telescope.builtin'.find_files({find_command={'fd', vim.fn.expand('<cWORD>'):sub(2, -2)}})<cr>"
   if lvim.builtin.harpoon.active then
     set_harpoon_keymaps()
   end
-  lvim.keys.normal_mode["gf"] = "<cmd>lua require'telescope.builtin'.find_files({find_command={'fd', vim.fn.expand('<cWORD>'):sub(2, -2)}})<cr>"
   lvim.keys.visual_mode["p"] = [["_dP]]
   lvim.keys.visual_mode["ga"] = "<esc><Cmd>lua vim.lsp.buf.range_code_action()<CR>"
   lvim.keys.visual_mode["<leader>st"] = "<Cmd>lua require('user.telescope').grep_string_visual()<CR>"
@@ -269,7 +269,7 @@ M.config = function()
     z = { "<cmd>lua require('user.telescope').search_only_certain_files()<cr>", "Certain Filetype" },
   }
   lvim.builtin.which_key.mappings["C"] = { "<cmd>Telescope command_center<cr>", " Command Palette" }
-  lvim.keys.normal_mode["<c-P>"] = "<cmd>Telescope command_center<cr>"
+  -- lvim.keys.normal_mode["<c-P>"] = "<cmd>Telescope command_center<cr>"
 
   if lvim.builtin.file_browser.active then
     lvim.builtin.which_key.mappings["se"] = { "<cmd>Telescope file_browser<cr>", "File Browser" }
