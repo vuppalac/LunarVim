@@ -30,18 +30,18 @@ M.config = function()
         return _time.hour >= 9 and _time.hour < 17
       end,
     },
-    -- {
-    --   "catppuccin/nvim",
-    --   as = "catppuccin",
-    --   config = function()
-    --     require("user.theme").catppuccin()
-    --     vim.cmd [[colorscheme catppuccin]]
-    --   end,
-    --   cond = function()
-    --     local _time = os.date "*t"
-    --     return (_time.hour >= 17 and _time.hour < 21)
-    --   end,
-    -- },
+    {
+      "catppuccin/nvim",
+      as = "catppuccin",
+      config = function()
+        require("user.theme").catppuccin()
+        vim.cmd [[colorscheme catppuccin]]
+      end,
+      cond = function()
+        local _time = os.date "*t"
+        return (_time.hour >= 17 and _time.hour < 21)
+      end,
+    },
     {
       "rebelot/kanagawa.nvim",
       config = function()
@@ -50,7 +50,7 @@ M.config = function()
       end,
       cond = function()
         local _time = os.date "*t"
-        return (_time.hour >= 17 and _time.hour < 24) or (_time.hour >= 0 and _time.hour < 1)
+        return (_time.hour >= 21 and _time.hour < 24) or (_time.hour >= 0 and _time.hour < 1)
       end,
     },
     {
@@ -397,7 +397,7 @@ M.config = function()
       end,
     },
     {
-      "Nguyen-Hoang-Nam/nvim-mini-file-icons",
+      "abzcoding/nvim-mini-file-icons",
       config = function()
         require("user.dev_icons").set_icon()
       end,
@@ -429,17 +429,6 @@ M.config = function()
       end,
       event = "BufReadPost",
       disable = not lvim.builtin.hlslens.active,
-    },
-    {
-      "kosayoda/nvim-lightbulb",
-      config = function()
-        vim.fn.sign_define(
-          "LightBulbSign",
-          { text = require("user.lsp_kind").icons.code_action, texthl = "DiagnosticInfo" }
-        )
-      end,
-      event = "BufRead",
-      ft = { "rust", "go", "typescript", "typescriptreact" },
     },
     {
       "chrisbra/csv.vim",
@@ -559,7 +548,13 @@ M.config = function()
       end,
       disable = not lvim.builtin.refactoring.active,
     },
-
+    {
+      "b0o/incline.nvim",
+      config = function()
+        require("user.incline").config()
+      end,
+      disable = not lvim.builtin.global_statusline,
+    },
     -- end of abz config
     {
       'vim-scripts/DoxygenToolkit.vim',

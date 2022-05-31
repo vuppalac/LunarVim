@@ -288,9 +288,9 @@ M.current_colors = function()
     colors = M.colors.rose_pine_colors
   elseif _time.hour >= 9 and _time.hour < 17 then
     colors = M.colors.tokyonight_colors
-  -- elseif _time.hour >= 17 and _time.hour < 21 then
-  --   colors = M.colors.catppuccin_colors
-  elseif (_time.hour >= 17 and _time.hour < 24) or (_time.hour >= 0 and _time.hour < 1) then
+  elseif _time.hour >= 17 and _time.hour < 21 then
+    colors = M.colors.catppuccin_colors
+  elseif (_time.hour >= 21 and _time.hour < 24) or (_time.hour >= 0 and _time.hour < 1) then
     colors = M.colors.kanagawa_colors
   end
   return colors
