@@ -1,18 +1,18 @@
 {
   "Comment.nvim": {
-    "commit": "cc87c89"
+    "commit": "bdf9ca6"
   },
   "FixCursorHold.nvim": {
     "commit": "1bfb32e"
   },
   "LuaSnip": {
-    "commit": "06ce7f1"
+    "commit": "52f4aed"
   },
   "alpha-nvim": {
     "commit": "4781fcf"
   },
   "bufferline.nvim": {
-    "commit": "82e3598"
+    "commit": "e2b1e99"
   },
   "cmp-buffer": {
     "commit": "12463cf"
@@ -30,22 +30,22 @@
     "commit": "bbda2b0"
   },
   "friendly-snippets": {
-    "commit": "02c92e3"
+    "commit": "974d792"
   },
   "gitsigns.nvim": {
-    "commit": "f064a90"
+    "commit": "27aeb2e"
   },
   "lua-dev.nvim": {
     "commit": "54149d1"
   },
   "lualine.nvim": {
-    "commit": "c12b167"
+    "commit": "3362b28"
   },
   "nlsp-settings.nvim": {
-    "commit": "208da2e"
+    "commit": "4690da2"
   },
   "null-ls.nvim": {
-    "commit": "af19226"
+    "commit": "7b8560d"
   },
   "nvim-autopairs": {
     "commit": "b9cc0a2"
@@ -57,25 +57,25 @@
     "commit": "0062c19"
   },
   "nvim-lsp-installer": {
-    "commit": "621c8c6"
+    "commit": "d40cc5c"
   },
   "nvim-lspconfig": {
-    "commit": "b86a37c"
+    "commit": "84252b0"
   },
   "nvim-notify": {
     "commit": "c6ca279"
   },
   "nvim-tree.lua": {
-    "commit": "6abc87b"
+    "commit": "2002b21"
   },
   "nvim-treesitter": {
-    "commit": "3dea0bb"
+    "commit": "5e24e8d"
   },
   "nvim-ts-context-commentstring": {
     "commit": "8834375"
   },
   "nvim-web-devicons": {
-    "commit": "8a3ab5e"
+    "commit": "8d2c533"
   },
   "onedarker.nvim": {
     "commit": "b00dd21"
@@ -90,10 +90,10 @@
     "commit": "b7404d3"
   },
   "project.nvim": {
-    "commit": "612443b"
+    "commit": "541115e"
   },
   "schemastore.nvim": {
-    "commit": "675ec50"
+    "commit": "af73c24"
   },
   "structlog.nvim": {
     "commit": "232a8e2"
@@ -102,10 +102,10 @@
     "commit": "2330a7e"
   },
   "telescope.nvim": {
-    "commit": "cd9e6aa"
+    "commit": "54be102"
   },
   "toggleterm.nvim": {
-    "commit": "c525442"
+    "commit": "93c2f2c"
   },
   "which-key.nvim": {
     "commit": "f03a259"
