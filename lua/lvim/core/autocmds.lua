@@ -22,17 +22,17 @@ function M.load_defaults()
         end,
       },
     },
-    {
-      "BufWritePost",
-      {
-        group = "_general_settings",
-        pattern = user_config_file,
-        desc = "Trigger LvimReload on saving " .. vim.fn.expand "%:~",
-        callback = function()
-          require("lvim.config"):reload()
-        end,
-      },
-    },
+    -- {
+    --   "BufWritePost",
+    --   {
+    --     group = "_general_settings",
+    --     pattern = user_config_file,
+    --     desc = "Trigger LvimReload on saving " .. vim.fn.expand "%:~",
+    --     callback = function()
+    --       require("lvim.config"):reload()
+    --     end,
+    --   },
+    -- },
     {
       "FileType",
       {
