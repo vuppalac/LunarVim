@@ -2,7 +2,8 @@
 -- =========================================
 lvim.format_on_save = false
 lvim.leader = " "
-lvim.colorscheme = "pablo"
+lvim.colorscheme = "pablo" -- set to a custom theme
+lvim.builtin.time_based_themes = true -- set false to use your own configured theme
 lvim.debug = false
 vim.lsp.set_log_level "warn"
 lvim.log.level = "warn"
@@ -38,7 +39,7 @@ lvim.builtin.hlslens = { active = false } -- enable/disable hlslens
 lvim.builtin.csv_support = false -- enable/disable csv support
 lvim.builtin.sidebar = { active = false } -- enable/disable sidebar
 lvim.builtin.async_tasks = { active = true } -- enable/disable async tasks
-lvim.builtin.winbar_provider = "filename" -- can be "filename" or "treesitter" or ""
+lvim.builtin.winbar_provider = "treesitter" -- can be "filename" or "treesitter" or ""
 lvim.builtin.metals = {
   active = false, -- enable/disable nvim-metals for scala development
   fallbackScalaVersion = "2.13.7",
@@ -54,8 +55,11 @@ lvim.builtin.dressing = { active = true } -- enable to override vim.ui.input and
 lvim.builtin.refactoring = { active = true } -- enable to use refactoring.nvim code_actions
 
 lvim.builtin.gitsigns.opts.git_path = "git" -- use a custom gitsigns, which has support for non-default git command location
+vim.opt.cmdheight = 0 -- WARN: only works with the latest neovim
+
 local user = os.getenv "USER"
 if user and user == "abz" then
+  vim.opt.cmdheight = 0 -- WARN: only works with the latest neovim
   lvim.builtin.custom_web_devicons = true
   lvim.use_icons = false -- only set to false if you know what are you doing
   lvim.builtin.sell_your_soul_to_devil = { active = true, prada = false }
