@@ -177,6 +177,16 @@ M.set_async_tasks_keymaps = function()
   end
 end
 
+function M.open()
+  if vim.fn.executable "xdg-open" ~= 1 then
+    vim.notify("xdg-open was not found", vim.log.levels.WARN)
+    return
+  end
+  local uri = vim.fn.shellescape(vim.fn.expand("<cfile>"))
+  vim.notify("trying to open: " .. uri, vim.log.levels.DEBUG)
+  os.execute("xdg-open " .. uri)
+end
+
 M.config = function()
   -- Additional keybindings
   -- =========================================
@@ -226,6 +236,7 @@ M.config = function()
   lvim.keys.normal_mode["Y"] = "y$"
   lvim.keys.normal_mode["gv"] = "<cmd>vsplit | lua vim.lsp.buf.definition()<cr>"
   lvim.keys.normal_mode["gf"] = "<cmd>lua require'telescope.builtin'.find_files({find_command={'fd', vim.fn.expand('<cWORD>'):sub(2, -2)}})<cr>"
+  -- lvim.keys.normal_mode["gf"] = "<CMD>lua M.open()<CR>"
   if lvim.builtin.harpoon.active then
     set_harpoon_keymaps()
   end
