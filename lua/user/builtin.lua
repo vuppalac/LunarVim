@@ -399,6 +399,7 @@ M.config = function()
       },
     },
   }
+  lvim.builtin.treesitter.rainbow.enable = true
 
   -- Telescope
   -- =========================================
