@@ -112,7 +112,8 @@ local function set_bufferline_keymaps()
     ["8"] = { "<Cmd>BufferLineGoToBuffer 8<CR>", "goto 8" },
     ["9"] = { "<Cmd>BufferLineGoToBuffer 9<CR>", "goto 9" },
     c = { "<Cmd>BufferLinePickClose<CR>", "delete buffer" },
-    p = { "<Cmd>BufferLinePick<CR>", "pick buffer" },
+    p = { "<Cmd>BufferLineTogglePin<CR>", "toggle pin" },
+    s = { "<Cmd>BufferLinePick<CR>", "pick buffer" },
     t = { "<Cmd>BufferLineGroupToggle docs<CR>", "toggle groups" },
     f = { "<cmd>Telescope buffers<cr>", "Find" },
     b = { "<cmd>b#<cr>", "Previous" },
@@ -177,16 +178,6 @@ M.set_async_tasks_keymaps = function()
   end
 end
 
-function M.open()
-  if vim.fn.executable "xdg-open" ~= 1 then
-    vim.notify("xdg-open was not found", vim.log.levels.WARN)
-    return
-  end
-  local uri = vim.fn.shellescape(vim.fn.expand("<cfile>"))
-  vim.notify("trying to open: " .. uri, vim.log.levels.DEBUG)
-  os.execute("xdg-open " .. uri)
-end
-
 M.config = function()
   -- Additional keybindings
   -- =========================================
@@ -236,7 +227,6 @@ M.config = function()
   lvim.keys.normal_mode["Y"] = "y$"
   lvim.keys.normal_mode["gv"] = "<cmd>vsplit | lua vim.lsp.buf.definition()<cr>"
   lvim.keys.normal_mode["gf"] = "<cmd>lua require'telescope.builtin'.find_files({find_command={'fd', vim.fn.expand('<cWORD>'):sub(2, -2)}})<cr>"
-  -- lvim.keys.normal_mode["gf"] = "<CMD>lua M.open()<CR>"
   if lvim.builtin.harpoon.active then
     set_harpoon_keymaps()
   end
@@ -365,6 +355,12 @@ M.config = function()
     f = { "<cmd>Ultest<cr>", "File" },
     n = { "<cmd>UltestNearest<cr>", "Nearest" },
     s = { "<cmd>UltestSummary<cr>", "Summary" },
+    -- f = { "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", "File" },
+    -- o = { "<cmd>lua require('neotest').output.open({ enter = true, short = false })<cr>", "Output" },
+    -- r = { "<cmd>lua require('neotest').run.run()<cr>", "Run" },
+    -- s = { "<cmd>lua require('neotest').summary.toggle()<cr>", "Summary" },
+    -- n = { "<cmd>lua require('neotest').jump.next({ status = 'failed' })<cr>", "jump to next failed" },
+    -- p = { "<cmd>lua require('neotest').jump.prev({ status = 'failed' })<cr>", "jump to previous failed" },
   }
   lvim.builtin.which_key.mappings["z"] = { "<cmd>ZenMode<cr>", " Zen" }
   lvim.builtin.which_key.mappings["w"] = { "<cmd>w!<CR>", " Save" }
