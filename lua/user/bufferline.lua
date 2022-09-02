@@ -1,151 +1,167 @@
 local M = {}
+
 M.config = function()
-  --local icons = require("user.icons")
-
-  local fn = vim.fn
-  local icons = require("user.lsp_kind").icons
-  local function is_ft(b, ft)
-    return vim.bo[b].filetype == ft
-  end
-
-  local symbols = { error = icons.error, warning = icons.warn, info = icons.info }
-
-  local function diagnostics_indicator(_, _, diagnostics)
-    local result = {}
-    for name, count in pairs(diagnostics) do
-      if symbols[name] and count > 0 then
-        table.insert(result, symbols[name] .. count)
-      end
-    end
-    result = table.concat(result, " ")
-    return #result > 0 and result or ""
-  end
-
-  local function custom_filter(buf, buf_nums)
-    local logs = vim.tbl_filter(function(b)
-      return is_ft(b, "log")
-    end, buf_nums)
-    if vim.tbl_isempty(logs) then
-      return true
-    end
-    local tab_num = vim.fn.tabpagenr()
-    local last_tab = vim.fn.tabpagenr "$"
-    local is_log = is_ft(buf, "log")
-    if last_tab == 1 then
-      return true
-    end
-    -- only show log buffers in secondary tabs
-    return (tab_num == last_tab and is_log) or (tab_num ~= last_tab and not is_log)
-  end
-
-  ---@diagnostic disable-next-line: unused-function, unused-local
-  local function sort_by_mtime(a, b)
-    local astat = vim.loop.fs_stat(a.path)
-    local bstat = vim.loop.fs_stat(b.path)
-    local mod_a = astat and astat.mtime.sec or 0
-    local mod_b = bstat and bstat.mtime.sec or 0
-    return mod_a > mod_b
-  end
-
-  local groups = require "bufferline.groups"
+  local kind = require "user.lsp_kind"
   local List = require "plenary.collections.py_list"
-
-  require("bufferline").setup {
-    options = {
-      -- sort_by = sort_by_mtime,
-      sort_by = "id",
-      right_mouse_command = "vert sbuffer %d",
-      show_close_icon = false,
-      show_buffer_icons = true,
-      separator_style = "thin",
-      enforce_regular_tabs = false,
-      always_show_bufferline = false,
-      diagnostics = "nvim_lsp",
-      diagnostics_indicator = diagnostics_indicator,
-      diagnostics_update_in_insert = false,
-      custom_filter = custom_filter,
-      offsets = {
-        {
-          filetype = "undotree",
-          text = "Undotree",
-          highlight = "PanelHeading",
-          padding = 1,
+  lvim.builtin.bufferline.highlights = {
+    background = { italic = true },
+    buffer_selected = { bold = true },
+  }
+  local g_ok, bufferline_groups = pcall(require, "bufferline.groups")
+  if not g_ok then
+    bufferline_groups = {
+      builtin = {
+        pinned = {
+          name = "pinned",
+          with = function(ico)
+            print(ico)
+          end,
         },
-        {
-          filetype = "NvimTree",
-          text = "Explorer",
-          highlight = "PanelHeading",
-          padding = 1,
-        },
-        {
-          filetype = "DiffviewFiles",
-          text = "Diff View",
-          highlight = "PanelHeading",
-          padding = 1,
-        },
-        {
-          filetype = "flutterToolsOutline",
-          text = "Flutter Outline",
-          highlight = "PanelHeading",
-        },
-        {
-          filetype = "packer",
-          text = "Packer",
-          highlight = "PanelHeading",
-          padding = 1,
-        },
+        ungroupued = { name = "ungrouped" },
       },
-      groups = {
-        options = {
-          toggle_hidden_on_enter = true,
+    }
+  end
+  lvim.builtin.bufferline.options = {
+    navigation = { mode = "uncentered" },
+    diagnostics = false, -- do not show diagnostics in bufferline
+    diagnostics_indicator = function(_, _, diagnostics)
+      local result = {}
+      local symbols = { error = kind.icons.error, warning = kind.icons.warn, info = kind.icons.info }
+      for name, count in pairs(diagnostics) do
+        if symbols[name] and count > 0 then
+          table.insert(result, symbols[name] .. count)
+        end
+      end
+      result = table.concat(result, " ")
+      return #result > 0 and result or ""
+    end,
+
+    mode = "buffers",
+    sort_by = "insert_after_current",
+    groups = {
+      options = {
+        toggle_hidden_on_enter = true,
+      },
+      items = {
+        bufferline_groups.builtin.pinned:with { icon = "" },
+        bufferline_groups.builtin.ungrouped,
+        {
+          name = "Dependencies",
+          icon = kind.icons.config,
+          highlight = { fg = "#ECBE7B" },
+          matcher = function(buf)
+            return vim.startswith(buf.path, string.format("%s/site/pack/packer", vim.fn.stdpath "data"))
+              or vim.startswith(buf.path, vim.fn.expand "$VIMRUNTIME")
+          end,
         },
-        items = {
-          groups.builtin.ungrouped,
-          {
-            highlight = { guisp = "#51AFEF" },
-            name = "tests",
-            icon = icons.test,
-            matcher = function(buf)
-              return buf.filename:match "_spec" or buf.filename:match "test"
-            end,
-          },
-          {
-            name = "view models",
-            highlight = { guisp = "#03589C" },
-            matcher = function(buf)
-              return buf.filename:match "view_model%.dart"
-            end,
-          },
-          {
-            name = "screens",
-            icon = icons.screen,
-            matcher = function(buf)
-              return buf.path:match "screen"
-            end,
-          },
-          {
-            highlight = { guisp = "#C678DD" },
-            name = "docs",
-            icon = icons.docs,
-            matcher = function(buf)
-              local list = List { "md", "txt", "org", "norg", "wiki" }
-              return list:contains(fn.fnamemodify(buf.path, ":e"))
-            end,
-          },
-          {
-            highlight = { guisp = "#F6A878" },
-            name = "config",
-            matcher = function(buf)
-              return buf.filename:match "go.mod"
-                or buf.filename:match "go.sum"
-                or buf.filename:match "Cargo.toml"
-                or buf.filename:match "manage.py"
-                or buf.filename:match "Makefile"
-            end,
-          },
+        {
+          highlight = { sp = "#51AFEF" },
+          name = "tests",
+          icon = kind.icons.test,
+          matcher = function(buf)
+            local name = buf.filename
+            return name:match "_spec" or name:match "_test" or name:match "test_"
+          end,
+        },
+        {
+          name = "Terraform",
+          matcher = function(buf)
+            return buf.name:match "%.tf" ~= nil
+          end,
+        },
+        {
+          name = "SQL",
+          matcher = function(buf)
+            return buf.filename:match "%.sql$"
+          end,
+        },
+        {
+          name = "view models",
+          highlight = { sp = "#03589C" },
+          matcher = function(buf)
+            return buf.filename:match "view_model%.dart"
+          end,
+        },
+        {
+          name = "screens",
+          icon = kind.icons.screen,
+          matcher = function(buf)
+            return buf.path:match "screen"
+          end,
+        },
+        {
+          highlight = { sp = "#C678DD" },
+          name = "docs",
+          matcher = function(buf)
+            for _, ext in ipairs { "md", "txt", "org", "norg", "wiki" } do
+              if ext == vim.fn.fnamemodify(buf.path, ":e") then
+                return true
+              end
+            end
+          end,
+        },
+        {
+          highlight = { sp = "#F6A878" },
+          name = "config",
+          matcher = function(buf)
+            local filename = buf.filename
+            if filename == nil then
+              return false
+            end
+            return filename:match "go.mod"
+              or filename:match "go.sum"
+              or filename:match "Cargo.toml"
+              or filename:match "manage.py"
+              or filename:match "Makefile"
+          end,
         },
       },
     },
+    offsets = {
+      {
+        text = "EXPLORER",
+        filetype = "neo-tree",
+        highlight = "PanelHeading",
+        text_align = "left",
+        separator = true,
+      },
+      {
+        text = " FLUTTER OUTLINE",
+        filetype = "flutterToolsOutline",
+        highlight = "PanelHeading",
+        separator = true,
+      },
+      {
+        text = "UNDOTREE",
+        filetype = "undotree",
+        highlight = "PanelHeading",
+        separator = true,
+      },
+      {
+        text = " PACKER",
+        filetype = "packer",
+        highlight = "PanelHeading",
+        separator = true,
+      },
+      {
+        text = " DATABASE VIEWER",
+        filetype = "dbui",
+        highlight = "PanelHeading",
+        separator = true,
+      },
+      {
+        text = " DIFF VIEW",
+        filetype = "DiffviewFiles",
+        highlight = "PanelHeading",
+        separator = true,
+      },
+    },
+    separator_style = os.getenv "KITTY_WINDOW_ID" and "slant" or "thin",
+    right_mouse_command = "vert sbuffer %d",
+    show_close_icon = false,
+    indicator = { style = "bold" },
+    show_buffer_close_icons = true,
+    diagnostics_update_in_insert = false,
   }
 end
 
