@@ -76,19 +76,14 @@ M.config = function()
     -- NOTE: Prefer using : over <cmd> as the latter avoids going back in normal-mode.
     -- see https://neovim.io/doc/user/map.html#:map-cmd
     vmappings = {
-      ["/"] = { "<ESC><CMD>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>", "Comment" },
-      l = {
-        name = "Lsp",
-        a = { "<cmd>lua vim.lsp.buf.range_code_action()<cr>", "Range Code Action" },
-        f = { "<Cmd>lua vim.lsp.buf.range_formatting()<cr>",  "Range Format"}
-      }
+      ["/"] = { "<Plug>(comment_toggle_linewise_visual)", "Comment toggle linewise (visual)" },
     },
     mappings = {
       [";"] = { "<cmd>Alpha<CR>", "Dashboard" },
       ["w"] = { "<cmd>w!<CR>", "Save" },
       ["q"] = { "<cmd>lua require('lvim.utils.functions').smart_quit()<CR>", "Quit" },
-      ["/"] = { "<cmd>lua require('Comment.api').toggle_current_linewise()<CR>", "Comment" },
-      -- ["c"] = { "<cmd>BufferKill<CR>", "Close Buffer" },
+      ["/"] = { "<Plug>(comment_toggle_linewise_current)", "Comment toggle current line" },
+      --["c"] = { "<cmd>BufferKill<CR>", "Close Buffer" },
       ["f"] = { require("lvim.core.telescope.custom-finders").find_project_files, "Find File" },
       ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
       b = {
