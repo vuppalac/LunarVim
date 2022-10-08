@@ -22,6 +22,7 @@ local skipped_servers = {
   "reason_ls",
   "scry",
   "solang",
+  "solc",
   "solidity_ls",
   "sorbet",
   "sourcekit",
@@ -46,10 +47,10 @@ return {
     signs = {
       active = true,
       values = {
-        { name = "DiagnosticSignError", text = "" },
-        { name = "DiagnosticSignWarn", text = "" },
-        { name = "DiagnosticSignHint", text = "" },
-        { name = "DiagnosticSignInfo", text = "" },
+        { name = "DiagnosticSignError", text = lvim.icons.diagnostics.Error },
+        { name = "DiagnosticSignWarn", text = lvim.icons.diagnostics.Warning },
+        { name = "DiagnosticSignHint", text = lvim.icons.diagnostics.Hint },
+        { name = "DiagnosticSignInfo", text = lvim.icons.diagnostics.Info },
       },
     },
     virtual_text = true,
@@ -72,7 +73,7 @@ return {
       end,
     },
   },
-  document_highlight = true,
+  document_highlight = false,
   code_lens_refresh = true,
   float = {
     focusable = true,
@@ -132,7 +133,9 @@ return {
     },
   },
   null_ls = {
-    setup = {},
+    setup = {
+      debug = false,
+    },
     config = {},
   },
   ---@deprecated use lvim.lsp.automatic_configuration.skipped_servers instead

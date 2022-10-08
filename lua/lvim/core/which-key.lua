@@ -15,16 +15,16 @@ M.config = function()
           motions = false, -- adds help for motions
           text_objects = false, -- help for text objects triggered after entering an operator
           windows = false, -- default bindings on <c-w>
-          nav = true, -- misc bindings to work with windows
+          nav = false, -- misc bindings to work with windows
           z = false, -- bindings for folds, spelling and others prefixed with z
           g = false, -- bindings for prefixed with g
         },
         spelling = { enabled = true, suggestions = 20 }, -- use which-key for spelling hints
       },
       icons = {
-        breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
-        separator = "➜", -- symbol used between a key and it's label
-        group = "+", -- symbol prepended to a group
+        breadcrumb = lvim.icons.ui.DoubleChevronRight, -- symbol used in the command line area that shows your active key combo
+        separator = lvim.icons.ui.BoldArrowRight, -- symbol used between a key and it's label
+        group = lvim.icons.ui.Plus, -- symbol prepended to a group
       },
       popup_mappings = {
         scroll_down = "<c-d>", -- binding to scroll down inside the popup
@@ -130,6 +130,7 @@ M.config = function()
       -- " Debugging
       g = {
         name = "Git",
+        g = { "<cmd>lua require 'lvim.core.terminal'.lazygit_toggle()<cr>", "Lazygit" },
         j = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", "Next Hunk" },
         k = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", "Prev Hunk" },
         p = { "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", "Preview Hunk" },

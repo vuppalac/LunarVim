@@ -11,7 +11,7 @@ function M.config()
         "dashboard",
         "alpha",
       },
-      auto_reload_on_write = true,
+      auto_reload_on_write = false,
       hijack_directories = {
         enable = false,
       },
@@ -20,10 +20,10 @@ function M.config()
         enable = lvim.use_icons,
         show_on_dirs = false,
         icons = {
-          hint = "",
-          info = "",
-          warning = "",
-          error = "",
+          hint = lvim.icons.diagnostics.BoldHint,
+          info = lvim.icons.diagnostics.BoldInformation,
+          warning = lvim.icons.diagnostics.BoldWarning,
+          error = lvim.icons.diagnostics.BoldError,
         },
       },
       update_focused_file = {
@@ -42,7 +42,6 @@ function M.config()
       },
       view = {
         width = 30,
-        height = 30,
         hide_root_folder = false,
         side = "left",
         mappings = {
@@ -72,27 +71,28 @@ function M.config()
             folder_arrow = lvim.use_icons,
           },
           glyphs = {
-            default = "",
-            symlink = "",
+            default = lvim.icons.ui.Text,
+            symlink = lvim.icons.ui.FileSymlink,
             git = {
-              unstaged = "",
-              staged = "S",
-              unmerged = "",
-              renamed = "➜",
-              deleted = "",
-              untracked = "U",
-              ignored = "◌",
+              deleted = lvim.icons.git.FileDeleted,
+              ignored = lvim.icons.git.FileIgnored,
+              renamed = lvim.icons.git.FileRenamed,
+              staged = lvim.icons.git.FileStaged,
+              unmerged = lvim.icons.git.FileUnmerged,
+              unstaged = lvim.icons.git.FileUnstaged,
+              untracked = lvim.icons.git.FileUntracked,
             },
             folder = {
-              default = "",
-              open = "",
-              empty = "",
-              empty_open = "",
-              symlink = "",
+              default = lvim.icons.ui.Folder,
+              empty = lvim.icons.ui.EmptyFolder,
+              empty_open = lvim.icons.ui.EmptyFolderOpen,
+              open = lvim.icons.ui.FolderOpen,
+              symlink = lvim.icons.ui.FolderSymlink,
             },
           },
         },
         highlight_git = true,
+        group_empty = false,
         root_folder_modifier = ":t",
       },
       filters = {
@@ -146,6 +146,24 @@ function M.setup()
     Log:error "Failed to load nvim-tree"
     return
   end
+
+  local status_ok_1, utils = pcall(require, "nvim-tree.utils")
+  if not status_ok_1 then
+    return
+  end
+
+  local function notify_level()
+    return function(msg)
+      vim.schedule(function()
+        vim.api.nvim_echo({ { msg, "WarningMsg" } }, false, {})
+      end)
+    end
+  end
+
+  utils.notify.warn = notify_level(vim.log.levels.WARN)
+  utils.notify.error = notify_level(vim.log.levels.ERROR)
+  utils.notify.info = notify_level(vim.log.levels.INFO)
+  utils.notify.debug = notify_level(vim.log.levels.DEBUG)
 
   if lvim.builtin.nvimtree._setup_called then
     Log:debug "ignoring repeated setup call for nvim-tree, see kyazdani42/nvim-tree.lua#1308"

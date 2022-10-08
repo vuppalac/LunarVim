@@ -10,6 +10,25 @@ function M.load_defaults()
     user_config_file = user_config_file:gsub("\\", "/")
   end
 
+  vim.api.nvim_create_autocmd({ "FileType" }, {
+    pattern = {
+      "Jaq",
+      "qf",
+      "help",
+      "man",
+      "lspinfo",
+      "spectre_panel",
+      "lir",
+      "DressingSelect",
+      "tsplayground",
+    },
+    callback = function()
+      vim.cmd [[
+      nnoremap <silent> <buffer> q :close<CR>
+      set nobuflisted
+    ]]
+    end,
+  })
   local definitions = {
     {
       "TextYankPost",
@@ -33,6 +52,14 @@ function M.load_defaults()
     --     end,
     --   },
     -- },
+    {
+      "FileType",
+      {
+        group = "_hide_dap_repl",
+        pattern = "dap-repl",
+        command = "set nobuflisted",
+      },
+    },
     {
       "FileType",
       {
@@ -71,6 +98,42 @@ function M.load_defaults()
         group = "_auto_resize",
         pattern = "*",
         command = "tabdo wincmd =",
+      },
+    },
+    {
+      "FileType",
+      {
+        group = "_filetype_settings",
+        pattern = "alpha",
+        callback = function()
+          vim.cmd [[
+            nnoremap <silent> <buffer> q :qa<CR>
+            nnoremap <silent> <buffer> <esc> :qa<CR>
+            set nobuflisted
+          ]]
+        end,
+      },
+    },
+    {
+      "FileType",
+      {
+        group = "_filetype_settings",
+        pattern = "lir",
+        callback = function()
+          vim.opt_local.number = false
+          vim.opt_local.relativenumber = false
+        end,
+      },
+    },
+    -- TODO: figure out what keeps overriding laststatus
+    {
+      "BufWinEnter",
+      {
+        group = "_last_status",
+        pattern = "*",
+        callback = function()
+          vim.opt.laststatus = 3
+        end,
       },
     },
   }

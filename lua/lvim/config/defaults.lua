@@ -1,6 +1,6 @@
 return {
   leader = "space",
-  colorscheme = "onedarker",
+  colorscheme = "tokyonight",
   transparent_window = false,
   format_on_save = {
     ---@usage pattern string pattern used for the autocommand (Default: '*')
@@ -14,6 +14,7 @@ return {
   autoload = true,
 
   use_icons = true,
+  icons = require "lvim.icons",
 
   builtin = {},
 

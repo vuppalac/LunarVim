@@ -1,3 +1,4 @@
+-- local require = require("lvim.utils.require").require
 local core_plugins = {
   -- Packer can manage itself as an optional plugin
   { "wbthomason/packer.nvim" },
@@ -6,7 +7,6 @@ local core_plugins = {
   {
     "jose-elias-alvarez/null-ls.nvim",
   },
-  { "antoinemadec/FixCursorHold.nvim" }, -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
   { "williamboman/mason-lspconfig.nvim" },
   {
     "williamboman/mason.nvim",
@@ -15,17 +15,7 @@ local core_plugins = {
     end,
   },
   {
-    "lunarvim/onedarker.nvim",
-    branch = "freeze",
-    config = function()
-      pcall(function()
-        if lvim and lvim.colorscheme == "onedarker" then
-          require("onedarker").setup()
-          lvim.builtin.lualine.options.theme = "onedarker"
-        end
-      end)
-    end,
-    disable = lvim.colorscheme ~= "onedarker",
+    "folke/tokyonight.nvim",
   },
   {
     "rcarriga/nvim-notify",
@@ -140,7 +130,15 @@ local core_plugins = {
     end,
     disable = not lvim.builtin.nvimtree.active,
   },
-
+  -- Lir
+  {
+    "christianchiarulli/lir.nvim",
+    config = function()
+      require("lvim.core.lir").setup()
+    end,
+    requires = { "kyazdani42/nvim-web-devicons" },
+    disable = not lvim.builtin.lir.active,
+  },
   {
     "vuppalac/gitsigns.nvim",
 
@@ -197,6 +195,15 @@ local core_plugins = {
     disable = not lvim.builtin.lualine.active,
   },
 
+  -- breadcrumbs
+  {
+    "SmiteshP/nvim-navic",
+    config = function()
+      require("lvim.core.breadcrumbs").setup()
+    end,
+    disable = not lvim.builtin.breadcrumbs.active,
+  },
+
   {
     "akinsho/bufferline.nvim",
     config = function()
@@ -217,12 +224,12 @@ local core_plugins = {
     disable = not lvim.builtin.dap.active,
   },
 
-  -- Debugger management
+  -- Debugger user interface
   {
-    "Pocco81/dap-buddy.nvim",
-    branch = "dev",
-    -- event = "BufWinEnter",
-    -- event = "BufRead",
+    "rcarriga/nvim-dap-ui",
+    config = function()
+      require("lvim.core.dap").setup_ui()
+    end,
     disable = not lvim.builtin.dap.active,
   },
 
@@ -249,6 +256,36 @@ local core_plugins = {
   -- SchemaStore
   {
     "b0o/schemastore.nvim",
+  },
+
+  {
+    "RRethy/vim-illuminate",
+    config = function()
+      require("lvim.core.illuminate").setup()
+    end,
+    disable = not lvim.builtin.illuminate.active,
+  },
+
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    config = function()
+      require("lvim.core.indentlines").setup()
+    end,
+    disable = not lvim.builtin.indentlines.active,
+  },
+
+  {
+    "lunarvim/onedarker.nvim",
+    branch = "freeze",
+    config = function()
+      pcall(function()
+        if lvim and lvim.colorscheme == "onedarker" then
+          require("onedarker").setup()
+          lvim.builtin.lualine.options.theme = "onedarker"
+        end
+      end)
+    end,
+    disable = lvim.colorscheme ~= "onedarker",
   },
 }
 
