@@ -111,7 +111,10 @@ local core_plugins = {
     "nvim-treesitter/nvim-treesitter",
     -- run = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.install").prefer_git = true
+      --require("nvim-treesitter.install").prefer_git = true
+      require("nvim-treesitter.install").command_extra_args = {
+       curl = { "-k" },
+      }
       require("lvim.core.treesitter").setup()
     end,
   },
