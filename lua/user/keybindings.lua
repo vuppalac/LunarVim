@@ -210,8 +210,16 @@ M.config = function()
   lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<CR>"
   lvim.keys.normal_mode["<C-f>"] = ":Telescope grep_string<CR>"
   lvim.keys.normal_mode["<M-f>"] = ":Telescope live_grep<CR>"
-  lvim.keys.normal_mode["<C-_>"] = "<cmd>lua require('Comment.api').toggle_current_linewise()<CR>"
-  lvim.keys.visual_mode["<C-_>"] = "<ESC><CMD>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>"
+  -- local status_ok_comment, cmt = pcall(require, "Comment.api")
+  -- if status_ok_comment and cmt["toggle"] ~= nil then
+  --   lvim.keys.normal_mode["<C-_>"] = "<cmd>lua require('Comment.api').toggle_current_linewise()<CR>"
+  --   lvim.keys.visual_mode["<C-_>"] = "<ESC><CMD>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>"
+  -- else
+  --   lvim.keys.normal_mode["<C-_>"] = '<Plug>(comment_toggle_linewise_current)<CR>'
+  --   --lvim.keys.visual_mode["<C-_>"] = "<Plug>(comment_toggle_linewise_visual)"
+  --   --vim.keymap.set('n', 'gc', '<Plug>(comment_toggle_linewise_current)')
+  --   --vim.keymap.set('x', 'gc', '<Plug>(comment_toggle_linewise_visual)')
+  -- end
   lvim.keys.normal_mode["<C-d>"] = ":Dox<CR>"
   lvim.keys.normal_mode["<Tab>"] = ":BufferLineCycleNext<CR>"
   lvim.keys.normal_mode["<S-Tab>"] = ":BufferLineCyclePrev<CR>"
