@@ -9,7 +9,7 @@ M.config = function()
       section_separators = nil,
       theme = nil,
       disabled_filetypes = nil,
-      globalstatus = false,
+      globalstatus = true,
     },
     sections = {
       lualine_a = nil,
@@ -34,6 +34,12 @@ M.config = function()
 end
 
 M.setup = function()
+  if #vim.api.nvim_list_uis() == 0 then
+    local Log = require "lvim.core.log"
+    Log:debug "headless mode detected, skipping running setup for lualine"
+    return
+  end
+
   local status_ok, lualine = pcall(require, "lualine")
   if not status_ok then
     return

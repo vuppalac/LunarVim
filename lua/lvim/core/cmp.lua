@@ -155,6 +155,7 @@ M.config = function()
         buffer = "(Buffer)",
         tmux = "(TMUX)",
         copilot = "(Copilot)",
+        treesitter = "(TreeSitter)",
       },
       duplicates = {
         buffer = 1,
@@ -334,6 +335,23 @@ M.config = function()
         fallback() -- if not exited early, always fallback
       end),
     },
+    cmdline = {
+      enable = true,
+      options = {
+        {
+          type = ":",
+          sources = {
+            { name = "path" },
+          },
+        },
+        {
+          type = { "/", "?" },
+          sources = {
+            { name = "buffer" },
+          },
+        },
+      },
+    },
   }
 end
 
@@ -341,18 +359,14 @@ function M.setup()
   local cmp = require "cmp"
   cmp.setup(lvim.builtin.cmp)
 
-  cmp.setup.cmdline(":", {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = {
-      { name = "path" },
-    },
-  })
-  cmp.setup.cmdline({ "/", "?" }, {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = {
-      { name = "buffer" },
-    },
-  })
+  if lvim.builtin.cmp.cmdline.enable then
+    for _, option in ipairs(lvim.builtin.cmp.cmdline.options) do
+      cmp.setup.cmdline(option.type, {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = option.sources,
+      })
+    end
+  end
 end
 
 return M
