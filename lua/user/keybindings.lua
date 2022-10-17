@@ -210,16 +210,8 @@ M.config = function()
   lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<CR>"
   lvim.keys.normal_mode["<C-f>"] = ":Telescope grep_string<CR>"
   lvim.keys.normal_mode["<M-f>"] = ":Telescope live_grep<CR>"
-  -- local status_ok_comment, cmt = pcall(require, "Comment.api")
-  -- if status_ok_comment and cmt["toggle"] ~= nil then
-  --   lvim.keys.normal_mode["<C-_>"] = "<cmd>lua require('Comment.api').toggle_current_linewise()<CR>"
-  --   lvim.keys.visual_mode["<C-_>"] = "<ESC><CMD>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>"
-  -- else
-  --   lvim.keys.normal_mode["<C-_>"] = '<Plug>(comment_toggle_linewise_current)<CR>'
-  --   --lvim.keys.visual_mode["<C-_>"] = "<Plug>(comment_toggle_linewise_visual)"
-  --   --vim.keymap.set('n', 'gc', '<Plug>(comment_toggle_linewise_current)')
-  --   --vim.keymap.set('x', 'gc', '<Plug>(comment_toggle_linewise_visual)')
-  -- end
+  lvim.keys.normal_mode["<C-_>"] = "<cmd>lua require('Comment.api').toggle_current_linewise()<CR>"
+  lvim.keys.visual_mode["<C-_>"] = "<ESC><CMD>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>"
   lvim.keys.normal_mode["<C-d>"] = ":Dox<CR>"
   lvim.keys.normal_mode["<Tab>"] = ":BufferLineCycleNext<CR>"
   lvim.keys.normal_mode["<S-Tab>"] = ":BufferLineCyclePrev<CR>"
@@ -252,7 +244,9 @@ M.config = function()
   elseif vim.fn.has "linux" then
     lvim.keys.normal_mode["gx"] = [[<cmd>lua os.execute("xdg-open " .. vim.fn.shellescape(vim.fn.expand "<cWORD>")); vim.cmd "redraw!"<cr>]]
   end
-  set_bufferline_keymaps()
+  if lvim.builtin.bufferline.active then
+    set_bufferline_keymaps()
+  end
   if lvim.builtin.sidebar.active then
     lvim.keys.normal_mode["E"] = ":SidebarNvimToggle<cr>"
   end
@@ -454,7 +448,7 @@ M.config = function()
 
   -- My wezterm is weird
   -- =========================================
-  local user = os.getenv "USER"
+  local user = vim.env.USER
   if user and user == "abz" then
     M.set_wezterm_keybindings()
   end
