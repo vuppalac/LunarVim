@@ -13,7 +13,7 @@ lvim.log.level = "warn"
 require("user.neovim").config()
 lvim.lsp.code_lens_refresh = true
 lvim.lsp.diagnostics.virtual_text = false -- remove this line if you want to see inline errors
-lvim.lsp.automatic_servers_installation = false
+lvim.lsp.installer.setup.automatic_installation = false
 
 -- Customization
 -- =========================================
@@ -37,13 +37,12 @@ lvim.builtin.nonumber_unfocus = false -- diffrentiate between focused and non fo
 lvim.builtin.custom_web_devicons = true -- install https://github.com/Nguyen-Hoang-Nam/mini-file-icons
 lvim.builtin.harpoon = { active = false } -- use the harpoon plugin
 lvim.builtin.remote_dev = { active = false } -- enable/disable remote development
-lvim.builtin.global_status_line = { active = true } -- WARN: doesn't work with nvim head
 lvim.builtin.cursorline = { active = true } -- use a bit fancier cursorline
 lvim.builtin.motion_provider = "hop" -- change this to use different motion providers ( hop or lightspeed )
 lvim.builtin.hlslens = { active = false } -- enable/disable hlslens
 lvim.builtin.csv_support = false -- enable/disable csv support
 lvim.builtin.sidebar = { active = false } -- enable/disable sidebar
-lvim.builtin.task_runner = "" -- change this to use different task runners ( "async_tasks" or "overseer" or "")
+lvim.builtin.task_runner = "async_tasks" -- change this to use different task runners ( "async_tasks" or "overseer" or "")
 lvim.builtin.winbar_provider = "filename" -- can be "filename" or "treesitter" or "navic" or ""
 lvim.builtin.metals = {
   active = false, -- enable/disable nvim-metals for scala development
@@ -63,6 +62,7 @@ lvim.builtin.lsp_lines = false -- enable/disable lsp_lines to display lsp virtua
 
 if lvim.builtin.tmux_lualine then
   vim.opt.cmdheight = 0 -- WARN: only works with the latest neovim
+  vim.opt.laststatus = 0
   vim.g.tpipeline_cursormoved = 1
 end
 if lvim.builtin.lsp_lines then
@@ -74,14 +74,14 @@ lvim.builtin.lir.active = false
 lvim.builtin.breadcrumbs.active = false
 lvim.builtin.illuminate.active = false
 lvim.builtin.indentlines.active = true
-lvim.builtin.noice = { active = false } -- enables noice.nvim and inc-rename.nvim
+lvim.builtin.noice = { active = true } -- enables noice.nvim and inc-rename.nvim
 lvim.builtin.go_programming = { active = false } -- gopher.nvim + nvim-dap-go
 lvim.builtin.python_programming = { active = false } -- swenv.nvim + nvim-dap-python
 lvim.builtin.web_programming = { active = false } -- typescript.nvim + package-info.nvim
 lvim.builtin.rust_programming = { active = false } -- rust_tools.nvim + crates.nvim
 lvim.builtin.cmp.cmdline.enable = false
 lvim.builtin.borderless_cmp = false
-lvim.builtin.colored_args = false -- if true then sets up hlargs.nvim
+lvim.builtin.colored_args = true -- if true then sets up hlargs.nvim
 
 -- Custom User Config
 -- =========================================
