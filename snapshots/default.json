@@ -69,11 +69,7 @@
     "commit": "2315a39"
   },
   "nvim-navic": {
-<<<<<<< HEAD
-    "commit": "132b273"
-=======
     "commit": "9f7f0b7"
->>>>>>> b190f045e896fe5f1646e0807ab0bea008ee8950
   },
   "nvim-tree.lua": {
     "commit": "1be1e17"
