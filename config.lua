@@ -1,6 +1,5 @@
 -- Neovim
 -- =========================================
-lvim.format_on_save = false
 lvim.leader = " "
 lvim.colorscheme = "tokyonight" -- set to a custom theme
 lvim.builtin.time_based_themes = true -- set false to use your own configured theme
@@ -83,12 +82,12 @@ lvim.builtin.cmp.cmdline.enable = false
 lvim.builtin.borderless_cmp = false
 lvim.builtin.colored_args = true -- if true then sets up hlargs.nvim
 
-if vim.fn.has "nvim-0.9" == 1 then
-  vim.opt.mousescroll = { "ver:1", "hor:6" }
-  vim.o.mousefocus = true
-  vim.o.mousemoveevent = true
-  vim.o.splitkeep = "screen"
-end
+  if vim.fn.has "nvim-0.9" == 1 then
+    vim.opt.mousescroll = { "ver:1", "hor:6" }
+    vim.o.mousefocus = true
+    vim.o.mousemoveevent = true
+    vim.o.splitkeep = "screen"
+  end
 
 -- Custom User Config
 -- =========================================
@@ -103,7 +102,7 @@ end
 if lvim.builtin.winbar_provider == "navic" then
   vim.opt.showtabline = 1
   lvim.keys.normal_mode["<tab>"] =
-  "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false, initial_mode='normal'})<cr>"
+    "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false, initial_mode='normal'})<cr>"
   lvim.builtin.bufferline.active = false
   lvim.builtin.breadcrumbs.active = true
 end
