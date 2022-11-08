@@ -69,7 +69,7 @@ if lvim.builtin.lsp_lines then
   lvim.lsp.diagnostics.virtual_text = false
 end
 lvim.builtin.legendary = { active = false } -- enable/disable legendary plugin ( ctrl-p command )
-lvim.builtin.tree_provider = "nvimtree" -- can be "neo-tree" or "nvimtree" or ""
+lvim.builtin.tree_provider = "neo-tree" -- can be "neo-tree" or "nvimtree" or ""
 lvim.builtin.lir.active = false
 lvim.builtin.breadcrumbs.active = false
 lvim.builtin.illuminate.active = false
@@ -82,6 +82,13 @@ lvim.builtin.rust_programming = { active = false } -- rust_tools.nvim + crates.n
 lvim.builtin.cmp.cmdline.enable = false
 lvim.builtin.borderless_cmp = false
 lvim.builtin.colored_args = true -- if true then sets up hlargs.nvim
+
+if vim.fn.has "nvim-0.9" == 1 then
+  vim.opt.mousescroll = { "ver:1", "hor:6" }
+  vim.o.mousefocus = true
+  vim.o.mousemoveevent = true
+  vim.o.splitkeep = "screen"
+end
 
 -- Custom User Config
 -- =========================================
@@ -96,7 +103,7 @@ end
 if lvim.builtin.winbar_provider == "navic" then
   vim.opt.showtabline = 1
   lvim.keys.normal_mode["<tab>"] =
-    "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false, initial_mode='normal'})<cr>"
+  "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false, initial_mode='normal'})<cr>"
   lvim.builtin.bufferline.active = false
   lvim.builtin.breadcrumbs.active = true
 end
