@@ -30,7 +30,7 @@ lvim.builtin.lua_dev = { active = true } -- change this to enable/disable folke/
 lvim.builtin.test_runner = { active = false, runner = "ultest" } -- change this to enable/disable ultest or neotest
 lvim.builtin.cheat = { active = false } -- enable cheat.sh integration
 lvim.builtin.sql_integration = { active = false } -- use sql integration
-lvim.builtin.smooth_scroll = "" -- for smoth scrolling, can be "cinnamon", "neoscroll" or ""
+lvim.builtin.smooth_scroll = "cinnamon" -- for smoth scrolling, can be "cinnamon", "neoscroll" or ""
 lvim.builtin.neoclip = { active = true, enable_persistent_history = false }
 lvim.builtin.nonumber_unfocus = false -- diffrentiate between focused and non focused windows
 lvim.builtin.custom_web_devicons = true -- install https://github.com/Nguyen-Hoang-Nam/mini-file-icons
@@ -70,8 +70,8 @@ end
 lvim.builtin.legendary = { active = false } -- enable/disable legendary plugin ( ctrl-p command )
 lvim.builtin.tree_provider = "neo-tree" -- can be "neo-tree" or "nvimtree" or ""
 lvim.builtin.lir.active = false
-lvim.builtin.breadcrumbs.active = false
-lvim.builtin.illuminate.active = false
+lvim.builtin.breadcrumbs.active = true
+lvim.builtin.illuminate.active = true
 lvim.builtin.indentlines.active = true
 lvim.builtin.noice = { active = true } -- enables noice.nvim and inc-rename.nvim
 lvim.builtin.go_programming = { active = false } -- gopher.nvim + nvim-dap-go
