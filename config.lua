@@ -42,7 +42,7 @@ lvim.builtin.hlslens = { active = false } -- enable/disable hlslens
 lvim.builtin.csv_support = false -- enable/disable csv support
 lvim.builtin.sidebar = { active = false } -- enable/disable sidebar
 lvim.builtin.task_runner = "async_tasks" -- change this to use different task runners ( "async_tasks" or "overseer" or "")
-lvim.builtin.winbar_provider = "filename" -- can be "filename" or "treesitter" or "navic" or ""
+lvim.builtin.winbar_provider = "navic" -- can be "filename" or "treesitter" or "navic" or ""
 lvim.builtin.metals = {
   active = false, -- enable/disable nvim-metals for scala development
   fallbackScalaVersion = "3.2.0-RC3",
@@ -82,12 +82,12 @@ lvim.builtin.cmp.cmdline.enable = false
 lvim.builtin.borderless_cmp = false
 lvim.builtin.colored_args = true -- if true then sets up hlargs.nvim
 
-  if vim.fn.has "nvim-0.9" == 1 then
-    vim.opt.mousescroll = { "ver:1", "hor:6" }
-    vim.o.mousefocus = true
-    vim.o.mousemoveevent = true
-    vim.o.splitkeep = "screen"
-  end
+if vim.fn.has "nvim-0.9" == 1 then
+  vim.opt.mousescroll = { "ver:1", "hor:6" }
+  vim.o.mousefocus = true
+  vim.o.mousemoveevent = true
+  vim.o.splitkeep = "screen"
+end
 
 -- Custom User Config
 -- =========================================

@@ -1,9 +1,18 @@
 {
-  "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
-  "Lua.diagnostics.disable": [
-    "redundant-parameter",
-    "param-type-mismatch",
-    "missing-parameter"
-  ],
-  "diagnostics.libraryFiles": "Disable"
+    "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+    "Lua.diagnostics.disable": [
+        "redundant-parameter",
+        "param-type-mismatch",
+        "missing-parameter"
+    ],
+    "Lua.workspace.library": [
+        "/home/cvuppala/.local/nvim/share/nvim/runtime",
+        "/home/cvuppala/.config/nvim",
+        "/home/cvuppala/.local/share/nvim/site/pack/packer/opt/neodev.nvim/types/nightly",
+        "/home/cvuppala/.local/share/nvim/site/pack/packer/start/LuaSnip/lua",
+        "/home/cvuppala/.local/share/nvim/site/pack/packer/start/plenary.nvim/lua",
+        "/home/cvuppala/.local/share/nvim/site/pack/packer/start/telescope.nvim/lua",
+        "${3rd}/luassert/library"
+    ],
+    "diagnostics.libraryFiles": "Disable"
 }
