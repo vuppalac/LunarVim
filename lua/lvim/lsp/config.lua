@@ -15,6 +15,7 @@ local skipped_servers = {
   "graphql",
   "jedi_language_server",
   "ltex",
+  "neocmake",
   "ocamlls",
   "phpactor",
   "psalm",
@@ -61,7 +62,7 @@ return {
     underline = true,
     severity_sort = true,
     float = {
-      focusable = false,
+      focusable = true,
       style = "minimal",
       border = "rounded",
       source = "always",

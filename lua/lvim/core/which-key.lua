@@ -84,13 +84,18 @@ M.config = function()
       ["q"] = { "<cmd>lua require('lvim.utils.functions').smart_quit()<CR>", "Quit" },
       ["/"] = { "<Plug>(comment_toggle_linewise_current)", "Comment toggle current line" },
       --["c"] = { "<cmd>BufferKill<CR>", "Close Buffer" },
-      ["f"] = { require("lvim.core.telescope.custom-finders").find_project_files, "Find File" },
+      ["f"] = {
+        function()
+          require("lvim.core.telescope.custom-finders").find_project_files { previewer = false }
+        end,
+        "Find File",
+      },
       ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
       ["e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer" },
       b = {
         name = "Buffers",
         j = { "<cmd>BufferLinePick<cr>", "Jump" },
-        f = { "<cmd>Telescope buffers<cr>", "Find" },
+        f = { "<cmd>Telescope buffers previewer=false<cr>", "Find" },
         b = { "<cmd>BufferLineCyclePrev<cr>", "Previous" },
         n = { "<cmd>BufferLineCycleNext<cr>", "Next" },
         W = { "<cmd>noautocmd w<cr>", "Save without formatting (noautocmd)" },
@@ -128,7 +133,7 @@ M.config = function()
         r = { "<cmd>lua require'dap'.repl.toggle()<cr>", "Toggle Repl" },
         s = { "<cmd>lua require'dap'.continue()<cr>", "Start" },
         q = { "<cmd>lua require'dap'.close()<cr>", "Quit" },
-        U = { "<cmd>lua require'dapui'.toggle()<cr>", "Toggle UI" },
+        U = { "<cmd>lua require'dapui'.toggle({reset = true})<cr>", "Toggle UI" },
       },
       p = {
         name = "Packer",
