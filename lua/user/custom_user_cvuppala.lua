@@ -10,7 +10,7 @@ M.config = function()
   lvim.builtin.cursorline.active = false
   lvim.builtin.winbar_provider = "navic"
   lvim.builtin.breadcrumbs.active = true
-  lvim.builtin.illuminate.active = false
+  lvim.builtin.illuminate.active = true
 
   -- abz customization
   if vim.fn.has "nvim-0.9" == 1 then
@@ -52,7 +52,7 @@ M.config = function()
   lvim.builtin.go_programming.active = false
   lvim.builtin.python_programming.active = true
   lvim.builtin.web_programming.active = false
-  lvim.builtin.rust_programming.active = false
+  lvim.builtin.rust_programming.active = true
   lvim.builtin.cpp_programming.active = true
   lvim.builtin.borderless_cmp = true
   lvim.builtin.colored_args = true

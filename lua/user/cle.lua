@@ -25,7 +25,7 @@ M.config = function()
     "--offset-encoding=utf-16",
     "--ranking-model=heuristics",
     "--folding-ranges",
-    "--compile-commands-dir=build"
+    "--compile-commands-dir=build_el7_2020_05"
   }
   local nvim_lsp = require('lspconfig')
   clangd_extensions.setup {

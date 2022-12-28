@@ -198,7 +198,7 @@ M.config = function()
   -- lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
   local status_ok_comment, cmt = pcall(require, "Comment.api")
   lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<CR>"
-  lvim.keys.normal_mode["<C-f>"] = "<Cmd>lua require('user.telescope').grep_string()<CR>"
+  lvim.keys.normal_mode["<C-f>"] = ":Telescope grep_string<CR>"
   lvim.keys.normal_mode["<M-f>"] = ":Telescope live_grep<CR>"
   if status_ok_comment and cmt["toggle"] ~= nil then
     lvim.keys.normal_mode["<C-_>"] = "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>"
@@ -383,6 +383,7 @@ M.config = function()
       d = { "<cmd>lua require('persistence').stop()<cr> | :qa!<cr>", "Quit without saving session" },
       l = { "<cmd>lua require('persistence').load(last=true)<cr>", "Restore last session" },
       s = { "<cmd>lua require('persistence').load()<cr>", "Restore for current dir" },
+      q = { "<cmd>lua require('lvim.utils.functions').smart_quit()<CR>", "Quit" },
     }
   end
   lvim.builtin.which_key.mappings["n"] = {
