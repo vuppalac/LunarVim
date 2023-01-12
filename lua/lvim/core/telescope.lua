@@ -31,7 +31,7 @@ function M.config()
       selection_strategy = "reset",
       sorting_strategy = nil,
       layout_strategy = nil,
-      layout_config = nil,
+      layout_config = {},
       vimgrep_arguments = {
         "rg",
         "--color=never",
@@ -98,6 +98,9 @@ function M.config()
         hidden = true,
         show_untracked = true,
       },
+      colorscheme = {
+        enable_preview = true,
+      },
     },
     extensions = {
       fzf = {
@@ -124,7 +127,7 @@ function M.setup()
 
   local telescope = require "telescope"
 
-  local theme = require("telescope.themes")["get_" .. lvim.builtin.telescope.theme]
+  local theme = require("telescope.themes")["get_" .. (lvim.builtin.telescope.theme or "")]
   if theme then
     lvim.builtin.telescope.defaults = theme(lvim.builtin.telescope.defaults)
   end
