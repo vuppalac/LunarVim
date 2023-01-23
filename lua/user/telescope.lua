@@ -136,7 +136,7 @@ end
 
 function M.installed_plugins()
   builtin.find_files {
-    cwd = join_paths(vim.env.LUNARVIM_RUNTIME_DIR, "site", "pack", "packer"),
+    cwd = join_paths(vim.env.LUNARVIM_RUNTIME_DIR, "site", "pack", "lazy"),
   }
 end
 
@@ -252,21 +252,6 @@ function M.grep_string_visual()
   require("telescope.builtin").live_grep {
     default_text = visual_selection(),
   }
-end
-
-function M.grep_string()
-  local opts = {
-    prompt_position = "bottom",
-    layout_strategy = "horizontal",
-    sorting_strategy = "descending",
-    layout_config = {
-      width = 0.9,
-      height = 0.8,
-      horizontal = { width = { padding = 0.15 } },
-      vertical = { preview_height = 0.75 },
-    },
-  }
-  builtin.grep_string(opts)
 end
 
 function M.find_project_files(opts)
