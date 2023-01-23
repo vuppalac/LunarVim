@@ -70,6 +70,7 @@ M.load_default_options = function()
     extension = {
       tex = "tex",
       zir = "zir",
+      cr = "crystal",
     },
     pattern = {
       ["[jt]sconfig.*.json"] = "jsonc",
