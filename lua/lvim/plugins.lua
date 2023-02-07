@@ -6,25 +6,34 @@ local core_plugins = {
     lazy = true,
     dependencies = { "mason-lspconfig.nvim", "nlsp-settings.nvim" },
   },
-  { "williamboman/mason-lspconfig.nvim", lazy = true },
-  { "tamago324/nlsp-settings.nvim", lazy = true },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    cmd = { "LspInstall", "LspUninstall" },
+    lazy = true,
+    dependencies = "mason.nvim",
+  },
+  { "tamago324/nlsp-settings.nvim", cmd = "LspSettings", lazy = true },
   { "jose-elias-alvarez/null-ls.nvim", lazy = true },
   {
     "williamboman/mason.nvim",
     config = function()
       require("lvim.core.mason").setup()
     end,
+    cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
+    lazy = true,
   },
   {
     "folke/tokyonight.nvim",
+    lazy = not vim.startswith(lvim.colorscheme, "tokyonight"),
   },
   {
     "lunarvim/lunar.nvim",
+    lazy = lvim.colorscheme ~= "lunar",
   },
-  { "Tastyep/structlog.nvim" },
+  { "Tastyep/structlog.nvim", lazy = true },
 
-  { "nvim-lua/popup.nvim" },
-  { "nvim-lua/plenary.nvim" },
+  { "nvim-lua/popup.nvim", lazy = true },
+  { "nvim-lua/plenary.nvim", cmd = { "PlenaryBustedFile", "PlenaryBustedDirectory" }, lazy = true },
   -- Telescope
   {
     "nvim-telescope/telescope.nvim",
@@ -117,21 +126,24 @@ local core_plugins = {
       vim.opt.rtp:prepend(path) -- treesitter needs to be before nvim's runtime in rtp
       require("lvim.core.treesitter").setup()
     end,
+    cmd = { "TSInstall", "TSUninstall", "TSUpdate", "TSInstallInfo", "TSInstallSync", "TSInstallFromGrammar" },
+    event = "User FileOpened",
   },
   {
+    -- Lazy loaded by Comment.nvim pre_hook
     "JoosepAlviste/nvim-ts-context-commentstring",
-    event = "VeryLazy",
+    lazy = true,
   },
 
   -- NvimTree
   {
     "kyazdani42/nvim-tree.lua",
-    -- event = "BufWinOpen",
-    -- cmd = "NvimTreeToggle",
     config = function()
       require("lvim.core.nvimtree").setup()
     end,
     enabled = lvim.builtin.nvimtree.active,
+    cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFocus", "NvimTreeFindFileToggle" },
+    event = "User DirOpened",
   },
   -- Lir
   {
@@ -140,13 +152,15 @@ local core_plugins = {
       require("lvim.core.lir").setup()
     end,
     enabled = lvim.builtin.lir.active,
+    event = "User DirOpened",
   },
   {
     "vuppalac/gitsigns.nvim",
     config = function()
       require("lvim.core.gitsigns").setup()
     end,
-    event = "BufRead",
+    event = "User FileOpened",
+    cmd = "Gitsigns",
     enabled = lvim.builtin.gitsigns.active,
   },
 
@@ -156,6 +170,7 @@ local core_plugins = {
     config = function()
       require("lvim.core.which-key").setup()
     end,
+    cmd = "WhichKey",
     event = "VeryLazy",
     enabled = lvim.builtin.which_key.active,
   },
@@ -163,10 +178,11 @@ local core_plugins = {
   -- Comments
   {
     "numToStr/Comment.nvim",
-    event = "BufRead",
     config = function()
       require("lvim.core.comment").setup()
     end,
+    keys = { { "gc", mode = { "n", "v" } }, { "gb", mode = { "n", "v" } } },
+    event = "User FileOpened",
     enabled = lvim.builtin.comment.active,
   },
 
@@ -177,12 +193,15 @@ local core_plugins = {
       require("lvim.core.project").setup()
     end,
     enabled = lvim.builtin.project.active,
+    event = "VimEnter",
+    cmd = "Telescope projects",
   },
 
   -- Icons
   {
     "nvim-tree/nvim-web-devicons",
     enabled = lvim.use_icons,
+    lazy = true,
   },
 
   -- Status Line and Bufferline
@@ -193,6 +212,7 @@ local core_plugins = {
     config = function()
       require("lvim.core.lualine").setup()
     end,
+    event = "VimEnter",
     enabled = lvim.builtin.lualine.active,
   },
 
@@ -202,6 +222,7 @@ local core_plugins = {
     config = function()
       require("lvim.core.breadcrumbs").setup()
     end,
+    event = "User FileOpened",
     enabled = lvim.builtin.breadcrumbs.active,
   },
 
@@ -211,16 +232,17 @@ local core_plugins = {
       require("lvim.core.bufferline").setup()
     end,
     branch = "main",
+    event = "User FileOpened",
     enabled = lvim.builtin.bufferline.active,
   },
 
   -- Debugging
   {
     "mfussenegger/nvim-dap",
-    -- event = "BufWinEnter",
     config = function()
       require("lvim.core.dap").setup()
     end,
+    lazy = true,
     enabled = lvim.builtin.dap.active,
   },
 
@@ -230,6 +252,7 @@ local core_plugins = {
     config = function()
       require("lvim.core.dap").setup_ui()
     end,
+    lazy = true,
     enabled = lvim.builtin.dap.active,
   },
 
@@ -240,6 +263,7 @@ local core_plugins = {
       require("lvim.core.alpha").setup()
     end,
     enabled = lvim.builtin.alpha.active,
+    event = "VimEnter",
   },
 
   -- Terminal
@@ -264,7 +288,7 @@ local core_plugins = {
     config = function()
       require("lvim.core.illuminate").setup()
     end,
-    event = "VeryLazy",
+    event = "User FileOpened",
     enabled = lvim.builtin.illuminate.active,
   },
 
@@ -273,6 +297,7 @@ local core_plugins = {
     config = function()
       require("lvim.core.indentlines").setup()
     end,
+    event = "User FileOpened",
     enabled = lvim.builtin.indentlines.active,
   },
 
@@ -287,7 +312,7 @@ local core_plugins = {
         end
       end)
     end,
-    enabled = lvim.colorscheme == "onedarker",
+    lazy = lvim.colorscheme ~= "onedarker",
   },
 
   {
@@ -298,6 +323,7 @@ local core_plugins = {
       end)
     end,
     enabled = lvim.builtin.bigfile.active,
+    event = { "FileReadPre", "BufReadPre", "User FileOpened" },
   },
 }
 
