@@ -213,7 +213,10 @@ M.config = function()
   end
 
   if lvim.builtin.noice.active then
-    vim.lsp.handlers["textDocument/hover"] = require("noice.lsp.hover").on_hover
+    local status_ok, noice = pcall(require, "noice.lsp.hover")
+    if status_ok then
+      vim.lsp.handlers["textDocument/hover"] = noice.on_hover
+    end
   end
   lvim.lsp.buffer_mappings.normal_mode["ga"] = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" }
   lvim.lsp.buffer_mappings.normal_mode["gI"] = {
@@ -369,6 +372,8 @@ M.config = function()
       "toml",
       "vim",
       "yaml",
+      "git_commit",
+      "git_rebase"
   }
   lvim.builtin.treesitter.highlight.disable = { "org" }
   lvim.builtin.treesitter.highlight.aditional_vim_regex_highlighting = { "org" }
@@ -475,6 +480,7 @@ M.config = function()
   -- lvim.builtin.telescope.defaults.selection_caret = "  "
   lvim.builtin.telescope.defaults.cache_picker = { num_pickers = 3 }
   lvim.builtin.telescope.defaults.layout_strategy = "horizontal"
+  lvim.builtin.telescope.defaults.sorting_strategy = "descending"
   lvim.builtin.telescope.defaults.file_ignore_patterns = {
     "vendor/*",
     "%.lock",
