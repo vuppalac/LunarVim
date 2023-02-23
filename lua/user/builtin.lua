@@ -342,7 +342,6 @@ M.config = function()
   lvim.builtin.terminal.active = true
   lvim.builtin.terminal.execs = {}
   lvim.builtin.terminal.autochdir = true
-  lvim.builtin.terminal.open_mapping = nil
   lvim.builtin.terminal.size = vim.o.columns * 0.4
   lvim.builtin.terminal.on_config_done = function()
     M.create_terminal(2, "<c-\\>", 20, "float")
@@ -371,9 +370,7 @@ M.config = function()
       "rust",
       "toml",
       "vim",
-      "yaml",
-      "git_commit",
-      "git_rebase"
+      "yaml"
   }
   lvim.builtin.treesitter.highlight.disable = { "org" }
   lvim.builtin.treesitter.highlight.aditional_vim_regex_highlighting = { "org" }
