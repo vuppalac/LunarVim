@@ -3,6 +3,7 @@
 lvim.leader = " "
 lvim.colorscheme = "tokyonight" -- set to a custom theme
 lvim.builtin.time_based_themes = true -- set false to use your own configured theme
+lvim.builtin.time_offset = 0
 lvim.transparent_window = false -- enable/disable transparency
 lvim.debug = false
 vim.lsp.set_log_level "error"
@@ -87,6 +88,10 @@ if user and user == "abz" then
   require("user.custom_user").config()
 end
 if user and user == "cvuppala" then
+  lvim.reload_config_on_save = true
+  require("user.custom_user_cvuppala").config()
+end
+if user and user == "chandrashekar" then
   lvim.reload_config_on_save = true
   require("user.custom_user_cvuppala").config()
 end
