@@ -27,6 +27,11 @@ local core_plugins = {
       require("lvim.core.mason").setup()
     end,
     cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
+    build = function()
+      pcall(function()
+        require("mason-registry").refresh()
+      end)
+    end,
     lazy = true,
   },
   {
@@ -38,8 +43,6 @@ local core_plugins = {
     lazy = lvim.colorscheme ~= "lunar",
   },
   { "Tastyep/structlog.nvim", lazy = true },
-
-  { "nvim-lua/popup.nvim", lazy = true },
   { "nvim-lua/plenary.nvim", cmd = { "PlenaryBustedFile", "PlenaryBustedDirectory" }, lazy = true },
   -- Telescope
   {
