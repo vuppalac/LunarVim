@@ -3,7 +3,6 @@
 lvim.leader = " "
 lvim.colorscheme = "tokyonight" -- set to a custom theme
 lvim.builtin.time_based_themes = true -- set false to use your own configured theme
-lvim.builtin.time_offset = 0
 lvim.transparent_window = false -- enable/disable transparency
 lvim.debug = false
 vim.lsp.set_log_level "error"
@@ -78,6 +77,7 @@ lvim.builtin.borderless_cmp = false
 lvim.builtin.colored_args = false -- if true then sets up hlargs.nvim
 lvim.builtin.bigfile.active = true
 lvim.builtin.inlay_hints = { active = false } -- enable/disable inlay hints
+-- WARN: mind plugin is deprecated ( use with caution )
 lvim.builtin.mind = { active = false, root_path = "~/.mind" } -- enable/disable mind.nvim
 
 -- Custom User Config
@@ -88,10 +88,6 @@ if user and user == "abz" then
   require("user.custom_user").config()
 end
 if user and user == "cvuppala" then
-  lvim.reload_config_on_save = true
-  require("user.custom_user_cvuppala").config()
-end
-if user and user == "chandrashekar" then
   lvim.reload_config_on_save = true
   require("user.custom_user_cvuppala").config()
 end
