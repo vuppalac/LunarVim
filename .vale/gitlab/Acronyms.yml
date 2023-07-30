@@ -16,6 +16,7 @@ second: '(?:\b[A-Z][a-z]+ )+\(([A-Z]{3,5})\)'
 exceptions:
   - ACID
   - ACK
+  - ACL
   - AJAX
   - ANSI
   - API
@@ -23,24 +24,33 @@ exceptions:
   - ARN
   - ARP
   - ASCII
+  - ASLR
+  - ASN
   - AWS
   - BAR
   - BGP
   - BSD
   - CAS
   - CASMM
+  - CAM
   - CDN
+  - CET
+  - CFG
   - CIS
   - CLI
   - CMD
   - CNA
   - CNAME
+  - CNI
+  - COM
   - CONOP
   - CORE
   - CORS
   - CPU
   - CRIME
   - CRLF
+  - CRUD
+  - CSI
   - CSPM
   - CSRF
   - CSS
@@ -51,6 +61,7 @@ exceptions:
   - DAG
   - DAST
   - DDOS
+  - DEP
   - DHCP
   - DHT
   - DLL
@@ -69,6 +80,7 @@ exceptions:
   - EOL
   - EPA
   - ETC
+  - ETCD
   - EXIF
   - FAQ
   - FIFO
@@ -100,16 +112,20 @@ exceptions:
   - HTML
   - HTTP
   - HTTPS
+  - HVCI
   - IAM
   - IANA
+  - IAT
   - IBM
   - ICMP
+  - IDA
   - IDE
   - IDOR
   - IID
   - IMAP
   - IOPS
   - IRC
+  - IRQL
   - ISAC
   - ISN
   - ISO
@@ -127,6 +143,8 @@ exceptions:
   - LRU
   - LSP
   - LTS
+  - LUKS
+  - MAC
   - MBR
   - MFA
   - MIME
@@ -144,11 +162,15 @@ exceptions:
   - ONLY
   - OSI
   - OSS
+  - OTP
+  - OTR
   - OWASP
   - PAT
   - PCI
   - PCI-DSS
   - PDF
+  - PID
+  - PEB
   - PEM
   - PEP
   - PGP
@@ -157,9 +179,11 @@ exceptions:
   - POSIX
   - POST
   - PPP
+  - PTE
   - PUT
   - QEMU
   - QMP
+  - QUIC
   - RAID
   - RAM
   - RBAC
@@ -170,11 +194,14 @@ exceptions:
   - RFC
   - RFI
   - RHEL
+  - ROM
+  - ROP
   - RPC
   - RPM
   - RPS
   - RSA
   - RSS
+  - RST
   - RVM
   - SAAS
   - SAML
@@ -187,6 +214,7 @@ exceptions:
   - SCSS
   - SDK
   - SDN
+  - SEH
   - SELF
   - SEO
   - SET
@@ -195,6 +223,7 @@ exceptions:
   - SIEM
   - SLA
   - SLSA
+  - SMB
   - SMS
   - SMTP
   - SOAP
@@ -217,6 +246,7 @@ exceptions:
   - SVN
   - SYN
   - TBA
+  - TBD
   - TCP
   - TEE
   - TIFF
@@ -225,6 +255,7 @@ exceptions:
   - TLS
   - TODO
   - TOML
+  - TOR
   - TSC
   - TTL
   - UDP
@@ -236,6 +267,7 @@ exceptions:
   - UTF
   - UUID
   - VCS
+  - VLAN
   - VNC
   - VPC
   - VPN
