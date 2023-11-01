@@ -43,7 +43,7 @@ function plugin_loader.init(opts)
   end
 
   local rtp = vim.opt.rtp:get()
-  local base_dir = (vim.env.LUNARVIM_BASE_DIR or get_runtime_dir() .. "/lvim"):gsub("\\", "/")
+  local base_dir = (vim.env.LUNARVIM_BASE_DIR or get_runtime_dir() .. "/nvim"):gsub("\\", "/")
   local idx_base = #rtp + 1
   for i, path in ipairs(rtp) do
     path = path:gsub("\\", "/")

@@ -121,7 +121,7 @@ local config = {
         enabled = true,
         settings = {
           profile = "GoogleStyle",
-          url = home .. "/.config/lvim/.java-google-formatter.xml",
+          url = home .. "/.config/nvim/.java-google-formatter.xml",
         },
       },
     },

@@ -488,8 +488,8 @@ M.config = function()
       init = function()
         vim.cmd [[
           let g:asyncrun_open = 8
-          let g:asynctask_template = '~/.config/lvim/task_template.ini'
-          let g:asynctasks_extra_config = ['~/.config/lvim/tasks.ini']
+          let g:asynctask_template = '~/.config/nvim/task_template.ini'
+          let g:asynctasks_extra_config = ['~/.config/nvim/tasks.ini']
         ]]
       end,
       event = { "BufRead", "BufNew" },
@@ -821,6 +821,12 @@ M.config = function()
       end,
       event = "VeryLazy",
       enabled = lvim.builtin.sell_your_soul_to_devil.openai,
+    },
+    {
+      "lukas-reineke/indent-blankline.nvim",
+      name = "new-indent",
+      main = "ibl",
+      enabled = lvim.builtin.indentlines.mine,
     },
     -- end of abz config
     {
